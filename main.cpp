@@ -1,57 +1,120 @@
 #include <iostream>
-#include <array>
+#include <string>
+#include <vector>
+#include <fstream>
+#include <json.hpp>
+#include <cmath>
+#include <curl.h>
 
-#include <Helper.h>
+
+
+
+class Cabral {
+    std::vector<std::string> sayings;
+    public:
+    explicit Cabral(const std::vector<std::string>& sayings_) {
+        sayings = sayings_;
+    }
+
+
+};
+
+
+class Player {
+    int m_score=0;
+    std::string m_name;
+    std::string m_family;
+public:
+    void increaseScore(int& m_score, int points_given, int bonus_multiplier) {
+        m_score+= points_given*bonus_multiplier;
+        //Functie care incrementeaza scorul in functie de punctele raspunsului si bonusul rundei.
+    }
+
+
+    Player(const std::string& name, const std::string& family) {
+        m_name = name;
+        m_family = family;
+    }
+
+
+};
+
+class Question {
+    std::string m_text;
+    std::vector<std::pair<std::string, int>> answers;
+
+
+public:
+    explicit Question(const std::string& text_) {
+        m_text = text_;
+    }
+
+};
+
+
+
+class Round {
+    std::vector<Question> questions;
+    int round_id = 1;
+    Player m_p1 = Player("Player1", "Player1");
+    Player m_p2 = Player("Player2", "Player2");
+public:
+    Round(const Player& p1_, const Player& p2_, const std::vector<Question>& questions_, const int round_id_) {
+        m_p1 = p1_;
+        m_p2 = p2_;
+        questions = questions_;
+        round_id = round_id_;
+    }
+
+    /* Scopul constructorului de copiere, ti-au placut intrebarile dintr-o runda si vrei sa
+     * o poti da si altor oameni/prieteni sa o joace sau optiune de 'Genereaza runda custom
+     * pe baza acestei runde!' */
+
+    Round(const Round& round_) {
+        std::cout <<"Runda a fost copiata cu succes!";
+        questions = round_.questions;
+        m_p1 = round_.m_p1;
+        m_p2 = round_.m_p2;
+        round_id = round_.round_id;
+    }
+    ~Round() {
+        std::cout<<"Runda a fost distrusa.";
+    }
+    Round& operator=(const Round& other) {
+
+        if (this == &other) {
+            return *this;
+        }
+        questions = other.questions;
+        m_p1 = other.m_p1;
+        m_p2 = other.m_p2;
+        round_id = other.round_id;
+        return *this;
+    }
+};
+
+
+class Game {
+    std::vector<Player> players;
+    int rounds = 6;
+    public:
+    explicit Game(const std::vector<Player>& p1_, int number_of_rounds = 6) {
+        players = p1_;
+        rounds(number_of_rounds);
+    }
+};
+
+
 
 int main() {
-    std::cout << "Hello, world!\n";
-    std::array<int, 100> v{};
-    int nr;
-    std::cout << "Introduceți nr: ";
-    /////////////////////////////////////////////////////////////////////////
-    /// Observație: dacă aveți nevoie să citiți date de intrare de la tastatură,
-    /// dați exemple de date de intrare folosind fișierul tastatura.txt
-    /// Trebuie să aveți în fișierul tastatura.txt suficiente date de intrare
-    /// (în formatul impus de voi) astfel încât execuția programului să se încheie.
-    /// De asemenea, trebuie să adăugați în acest fișier date de intrare
-    /// pentru cât mai multe ramuri de execuție.
-    /// Dorim să facem acest lucru pentru a automatiza testarea codului, fără să
-    /// mai pierdem timp de fiecare dată să introducem de la zero aceleași date de intrare.
-    ///
-    /// Pe GitHub Actions (bife), fișierul tastatura.txt este folosit
-    /// pentru a simula date introduse de la tastatură.
-    /// Bifele verifică dacă programul are erori de compilare, erori de memorie și memory leaks.
-    ///
-    /// Dacă nu puneți în tastatura.txt suficiente date de intrare, îmi rezerv dreptul să vă
-    /// testez codul cu ce date de intrare am chef și să nu pun notă dacă găsesc vreun bug.
-    /// Impun această cerință ca să învățați să faceți un demo și să arătați părțile din
-    /// program care merg (și să le evitați pe cele care nu merg).
-    ///
-    /////////////////////////////////////////////////////////////////////////
-    std::cin >> nr;
-    /////////////////////////////////////////////////////////////////////////
-    for(int i = 0; i < nr; ++i) {
-        std::cout << "v[" << i << "] = ";
-        std::cin >> v[i];
-    }
-    std::cout << "\n\n";
-    std::cout << "Am citit de la tastatură " << nr << " elemente:\n";
-    for(int i = 0; i < nr; ++i) {
-        std::cout << "- " << v[i] << "\n";
-    }
-    ///////////////////////////////////////////////////////////////////////////
-    /// Pentru date citite din fișier, NU folosiți tastatura.txt. Creați-vă voi
-    /// alt fișier propriu cu ce alt nume doriți.
-    /// Exemplu:
-    /// std::ifstream fis("date.txt");
-    /// for(int i = 0; i < nr2; ++i)
-    ///     fis >> v2[i];
-    ///
-    ///////////////////////////////////////////////////////////////////////////
-    ///                Exemplu de utilizare cod generat                     ///
-    ///////////////////////////////////////////////////////////////////////////
-    Helper helper;
-    helper.help();
-    ///////////////////////////////////////////////////////////////////////////
+
+
     return 0;
+
+
+
+
+
+
+
 }
