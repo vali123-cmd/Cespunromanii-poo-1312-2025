@@ -1,4 +1,3 @@
-#pragma once
 
 #include <iostream>
 #include <string>
@@ -129,7 +128,7 @@ class Game {
             std::cin>>member_name;
             Player player(member_name, family_name);
             players_.push_back(player);
-            delete member_name;
+
         }
     }
     void parseJson() {
@@ -159,8 +158,7 @@ class Game {
         std::cin>>family2;
         getPlayers(players2, family2);
         Family secondFam(family2, 0, players2);
-        delete family1;
-        delete family2;
+
 
     }
 
