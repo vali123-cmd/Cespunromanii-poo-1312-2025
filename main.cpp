@@ -64,7 +64,7 @@ public:
         return family_score;
     }
 
-    Family(const std::string &family_name, int family_score=0, const std::vector<Player> &players)
+    Family(const std::string &family_name, int family_score=0, const std::vector<Player> &players = {})
         : family_name(family_name),
           family_score(family_score),
           players(players) {
@@ -87,16 +87,15 @@ public:
 
 
 class Round {
-    Family family1;
-    Family family2;
+
     int round_id = 1;
     json data;
 public:
-    Round(const Family &family1, const Family &family2, int round_id, const json &data)
-        : family1(family1),
-          family2(family2),
-          round_id(round_id),
-          data(data) {
+    Round(int round_id_, const json &data_){
+        round_id = round_id_;
+        data = data_;
+
+
     }
 
     /* Scopul constructorului de copiere, ti-au placut intrebarile dintr-o runda si vrei sa
