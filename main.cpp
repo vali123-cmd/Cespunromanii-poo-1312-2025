@@ -4,7 +4,9 @@
 #include <vector>
 #include <fstream>
 #include <nlohmann/json.hpp>
+#include <random>
 #include <cmath>
+#include <queue>
 
 
 using json = nlohmann::json;
@@ -90,10 +92,28 @@ class Round {
 
     int round_id = 1;
     json data;
+
+    std::string pickRandQuestion() {
+        //Functie care alege o intrebare random din json.
+        if (data["intrebari"].empty()) {
+            return "No questions available.";
+        }
+
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> distr(0, data["intrebari"].size() - 1);
+
+        int randomIndex = distr(gen);
+        return data["intrebari"][randomIndex]["intrebare"];
+    }
 public:
     Round(int round_id_, const json &data_){
         round_id = round_id_;
         data = data_;
+        std::cout<<"Runda "<<round_id<<" a inceput"<<'\n';
+
+
+
 
 
     }
@@ -106,7 +126,7 @@ public:
 
 
 class Game {
-    std::pair<std::string, std::string> families;
+
     std::vector<Player> players1;
     std::vector<Player> players2;
     std::vector<Question> game_questions;
@@ -146,21 +166,19 @@ class Game {
     Game() {
         std::string family1;
         std::string family2;
-        std::cout<<"Salut! Bine ai venit la Family feud/(Ce spun romanii?)! Eu sunt gazda emisiunii, Cabral./"
-                   "Te rog sa introduci mai jos numele celor doua familii:"<<'\n';
-        std::cout<<"Nume familie 1: "<<'\n';
-        std::cin>>family1;
-        std::cout<<"Introdu 5 membri ai primei familii: "<<'\n';
+        std::cout << "Salut! Bine ai venit la Family feud/(Ce spun romanii?)! Eu sunt gazda emisiunii, Cabral./"
+                "Te rog sa introduci mai jos numele celor doua familii:" << '\n';
+        std::cout << "Nume familie 1: " << '\n';
+        std::cin >> family1;
+        std::cout << "Introdu 5 membri ai primei familii: " << '\n';
         getPlayers(players1, family1);
         Family firstFam(family1, 0, players1);
-        std::cout<<"Nume familie 2: "<<'\n';
-        std::cin>>family2;
+        std::cout << "Nume familie 2: " << '\n';
+        std::cin >> family2;
         getPlayers(players2, family2);
         Family secondFam(family2, 0, players2);
 
-
     }
-
 };
 
 
