@@ -1,53 +1,53 @@
 {
-  "intrebari": [
-    {
-      "intrebare": "Spuneți un motiv pentru care oamenii merg la mare.",
-      "raspunsuri": [
-        { "raspuns": "Să se relaxeze", "punctaj": 40 },
-        { "raspuns": "Să înoate", "punctaj": 30 },
-        { "raspuns": "Să se bronzeze", "punctaj": 20 },
-        { "raspuns": "Să mănânce pește proaspăt", "punctaj": 10 }
-      ]
-    },
-    {
-      "intrebare": "Spuneți un lucru pe care românii îl fac când vine primăvara.",
-      "raspunsuri": [
-        { "raspuns": "Încep să îngrijească grădina", "punctaj": 35 },
-        { "raspuns": "Ies în parc să se plimbe", "punctaj": 25 },
-        { "raspuns": "Își schimbă garderoba", "punctaj": 20 },
-        { "raspuns": "Planifică vacanțe", "punctaj": 15 },
-        { "raspuns": "Fac curățenie generală", "punctaj": 5 }
-      ]
-    },
-    {
-      "intrebare": "Spuneți un aliment pe care românii îl mănâncă la micul dejun.",
-      "raspunsuri": [
-        { "raspuns": "Ouă", "punctaj": 30 },
-        { "raspuns": "Pâine cu unt", "punctaj": 25 },
-        { "raspuns": "Cereale", "punctaj": 20 },
-        { "raspuns": "Șuncă", "punctaj": 15 },
-        { "raspuns": "Brânză", "punctaj": 10 }
-      ]
-    },
-    {
-      "intrebare": "Spuneți un motiv pentru care oamenii folosesc telefonul mobil.",
-      "raspunsuri": [
-        { "raspuns": "Pentru a suna", "punctaj": 35 },
-        { "raspuns": "Pentru a naviga pe internet", "punctaj": 30 },
-        { "raspuns": "Pentru a folosi rețelele sociale", "punctaj": 20 },
-        { "raspuns": "Pentru a face poze", "punctaj": 10 },
-        { "raspuns": "Pentru a juca jocuri", "punctaj": 5 }
-      ]
-    },
-    {
-      "intrebare": "Spuneți un lucru pe care românii îl fac în timpul liber.",
-      "raspunsuri": [
-        { "raspuns": "Se uită la televizor", "punctaj": 40 },
-        { "raspuns": "Ies cu prietenii", "punctaj": 25 },
-        { "raspuns": "Citește cărți", "punctaj": 15 },
-        { "raspuns": "Practică sport", "punctaj": 10 },
-        { "raspuns": "Gătește", "punctaj": 10 }
-      ]
-    }
-  ]
+"intrebari": [
+{
+"intrebare": "Spuneți un motiv pentru care oamenii merg la mare.",
+"raspunsuri": [
+{ "raspuns": "Să se relaxeze", "punctaj": 40 },
+{ "raspuns": "Să înoate", "punctaj": 30 },
+{ "raspuns": "Să se bronzeze", "punctaj": 20 },
+{ "raspuns": "Să mănânce pește proaspăt", "punctaj": 10 }
+]
+},
+{
+"intrebare": "Spuneți un lucru pe care românii îl fac când vine primăvara.",
+"raspunsuri": [
+{ "raspuns": "Încep să îngrijească grădina", "punctaj": 35 },
+{ "raspuns": "Ies în parc să se plimbe", "punctaj": 25 },
+{ "raspuns": "Își schimbă garderoba", "punctaj": 20 },
+{ "raspuns": "Planifică vacanțe", "punctaj": 15 },
+{ "raspuns": "Fac curățenie generală", "punctaj": 5 }
+]
+},
+{
+"intrebare": "Spuneți un aliment pe care românii îl mănâncă la micul dejun.",
+"raspunsuri": [
+{ "raspuns": "Ouă", "punctaj": 30 },
+{ "raspuns": "Pâine cu unt", "punctaj": 25 },
+{ "raspuns": "Cereale", "punctaj": 20 },
+{ "raspuns": "Șuncă", "punctaj": 15 },
+{ "raspuns": "Brânză", "punctaj": 10 }
+]
+},
+{
+"intrebare": "Spuneți un motiv pentru care oamenii folosesc telefonul mobil.",
+"raspunsuri": [
+{ "raspuns": "Pentru a suna", "punctaj": 35 },
+{ "raspuns": "Pentru a naviga pe internet", "punctaj": 30 },
+{ "raspuns": "Pentru a folosi rețelele sociale", "punctaj": 20 },
+{ "raspuns": "Pentru a face poze", "punctaj": 10 },
+{ "raspuns": "Pentru a juca jocuri", "punctaj": 5 }
+]
+},
+{
+"intrebare": "Spuneți un lucru pe care românii îl fac în timpul liber.",
+"raspunsuri": [
+{ "raspuns": "Se uită la televizor", "punctaj": 40 },
+{ "raspuns": "Ies cu prietenii", "punctaj": 25 },
+{ "raspuns": "Citește cărți", "punctaj": 15 },
+{ "raspuns": "Practică sport", "punctaj": 10 },
+{ "raspuns": "Gătește", "punctaj": 10 }
+]
+}
+]
 }
