@@ -17,7 +17,7 @@ class Player {
     std::string m_family;
 
 public:
-    void increaseScore(int& m_score, int points_given, int bonus_multiplier) {
+    void increaseScore( int points_given, int bonus_multiplier) {
         m_score+= points_given*bonus_multiplier;
         //Functie care incrementeaza scorul in functie de punctele raspunsului si bonusul rundei.
     }
@@ -45,38 +45,62 @@ std::ostream& operator<<(std::ostream& os, const Player& p ) {
 }
 class Family{
     std::string family_name;
-    int family_score;
+    int family_score = 0;
+    int strikes = 0;
     std::vector<Player> players;
-public:
-    const int calculate_score()  {
-        int score = 0;
+    int calculate_score()  const {
+        int family_score = 0;
         for (const auto& player : players) {
-            score += player.m_score1();
+            family_score += player.m_score1();
         }
-        return score;
+        return family_score;
+    }
+    void resetStrikes() {
+        strikes = 0;
+    }
+public:
+    bool checkStrikes() {
+        if (strikes == 3) {
+            resetStrikes();
+            return true;
+        }
+        return false;
+    }
+    void increaseStrikes() {
+        strikes++;
     }
     [[nodiscard]] std::string family_name1() const {
         return family_name;
     }
 
-    [[nodiscard]] int family_score1() const {
-
-        return family_score;
+    [[nodiscard]] std::vector<Player> players1() const {
+        return players;
     }
 
+    void set_family_score(int family_score) {
+        this->family_score = family_score;
+    }
+    [[nodiscard]]  int family_score1()  {
+        int computedScore = calculate_score();
+        set_family_score(computedScore);
+        return family_score;
+    }
     Family(const std::string &family_name, int family_score=0, const std::vector<Player> &players = {})
         : family_name(family_name),
           family_score(family_score),
           players(players) {
     }
-
+    friend std::ostream& operator<<(std::ostream& os, const Family& f);
 };
-std::ostream& operator<<(std::ostream& os,  Family& family) {
+std::ostream& operator<<(std::ostream& os, const Family& family) {
 
-    os<<family.family_name1()<<": "<<family.calculate_score()<<'\n';
+    os<<family.family_name1()<<": "<<family.family_score<<'\n';
+    os<<"Strikes: "<<family.strikes()<<'\n';
     return os;
 }
-
+bool operator==(const Family& f1, const Family& f2) {
+    return f1.family_name1() == f2.family_name1();
+}
 class Question {
     std::string m_text;
     std::vector<std::pair<std::string, int>> answers;
@@ -95,6 +119,16 @@ public:
     [[nodiscard]] std::vector<std::pair<std::string, int>> answers1() const {
         return answers;
     }
+
+    bool isAnswerRight(std::string userString, int& score) {
+        for (const auto& item : answers) {
+            if (item.first == userString) {
+                score = item.second;
+                return 1;
+            }
+        }
+        return 0;
+    }
 };
 std::ostream& operator<<(std::ostream& os, const Question& q) {
     os<<q.m_text1()<<'\n';
@@ -107,8 +141,9 @@ class Round {
     int round_id = 1;
     json data;
 
+
     static int pickRandIndex(const json &data) {
-        //Functie care alege o intrebare random din json.
+        //Functie care alege o intrebare random din json,bazata pe mersenne.
         if (data["intrebari"].empty()) {
             return -1;
         }
@@ -118,41 +153,85 @@ class Round {
         std::uniform_int_distribution<> distr(0, data["intrebari"].size() - 1);
 
         int randomIndex = distr(gen);
+
         return randomIndex;
     }
+    Question getQuestion(const json &data_) {
+        int randindex = pickRandIndex(data_);
+        std::vector<std::pair<std::string, int>> answers;
+        for (const auto& item : data_["intrebari"][randindex]["raspunsuri"]) {
+            answers.push_back(std::make_pair(item["raspuns"], item["punctaj"]));
+        }
+        Question q = Question(data["intrebari"][randindex]["intrebare"],
+            answers);
+        data["intrebari"].erase(randindex); //nu vrem sa repetam intrebari, deci stergem.
+    }
+    const Family& whoPressedFirst(const Family& f1, const Family& f2) {
+        std::cout<<"Cine a apasat primul? Scrie 1 pentru familia "<<
+            f1.family_name1()<<" si 2 pentru familia "<<f2.family_name1()<<'\n';
+        int pick=-1;
+        while (pick!=1 and pick!=2) {
+            std::cin>>pick;
+            if (pick!=1 and pick!=2) {
+                std::cout<<"Alege ceva legal!"<<'\n';
+            }
+        }
+        if (pick==1) {
+            return f1;
+        }
+        return f2;
+    }
+    void SwitchFamily(Family& currentFamily, const Family& f1, const Family& f2) {
+         if (currentFamily==f1) {
+             currentFamily = f2;
+         }
+        else {
+            currentFamily = f1;
+        }
+    }
+
 public:
+
     [[nodiscard]] int round_id1() const {
         return round_id;
     }
 
-    Round(int round_id_, const json &data_){
+    Round(int round_id_, const json &data_, const Family& f1,const Family& f2){
         round_id = round_id_;
         data = data_;
         std::cout<<"Runda "<<round_id<<" a inceput"<<'\n';
-        int randindex = pickRandIndex(data_);
-        if (randindex == -1) {
-            std::cerr<<"Nu am putut gasi intrebari in json!"<<'\n';
-            //NOTA: De inchis fereastra atunci cand se intampla asta.
-        }
-        else {
-            std::vector<std::pair<std::string, int>> answers;
-            for (const auto& item : data_["intrebari"][randindex]["raspunsuri"]) {
-                answers.push_back(std::make_pair(item["raspuns"], item["punctaj"]));
+
+        Question currentQuestion =  getQuestion(data);
+        Family leaderFamily = whoPressedFirst(f1,f2);
+        std::cout<<leaderFamily;
+        for (auto& jucator: leaderFamily.players1()) {
+            std::cout<<jucator<<" te rugam sa introduci un raspuns popular: "<<"\n";
+            std::string answer;
+            std::cin>>answer;
+            int givenScore = 0;
+            int bonus_multiplier = 1;
+            if (round_id1()==6) {
+                bonus_multiplier = 2;
             }
-            Question q = Question(data["intrebari"][randindex]["intrebare"],
-                answers);
-            std::cout<<q;
+            if  (currentQuestion.isAnswerRight(answer,givenScore)) {
+                std::cout<<"Raspuns corect! Felicitari!"<<'\n';
+                jucator.increaseScore(givenScore, bonus_multiplier);
+            }
+            else {
+                std::cout<<"Raspuns gresit! Mai incearca!"<<'\n';
+                leaderFamily.increaseStrikes();
+                if (leaderFamily.checkStrikes() == 1) {
+                    std::cout<<"Ai primit 3 strikes! Se schimba familia!"<<'\n';
+                    SwitchFamily(leaderFamily,f1,f2);
+
+                }
+
+            }
         }
-
-
-
-
     }
-
     /* Scopul constructorului de copiere, ti-au placut intrebarile dintr-o runda si vrei sa
      * o poti da si altor oameni/prieteni sa o joace sau optiune de 'Genereaza runda custom
      * pe baza acestei runde!' */
-
 };
 std::ostream& operator<<(std::ostream& os, const Round& q) {
     os<<q.round_id1()<<'\n';
@@ -216,7 +295,7 @@ class Game {
 
         for (int i=1;i<=6;i++) {
 
-            Round round(i, data);
+            Round round(i, data,family1,family2);
         }
     }
 };
