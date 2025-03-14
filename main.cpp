@@ -210,6 +210,7 @@ public:
             std::cin>>answer;
             int givenScore = 0;
             int bonus_multiplier = 1;
+
             if (round_id1()==6) {
                 bonus_multiplier = 2;
             }
