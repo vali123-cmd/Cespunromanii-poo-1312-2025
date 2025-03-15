@@ -7,7 +7,6 @@
 #include <random>
 #include <cmath>
 
-#include <queue>
 
 
 using json = nlohmann::json;
@@ -48,7 +47,7 @@ class Family{
     int family_score = 0;
     int strikes = 0;
     std::vector<Player> players;
-    int calculate_score()  const {
+    [[nodiscard]] int calculate_score()  const {
         int family_score = 0;
         for (const auto& player : players) {
             family_score += player.m_score1();
@@ -85,7 +84,7 @@ public:
         set_family_score(computedScore);
         return family_score;
     }
-    Family(const std::string &family_name, int family_score=0, const std::vector<Player> &players = {})
+    Family(const std::string &family_name, const int family_score=0, const std::vector<Player> &players = {})
         : family_name(family_name),
           family_score(family_score),
           players(players) {
@@ -95,7 +94,7 @@ public:
 std::ostream& operator<<(std::ostream& os, const Family& family) {
 
     os<<family.family_name1()<<": "<<family.family_score<<'\n';
-    os<<"Strikes: "<<family.strikes()<<'\n';
+    os<<"Strikes: "<<family.strikes<<'\n';
     return os;
 }
 bool operator==(const Family& f1, const Family& f2) {
@@ -107,7 +106,7 @@ class Question {
 
 
 public:
-    Question(const std::string& text_, const std::vector<std::pair<std::string, int>>& answers_) {
+    explicit Question(const std::string& text_, const std::vector<std::pair<std::string, int>>& answers_) {
         m_text = text_;
         answers = answers_;
     }
@@ -165,6 +164,7 @@ class Round {
         Question q = Question(data["intrebari"][randindex]["intrebare"],
             answers);
         data["intrebari"].erase(randindex); //nu vrem sa repetam intrebari, deci stergem.
+        return q;
     }
     const Family& whoPressedFirst(const Family& f1, const Family& f2) {
         std::cout<<"Cine a apasat primul? Scrie 1 pentru familia "<<
@@ -299,10 +299,13 @@ class Game {
             Round round(i, data,family1,family2);
         }
     }
+    friend std::ostream& operator<<(std::ostream& os, const Game &g);
 };
 
 std::ostream& operator<<(std::ostream& os, const Game &g) {
-    std::cout<<"Game currently initiated and running. Enjoy! -From Cabral himself."<<'\n';
+    std::cout<<"Game currently initiated and running. Enjoy! -From Cabral himself. Captains: "<<'\n';
+    std::cout<<g.players1[0]<<'\n';
+    std::cout<<g.players2[0]<<'\n';
     return os;
 }
 
