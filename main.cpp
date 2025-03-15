@@ -47,7 +47,7 @@ class Family{
     int family_score = 0;
     int strikes = 0;
     std::vector<Player> players;
-    [[nodiscard]] int calculate_score()  const {
+    [[nodiscard]] int calculate_total_score()  const {
         int family_score = 0;
         for (const auto& player : players) {
             family_score += player.m_score1();
@@ -80,7 +80,7 @@ public:
         this->family_score = family_score;
     }
     [[nodiscard]]  int family_score1()  {
-        int computedScore = calculate_score();
+        int computedScore = calculate_total_score();
         set_family_score(computedScore);
         return family_score;
     }
@@ -274,8 +274,6 @@ class Game {
     file >> this->data;
 
     }
-
-
 
     public:
     Game() {
