@@ -103,7 +103,28 @@ bool operator==(const Family& f1, const Family& f2) {
 class Question {
     std::string m_text;
     std::vector<std::pair<std::string, int>> answers;
-
+    double similarity_percentage(std::string s1, std::string s2) {
+        //Functie care calculeaza procentul de similaritate dintre doua stringuri.
+        int n = s1.length();
+        int m = s2.length();
+        int dp[n + 1][m + 1];
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= m; j++) {
+                if (i == 0) {
+                    dp[i][j] = j;
+                } else if (j == 0) {
+                    dp[i][j] = i;
+                } else if (s1[i - 1] == s2[j - 1]) {
+                    dp[i][j] = dp[i - 1][j - 1];
+                } else {
+                    dp[i][j] = 1 + std::min({dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]});
+                }
+            }
+        }
+        return 100 - (dp[n][m] * 100.0 / std::max(n, m));
+        //Am implementat distanta levenstein pentru a calcula procentul de similaritate, dar
+        //in viitoare release-uri voi folosi un AI pentru a calcula procentul de similaritate.
+    }
 
 public:
     explicit Question(const std::string& text_, const std::vector<std::pair<std::string, int>>& answers_) {
@@ -120,8 +141,11 @@ public:
     }
 
     bool isAnswerRight(std::string userString, int& score) {
+
         for (const auto& item : answers) {
-            if (item.first == userString) {
+            if (similarity_percentage(userString, item.first) > 70) {
+                //NOTA: 70% este un prag de similaritate,poate varia in urmatoarele release-uri,
+                //in viitor vom folosi un AI pentru a calcula procentul de similaritate.
                 score = item.second;
                 return 1;
             }
