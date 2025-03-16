@@ -159,7 +159,7 @@ class Round {
         int randindex = pickRandIndex(data_);
         std::vector<std::pair<std::string, int>> answers;
         for (const auto& item : data_["intrebari"][randindex]["raspunsuri"]) {
-            answers.push_back(std::make_pair(item["raspuns"], item["punctaj"]));
+            answers.push_back(std::pair<nlohmann::json, nlohmann::json>(item["raspuns"], item["punctaj"]));
         }
         Question q = Question(data["intrebari"][randindex]["intrebare"],
             answers);
@@ -197,6 +197,7 @@ public:
     }
 
     Round(int round_id_, const json &data_, const Family& f1,const Family& f2){
+        bool family_switched = false;
         round_id = round_id_;
         data = data_;
         std::cout<<"Runda "<<round_id<<" a inceput"<<'\n';
@@ -221,10 +222,10 @@ public:
             else {
                 std::cout<<"Raspuns gresit! Mai incearca!"<<'\n';
                 leaderFamily.increaseStrikes();
-                if (leaderFamily.checkStrikes() == 1) {
+                if (leaderFamily.checkStrikes() == 1 and family_switched == false) {
                     std::cout<<"Ai primit 3 strikes! Se schimba familia!"<<'\n';
                     SwitchFamily(leaderFamily,f1,f2);
-
+                    family_switched = true;
                 }
 
             }
