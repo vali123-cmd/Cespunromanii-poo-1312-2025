@@ -159,7 +159,7 @@ class Round {
         int randindex = pickRandIndex(data_);
         std::vector<std::pair<std::string, int>> answers;
         for (const auto& item : data_["intrebari"][randindex]["raspunsuri"]) {
-            answers.push_back(std::pair<nlohmann::json, nlohmann::json>(item["raspuns"], item["punctaj"]));
+            answers.emplace_back(item["raspuns"], item["punctaj"]);
         }
         Question q = Question(data["intrebari"][randindex]["intrebare"],
             answers);
