@@ -65,7 +65,7 @@ public:
     void increaseStrikes() {
         strikes++;
     }
-    [[nodiscard]] std::string get_family_name() const {
+    [[nodiscard]] const std::string& get_family_name() const {
         return family_name;
     }
 
@@ -76,11 +76,11 @@ public:
     void set_family_score(int family_score) {
         this->family_score = family_score;
     }
-    [[nodiscard]]  int get_family_score()  {
+  /*  [[nodiscard]]  int get_family_score()  {
         int computedScore = calculate_total_score();
         set_family_score(computedScore);
         return family_score;
-    }
+    }*/
     explicit Family(const std::string &family_name, const int family_score=0, const std::vector<Player> &players = {})
         : family_name(family_name),
           family_score(family_score),
@@ -133,9 +133,9 @@ public:
         return m_text;
     }
 
-    [[nodiscard]] const std::vector<std::pair<std::string, int>>& get_answers() const {
+   /* [[nodiscard]] const std::vector<std::pair<std::string, int>>& get_answers() const {
         return answers;
-    }
+    }*/
 
     bool isAnswerRight(const std::string& userString, int& score) {
 
@@ -278,9 +278,9 @@ class Game {
     std::vector<Player> players2;
     json data;
    /* bool buttonPressed() {
-        /* O functie care ar trebui sa detecteze daca un buton a fost apasat,
-         * un pic de bataie de cap aici, deoarece trebuie sa facem asta diferit
-         * pe Windows/Linux/Mac (cred?!)
+        O functie care ar trebui sa detecteze daca un buton a fost apasat,
+          un pic de bataie de cap aici, deoarece trebuie sa facem asta diferit
+          pe Windows/Linux/Mac (cred?!)
 
         return 1;
     }*/
