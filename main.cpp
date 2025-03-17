@@ -107,7 +107,7 @@ class Question {
         //Functie care calculeaza procentul de similaritate dintre doua stringuri.
         int n = s1.length();
         int m = s2.length();
-        int dp[n + 1][m + 1];
+        std::vector<std::vector<int>> dp(n + 1, std::vector<int>(m + 1));
         for (int i = 0; i <= n; i++) {
             for (int j = 0; j <= m; j++) {
                 if (i == 0) {
