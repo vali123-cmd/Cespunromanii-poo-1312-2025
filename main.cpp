@@ -21,10 +21,10 @@ public:
         //Functie care incrementeaza scorul in functie de punctele raspunsului si bonusul rundei.
     }
 
-    [[nodiscard]] int m_score1() const {
+   /* [[nodiscard]] int get_player_score() const {
         return m_score;
     }
-
+*/
 
 
     Player(const std::string& name, const std::string& family): m_name(name), m_family(family) {
