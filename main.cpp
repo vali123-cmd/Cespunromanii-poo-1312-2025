@@ -7,7 +7,7 @@
 #include <random>
 #include <cmath>
 
-
+#define ANSWERS_LIMIT 5
 
 using json = nlohmann::json;
 class Player {
@@ -27,11 +27,8 @@ public:
 
 
 
-    Player(const std::string& name, const std::string& family) {
-
-        m_name = name;
-        m_family = family;
-        std::cout<<"Jucatorul "<<m_name<<"din familia "<<m_family<<"a fost initializat cu succes."<<'\n';
+    Player(const std::string& name, const std::string& family): m_name(name), m_family(family) {
+        std::cout<<"Jucatorul "<<m_name<<" din familia "<<m_family<<" a fost initializat cu succes."<<'\n';
     }
     friend std::ostream& operator<<(std::ostream& os, const Player& p);
 
@@ -48,11 +45,11 @@ class Family{
     int strikes = 0;
     std::vector<Player> players;
     [[nodiscard]] int calculate_total_score()  const {
-        int family_score = 0;
+        int family_score_temp = 0;
         for (const auto& player : players) {
-            family_score += player.m_score1();
+            family_score_temp += player.m_score1();
         }
-        return family_score;
+        return family_score_temp;
     }
     void resetStrikes() {
         strikes = 0;
@@ -68,23 +65,23 @@ public:
     void increaseStrikes() {
         strikes++;
     }
-    [[nodiscard]] std::string family_name1() const {
+    [[nodiscard]] std::string get_family_name() const {
         return family_name;
     }
 
-    [[nodiscard]] std::vector<Player> players1() const {
+    [[nodiscard]]  std::vector<Player>& get_players() {
         return players;
     }
 
     void set_family_score(int family_score) {
         this->family_score = family_score;
     }
-    [[nodiscard]]  int family_score1()  {
+    [[nodiscard]]  int get_family_score()  {
         int computedScore = calculate_total_score();
         set_family_score(computedScore);
         return family_score;
     }
-    Family(const std::string &family_name, const int family_score=0, const std::vector<Player> &players = {})
+    explicit Family(const std::string &family_name, const int family_score=0, const std::vector<Player> &players = {})
         : family_name(family_name),
           family_score(family_score),
           players(players) {
@@ -93,17 +90,17 @@ public:
 };
 std::ostream& operator<<(std::ostream& os, const Family& family) {
 
-    os<<family.family_name1()<<": "<<family.family_score<<'\n';
+    os<<family.get_family_name()<<": "<<family.family_score<<'\n';
     os<<"Strikes: "<<family.strikes<<'\n';
     return os;
 }
 bool operator==(const Family& f1, const Family& f2) {
-    return f1.family_name1() == f2.family_name1();
+    return f1.get_family_name() == f2.get_family_name();
 }
 class Question {
     std::string m_text;
     std::vector<std::pair<std::string, int>> answers;
-    double similarity_percentage(std::string s1, std::string s2) {
+    double similarity_percentage(const std::string& s1,const std::string& s2) {
         //Functie care calculeaza procentul de similaritate dintre doua stringuri.
         int n = s1.length();
         int m = s2.length();
@@ -127,20 +124,20 @@ class Question {
     }
 
 public:
-    explicit Question(const std::string& text_, const std::vector<std::pair<std::string, int>>& answers_) {
-        m_text = text_;
-        answers = answers_;
+    explicit Question(const std::string& text_, const std::vector<std::pair<std::string, int>>& answers_):
+    m_text(text_), answers(answers_) {
+
     }
 
-    [[nodiscard]] std::string m_text1() const {
+    [[nodiscard]] const std::string& get_question_text() const {
         return m_text;
     }
 
-    [[nodiscard]] std::vector<std::pair<std::string, int>> answers1() const {
+    [[nodiscard]] const std::vector<std::pair<std::string, int>>& get_answers() const {
         return answers;
     }
 
-    bool isAnswerRight(std::string userString, int& score) {
+    bool isAnswerRight(const std::string& userString, int& score) {
 
         for (const auto& item : answers) {
             if (similarity_percentage(userString, item.first) > 70) {
@@ -154,16 +151,21 @@ public:
     }
 };
 std::ostream& operator<<(std::ostream& os, const Question& q) {
-    os<<q.m_text1()<<'\n';
+    os<<q.get_question_text()<<'\n';
     return os;
 }
 
 
 class Round {
-
+    std::vector<std::pair<std::string, int>> answers_given;
     int round_id = 1;
     json data;
 
+    static void printCurrentAnswers(const std::vector<std::pair<std::string, int>>& answers) {
+        for (const auto& item : answers) {
+            std::cout<<item.first<<" "<<item.second<<'\n';
+        }
+    }
 
     static int pickRandIndex(const json &data) {
         //Functie care alege o intrebare random din json,bazata pe mersenne.
@@ -192,7 +194,7 @@ class Round {
     }
     const Family& whoPressedFirst(const Family& f1, const Family& f2) {
         std::cout<<"Cine a apasat primul? Scrie 1 pentru familia "<<
-            f1.family_name1()<<" si 2 pentru familia "<<f2.family_name1()<<'\n';
+            f1.get_family_name()<<" si 2 pentru familia "<<f2.get_family_name()<<'\n';
         int pick=-1;
         while (pick!=1 and pick!=2) {
             std::cin>>pick;
@@ -220,38 +222,43 @@ public:
         return round_id;
     }
 
-    Round(int round_id_, const json &data_, const Family& f1,const Family& f2){
+    Round(int round_id_, const json &data_, const Family& f1,const Family& f2):
+    data(data_) {
         bool family_switched = false;
         round_id = round_id_;
-        data = data_;
+
         std::cout<<"Runda "<<round_id<<" a inceput"<<'\n';
 
         Question currentQuestion =  getQuestion(data);
+        std::cout<<currentQuestion;
         Family leaderFamily = whoPressedFirst(f1,f2);
         std::cout<<leaderFamily;
-        for (auto& jucator: leaderFamily.players1()) {
-            std::cout<<jucator<<" te rugam sa introduci un raspuns popular: "<<"\n";
-            std::string answer;
-            std::cin>>answer;
-            int givenScore = 0;
-            int bonus_multiplier = 1;
+        while (answers_given.size()!=ANSWERS_LIMIT and (family_switched==false or leaderFamily.checkStrikes()==0)) {
+            for (auto& jucator: leaderFamily.get_players()) {
+                std::cout<<jucator<<" te rugam sa introduci un raspuns popular: "<<"\n";
+                std::string answer;
+                std::cin>>answer;
+                int givenScore = 0;
+                int bonus_multiplier = 1;
 
-            if (round_id1()==6) {
-                bonus_multiplier = 2;
-            }
-            if  (currentQuestion.isAnswerRight(answer,givenScore)) {
-                std::cout<<"Raspuns corect! Felicitari!"<<'\n';
-                jucator.increaseScore(givenScore, bonus_multiplier);
-            }
-            else {
-                std::cout<<"Raspuns gresit! Mai incearca!"<<'\n';
-                leaderFamily.increaseStrikes();
-                if (leaderFamily.checkStrikes() == 1 and family_switched == false) {
-                    std::cout<<"Ai primit 3 strikes! Se schimba familia!"<<'\n';
-                    SwitchFamily(leaderFamily,f1,f2);
-                    family_switched = true;
+                if (round_id1()==6) {
+                    bonus_multiplier = 2;
                 }
-
+                if  (currentQuestion.isAnswerRight(answer,givenScore)) {
+                    std::cout<<"Raspuns corect! Felicitari!"<<'\n';
+                    answers_given.emplace_back(answer,givenScore);
+                    printCurrentAnswers(answers_given);
+                    jucator.increaseScore(givenScore, bonus_multiplier);
+                }
+                else {
+                    std::cout<<"Raspuns gresit! Mai incearca!"<<'\n';
+                    leaderFamily.increaseStrikes();
+                    if (leaderFamily.checkStrikes() == 1 and family_switched == false) {
+                        std::cout<<"Ai primit 3 strikes! Se schimba familia!"<<'\n';
+                        SwitchFamily(leaderFamily,f1,f2);
+                        family_switched = true;
+                    }
+                }
             }
         }
     }
@@ -269,16 +276,14 @@ class Game {
 
     std::vector<Player> players1;
     std::vector<Player> players2;
-    std::vector<Question> game_questions;
-    std::vector<std::pair<std::string, int>> answers;
     json data;
-    bool buttonPressed() {
+   /* bool buttonPressed() {
         /* O functie care ar trebui sa detecteze daca un buton a fost apasat,
          * un pic de bataie de cap aici, deoarece trebuie sa facem asta diferit
          * pe Windows/Linux/Mac (cred?!)
-         */
+
         return 1;
-    }
+    }*/
     void getPlayers(std::vector<Player>& players_, const std::string& family_name)
     {
         for (int i=0;i<5;i++) {
@@ -319,7 +324,7 @@ class Game {
 
         for (int i=1;i<=6;i++) {
 
-            Round round(i, data,family1,family2);
+            Round round(i, data,firstFam,secondFam);
         }
     }
     friend std::ostream& operator<<(std::ostream& os, const Game &g);
