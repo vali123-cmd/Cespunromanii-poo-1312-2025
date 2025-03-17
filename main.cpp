@@ -44,13 +44,13 @@ class Family{
     int family_score = 0;
     int strikes = 0;
     std::vector<Player> players;
-    [[nodiscard]] int calculate_total_score()  const {
+   /* [[nodiscard]] int calculate_total_score()  const {
         int family_score_temp = 0;
         for (const auto& player : players) {
             family_score_temp += player.m_score1();
         }
         return family_score_temp;
-    }
+    }*/
     void resetStrikes() {
         strikes = 0;
     }
@@ -73,9 +73,9 @@ public:
         return players;
     }
 
-    void set_family_score(int family_score) {
+    /*void set_family_score(int family_score) {
         this->family_score = family_score;
-    }
+    }*/
   /*  [[nodiscard]]  int get_family_score()  {
         int computedScore = calculate_total_score();
         set_family_score(computedScore);
