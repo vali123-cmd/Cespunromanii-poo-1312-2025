@@ -129,35 +129,33 @@ jobs:
       - name: Install packages
         uses: ./.github/actions/install-packages
 
-      - name: Install CPR library
+      - name: Install CPR library (Release version)
         if: matrix.os == 'ubuntu-22.04'
         run: |
           sudo apt-get update
           sudo apt-get install -y libcurl4-openssl-dev
-          
+
           # Clone the CPR repository
           git clone https://github.com/libcpr/cpr.git
           cd cpr
           
-          # Build CPR with the same build type as the main project
-          # This ensures library compatibility
+          # Force Release build for CPR regardless of project build type
           mkdir build && cd build
-          cmake .. -DCPR_USE_SYSTEM_CURL=ON -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DBUILD_SHARED_LIBS=ON -DCPR_CURL_NOSIGNAL=ON
+          cmake .. -DCPR_USE_SYSTEM_CURL=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON
           
-          # Build and install
           make -j$(nproc)
           sudo make install
           sudo ldconfig
-          
-          # Create a symbolic link if needed for debug version
-          if [ "${{ env.BUILD_TYPE }}" = "Debug" ]; then
-            if [ -f "/usr/local/lib/libcurl.so.4" ] && [ ! -f "/usr/local/lib/libcurl-d.so.4" ]; then
-              sudo ln -s /usr/local/lib/libcurl.so.4 /usr/local/lib/libcurl-d.so.4
-              sudo ldconfig
-            fi
-          fi
 
-      - name: Configure CMake
+      - name: Configure CMake with static curl
+        if: matrix.os == 'ubuntu-22.04'
+        uses: ./.github/actions/configure-cmake
+        with:
+          custom_flags: "${{ matrix.cmake_flags }} -DCURL_STATICLIB=ON -DCPR_FORCE_USE_SYSTEM_CURL=ON"
+          warnings_as_errors: 'ON'
+
+      - name: Configure CMake (non-Ubuntu)
+        if: matrix.os != 'ubuntu-22.04'
         uses: ./.github/actions/configure-cmake
         with:
           custom_flags: ${{ matrix.cmake_flags }}
@@ -189,10 +187,28 @@ jobs:
           path: ${{ env.ZIP_NAME }}
           retention-days: 30
 
+      - name: Find required libraries
+        if: matrix.os == 'ubuntu-22.04'
+        run: |
+          echo "Looking for required libraries in the executable..."
+          ldd ${{ env.ZIP_NAME }}/${{ env.EXECUTABLE_NAME }} || true
+          echo "Checking if libcurl-d.so.4 exists..."
+          find /usr -name "libcurl*.so*" || true
+          
+          echo "Creating symbolic links if needed..."
+          if [ -f "/usr/lib/x86_64-linux-gnu/libcurl.so.4" ] && [ ! -f "/usr/lib/x86_64-linux-gnu/libcurl-d.so.4" ]; then
+            sudo ln -sf /usr/lib/x86_64-linux-gnu/libcurl.so.4 /usr/lib/x86_64-linux-gnu/libcurl-d.so.4
+            sudo ldconfig
+            echo "Created symlink for libcurl-d.so.4"
+          fi
+          
+          echo "Updating LD_LIBRARY_PATH..."
+          echo "LD_LIBRARY_PATH=/usr/local/lib:/usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}" >> ${GITHUB_ENV}
+
       - name: Runtime checks
         uses: ./.github/actions/runtime-checks
         env:
-          LD_LIBRARY_PATH: ${{ env.LD_LIBRARY_PATH }}:/usr/local/lib
+          LD_LIBRARY_PATH: /usr/local/lib:/usr/lib/x86_64-linux-gnu:${{ env.LD_LIBRARY_PATH }}
 
       - name: Create release
         uses: ./.github/actions/create-release
