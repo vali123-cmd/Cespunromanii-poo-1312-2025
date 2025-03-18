@@ -134,13 +134,13 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libcurl4-openssl-dev
-          git clone https://github.com/whoshuu/cpr.git
+          git clone https://github.com/libcpr/cpr.git
           cd cpr
-          mkdir build
-          cd build
-          cmake ..
-          make
+          mkdir build && cd build
+          cmake .. -DCPR_USE_SYSTEM_CURL=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON
+          make -j$(nproc)
           sudo make install
+          sudo ldconfig  # Refresh the dynamic linker cache
 
       - name: Configure CMake
         uses: ./.github/actions/configure-cmake
@@ -176,6 +176,8 @@ jobs:
 
       - name: Runtime checks
         uses: ./.github/actions/runtime-checks
+        env:
+          LD_LIBRARY_PATH: ${{ env.LD_LIBRARY_PATH }}:/usr/local/lib
 
       - name: Create release
         uses: ./.github/actions/create-release

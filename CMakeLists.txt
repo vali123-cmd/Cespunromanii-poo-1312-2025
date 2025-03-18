@@ -75,8 +75,8 @@ FetchContent_MakeAvailable(cpr)
 
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${MAIN_EXECUTABLE_NAME}
-    main.cpp
-    generated/src/Helper.cpp
+        main.cpp
+        generated/src/Helper.cpp
 )
 include(cmake/CompilerFlags.cmake)
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
