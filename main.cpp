@@ -296,6 +296,26 @@ public:
 
         std::cout<<f1<<f2<<'\n';
     }
+
+    ~Round() = default;
+
+    Round(const Round &other)
+        : answers_given(other.answers_given),
+          round_id(other.round_id),
+          data(other.data) {
+    }
+
+    Round & operator=(const Round &other) {
+        if (this == &other)
+            return *this;
+        answers_given = other.answers_given;
+        round_id = other.round_id;
+        data = other.data;
+        return *this;
+    }
+
+
+
     /* Scopul constructorului de copiere, ti-au placut intrebarile dintr-o runda si vrei sa
      * o poti da si altor oameni/prieteni sa o joace sau optiune de 'Genereaza runda custom
      * pe baza acestei runde!' */
