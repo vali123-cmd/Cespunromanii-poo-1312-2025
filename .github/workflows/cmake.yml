@@ -134,13 +134,28 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libcurl4-openssl-dev
+          
+          # Clone the CPR repository
           git clone https://github.com/libcpr/cpr.git
           cd cpr
+          
+          # Build CPR with the same build type as the main project
+          # This ensures library compatibility
           mkdir build && cd build
-          cmake .. -DCPR_USE_SYSTEM_CURL=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON
+          cmake .. -DCPR_USE_SYSTEM_CURL=ON -DCMAKE_BUILD_TYPE=${{ env.BUILD_TYPE }} -DBUILD_SHARED_LIBS=ON -DCPR_CURL_NOSIGNAL=ON
+          
+          # Build and install
           make -j$(nproc)
           sudo make install
-          sudo ldconfig  # Refresh the dynamic linker cache
+          sudo ldconfig
+          
+          # Create a symbolic link if needed for debug version
+          if [ "${{ env.BUILD_TYPE }}" = "Debug" ]; then
+            if [ -f "/usr/local/lib/libcurl.so.4" ] && [ ! -f "/usr/local/lib/libcurl-d.so.4" ]; then
+              sudo ln -s /usr/local/lib/libcurl.so.4 /usr/local/lib/libcurl-d.so.4
+              sudo ldconfig
+            fi
+          fi
 
       - name: Configure CMake
         uses: ./.github/actions/configure-cmake
