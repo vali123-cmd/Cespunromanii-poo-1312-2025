@@ -7,6 +7,7 @@
 #include <random>
 #include <cmath>
 
+
 #define ANSWERS_LIMIT 5
 
 using json = nlohmann::json;
@@ -74,8 +75,8 @@ public:
         return players;
     }
 
-    void set_family_score(int family_score) {
-        this->family_score = family_score;
+    void set_family_score(int family_score_temp) {
+        this->family_score = family_score_temp;
     }
    [[nodiscard]]  int get_family_score()  {
         int computedScore = calculate_total_score();
