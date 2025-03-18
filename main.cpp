@@ -21,10 +21,10 @@ public:
         //Functie care incrementeaza scorul in functie de punctele raspunsului si bonusul rundei.
     }
 
-   /* [[nodiscard]] int get_player_score() const {
+    [[nodiscard]] int get_player_score() const {
         return m_score;
     }
-*/
+
 
 
     Player(const std::string& name, const std::string& family): m_name(name), m_family(family) {
@@ -44,20 +44,21 @@ class Family{
     int family_score = 0;
     int strikes = 0;
     std::vector<Player> players;
-   /* [[nodiscard]] int calculate_total_score()  const {
+    [[nodiscard]] int calculate_total_score()  const {
         int family_score_temp = 0;
         for (const auto& player : players) {
-            family_score_temp += player.m_score1();
+            family_score_temp += player.get_player_score();
         }
         return family_score_temp;
-    }*/
+    }
+
+public:
     void resetStrikes() {
         strikes = 0;
     }
-public:
     bool checkStrikes() {
         if (strikes == 3) {
-            resetStrikes();
+
             return true;
         }
         return false;
@@ -73,14 +74,14 @@ public:
         return players;
     }
 
-    /*void set_family_score(int family_score) {
+    void set_family_score(int family_score) {
         this->family_score = family_score;
-    }*/
-  /*  [[nodiscard]]  int get_family_score()  {
+    }
+   [[nodiscard]]  int get_family_score()  {
         int computedScore = calculate_total_score();
         set_family_score(computedScore);
         return family_score;
-    }*/
+    }
     explicit Family(const std::string &family_name, const int family_score=0, const std::vector<Player> &players = {})
         : family_name(family_name),
           family_score(family_score),
@@ -137,13 +138,17 @@ public:
         return answers;
     }*/
 
-    bool isAnswerRight(const std::string& userString, int& score) {
+    bool isAnswerRight(const std::string& userString, int& score, std::string& foundAnswer) {
 
         for (const auto& item : answers) {
             if (similarity_percentage(userString, item.first) > 70) {
                 //NOTA: 70% este un prag de similaritate,poate varia in urmatoarele release-uri,
                 //in viitor vom folosi un AI pentru a calcula procentul de similaritate.
                 score = item.second;
+                foundAnswer = item.first;
+                answers.erase(std::find_if(answers.begin(), answers.end(),[&](const std::pair<std::string, int>& p) {
+                    return p.first == item.first;
+                }));
                 return 1;
             }
         }
@@ -195,17 +200,18 @@ class Round {
     const Family& whoPressedFirst(const Family& f1, const Family& f2) {
         std::cout<<"Cine a apasat primul? Scrie 1 pentru familia "<<
             f1.get_family_name()<<" si 2 pentru familia "<<f2.get_family_name()<<'\n';
-        int pick=-1;
-        while (pick!=1 and pick!=2) {
-            std::cin>>pick;
-            if (pick!=1 and pick!=2) {
-                std::cout<<"Alege ceva legal!"<<'\n';
-            }
-        }
+        int pick;
+        std::cin>>pick;
         if (pick==1) {
             return f1;
         }
-        return f2;
+         if(pick==2) {
+            return f2;
+        }
+
+        std::cout<<"Ai introdus un numar gresit! Introdu 1 sau 2!"<<'\n';
+        return whoPressedFirst(f1,f2);
+
     }
     void SwitchFamily(Family& currentFamily, const Family& f1, const Family& f2) {
          if (currentFamily==f1) {
@@ -232,35 +238,63 @@ public:
         Question currentQuestion =  getQuestion(data);
         std::cout<<currentQuestion;
         Family leaderFamily = whoPressedFirst(f1,f2);
+        std::string answer;
+        std::string givenAns;
         std::cout<<leaderFamily;
-        while (answers_given.size()!=ANSWERS_LIMIT and (family_switched==false or leaderFamily.checkStrikes()==0)) {
+        bool terminateRound = false;
+        while (answers_given.size()<=ANSWERS_LIMIT and (family_switched==false or leaderFamily.checkStrikes()==0)) {
+
             for (auto& jucator: leaderFamily.get_players()) {
                 std::cout<<jucator<<" te rugam sa introduci un raspuns popular: "<<"\n";
-                std::string answer;
-                std::cin>>answer;
+                std::cin.clear();
+                std::cin.ignore();
+                std::getline(std::cin, answer);
                 int givenScore = 0;
                 int bonus_multiplier = 1;
 
                 if (round_id1()==6) {
                     bonus_multiplier = 2;
                 }
-                if  (currentQuestion.isAnswerRight(answer,givenScore)) {
+                if  (currentQuestion.isAnswerRight(answer,givenScore,givenAns)) {
                     std::cout<<"Raspuns corect! Felicitari!"<<'\n';
-                    answers_given.emplace_back(answer,givenScore);
+                    answers_given.emplace_back(givenAns,givenScore);
                     printCurrentAnswers(answers_given);
                     jucator.increaseScore(givenScore, bonus_multiplier);
+                    if (answers_given.size() == ANSWERS_LIMIT) {
+                        std::cout<<"Ai raspuns la toate intrebarile! S-a terminat runda!"<<'\n';
+                        leaderFamily.set_family_score(leaderFamily.get_family_score());
+                        terminateRound = true;
+                        break;
+                    }
                 }
                 else {
                     std::cout<<"Raspuns gresit! Mai incearca!"<<'\n';
                     leaderFamily.increaseStrikes();
+                    std::cout<<leaderFamily;
                     if (leaderFamily.checkStrikes() == 1 and family_switched == false) {
                         std::cout<<"Ai primit 3 strikes! Se schimba familia!"<<'\n';
+                        leaderFamily.set_family_score(leaderFamily.get_family_score());
+                        leaderFamily.resetStrikes();
                         SwitchFamily(leaderFamily,f1,f2);
                         family_switched = true;
+                        break;
+                    }
+                    if (leaderFamily.checkStrikes() == 1 and  family_switched==true) {
+                        std::cout<<"Noua familie a primit si ea 3 strikes! S-a terminat runda."<<'\n';
+                        leaderFamily.resetStrikes();
+                        leaderFamily.set_family_score(leaderFamily.get_family_score());
+                        terminateRound = true;
+                        break;
                     }
                 }
             }
+            if (terminateRound==true) {
+                break;
+            }
         }
+        leaderFamily.resetStrikes();
+
+        std::cout<<f1<<f2<<'\n';
     }
     /* Scopul constructorului de copiere, ti-au placut intrebarile dintr-o runda si vrei sa
      * o poti da si altor oameni/prieteni sa o joace sau optiune de 'Genereaza runda custom
@@ -326,6 +360,15 @@ class Game {
 
             Round round(i, data,firstFam,secondFam);
         }
+        if(firstFam.get_family_score()>secondFam.get_family_score()) {
+            std::cout<<"Familia "<<firstFam.get_family_name()<<" a castigat!"<<'\n';
+        }
+        else {
+            std::cout<<"Familia "<<secondFam.get_family_name()<<" a castigat!"<<'\n';
+        }
+    }
+    ~Game() {
+        std::cout<<"Game over! Multumim pentru participare!"<<'\n';
     }
     friend std::ostream& operator<<(std::ostream& os, const Game &g);
 };

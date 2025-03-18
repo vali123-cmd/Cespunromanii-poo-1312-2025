@@ -1,52 +1,55 @@
-{"intrebari" : [
 {
-"intrebare": "Spuneți un motiv pentru care oamenii merg la mare.",
-"raspunsuri": [
-{ "raspuns": "Să se relaxeze", "punctaj": 40 },
-{ "raspuns": "Să înoate", "punctaj": 30 },
-{ "raspuns": "Să se bronzeze", "punctaj": 20 },
-{ "raspuns": "Să mănânce pește proaspăt", "punctaj": 10 }
-]
-},
-{
-"intrebare": "Spuneți un lucru pe care românii îl fac când vine primăvara.",
-"raspunsuri": [
-{ "raspuns": "Încep să îngrijească grădina", "punctaj": 35 },
-{ "raspuns": "Ies în parc să se plimbe", "punctaj": 25 },
-{ "raspuns": "Își schimbă garderoba", "punctaj": 20 },
-{ "raspuns": "Planifică vacanțe", "punctaj": 15 },
-{ "raspuns": "Fac curățenie generală", "punctaj": 5 }
-]
-},
-{
-"intrebare": "Spuneți un aliment pe care românii îl mănâncă la micul dejun.",
-"raspunsuri": [
-{ "raspuns": "Ouă", "punctaj": 30 },
-{ "raspuns": "Pâine cu unt", "punctaj": 25 },
-{ "raspuns": "Cereale", "punctaj": 20 },
-{ "raspuns": "Șuncă", "punctaj": 15 },
-{ "raspuns": "Brânză", "punctaj": 10 }
-]
-},
-{
-"intrebare": "Spuneți un motiv pentru care oamenii folosesc telefonul mobil.",
-"raspunsuri": [
-{ "raspuns": "Pentru a suna", "punctaj": 35 },
-{ "raspuns": "Pentru a naviga pe internet", "punctaj": 30 },
-{ "raspuns": "Pentru a folosi rețelele sociale", "punctaj": 20 },
-{ "raspuns": "Pentru a face poze", "punctaj": 10 },
-{ "raspuns": "Pentru a juca jocuri", "punctaj": 5 }
-]
-},
-{
-"intrebare": "Spuneți un lucru pe care românii îl fac în timpul liber.",
-"raspunsuri": [
-{ "raspuns": "Se uită la televizor", "punctaj": 40 },
-{ "raspuns": "Ies cu prietenii", "punctaj": 25 },
-{ "raspuns": "Citește cărți", "punctaj": 15 },
-{ "raspuns": "Practică sport", "punctaj": 10 },
-{ "raspuns": "Gătește", "punctaj": 10 }
-]
+  "intrebari": [
+    {
+      "intrebare": "Ce obiecte gasesti intr-un birou?",
+      "raspunsuri": [
+        { "raspuns": "Calculator", "punctaj": 40 },
+        { "raspuns": "Pix", "punctaj": 30 },
+        { "raspuns": "Caiet", "punctaj": 15 },
+        { "raspuns": "Telefon", "punctaj": 10 },
+        { "raspuns": "Scaun", "punctaj": 5 }
+      ]
+    },
+    {
+      "intrebare": "Ce faci dimineata imediat dupa ce te trezesti?",
+      "raspunsuri": [
+        { "raspuns": "Merg la baie", "punctaj": 35 },
+        { "raspuns": "Beau cafea", "punctaj": 25 },
+        { "raspuns": "Ma spal pe dinti", "punctaj": 20 },
+        { "raspuns": "Ma intind", "punctaj": 10 },
+        { "raspuns": "Verific telefonul", "punctaj": 10 }
+      ]
+    },
+    {
+      "intrebare": "Care sunt cele mai populare animale de companie?",
+      "raspunsuri": [
+        { "raspuns": "Caine", "punctaj": 50 },
+        { "raspuns": "Pisica", "punctaj": 30 },
+        { "raspuns": "Peste", "punctaj": 10 },
+        { "raspuns": "Papagal", "punctaj": 5 },
+        { "raspuns": "Hamster", "punctaj": 5 }
+      ]
+    },
+    {
+      "intrebare": "Ce alimente gasesti intr-un mic dejun traditional?",
+      "raspunsuri": [
+        { "raspuns": "Oua", "punctaj": 40 },
+        { "raspuns": "Lapte", "punctaj": 25 },
+        { "raspuns": "Paine", "punctaj": 15 },
+        { "raspuns": "Cafea", "punctaj": 10 },
+        { "raspuns": "Unt", "punctaj": 10 }
+      ]
+    },
+    {
+      "intrebare": "Ce lucruri iau oamenii cu ei la plaja?",
+      "raspunsuri": [
+        { "raspuns": "Prosop", "punctaj": 35 },
+        { "raspuns": "Costum de baie", "punctaj": 30 },
+        { "raspuns": "Crema de protectie solara", "punctaj": 20 },
+        { "raspuns": "Ochelari de soare", "punctaj": 10 },
+        { "raspuns": "Carte", "punctaj": 5 }
+      ]
+    }
+  ]
 }
-]
-}
+
