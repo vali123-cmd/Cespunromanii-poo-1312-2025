@@ -296,7 +296,7 @@ class Game {
         }
     }
     void parseJson() {
-        std::ifstream file("/src/intrebari.json");
+        std::ifstream file("../src/intrebari.json");
     if (!file.is_open()) {
         std::cerr<<"Nu am putut deschide fisierul json!"<<'\n';
         //NOTA: De inchis fereastra atunci cand se intampla asta.
@@ -340,8 +340,10 @@ std::ostream& operator<<(std::ostream& os, const Game &g) {
 
 
 int main() {
-
+    std::ifstream file("../src/intrebari.json");
+    if (!file.is_open()) {
+        return 1;
+    }
     Game main;
-
     return 0;
 }
