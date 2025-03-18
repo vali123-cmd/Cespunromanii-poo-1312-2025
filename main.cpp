@@ -342,7 +342,7 @@ std::ostream& operator<<(std::ostream& os, const Game &g) {
 int main() {
     std::ifstream file("../src/intrebari.json");
     if (!file.is_open()) {
-        return 1;
+        return 0;
     }
     Game main;
     return 0;
