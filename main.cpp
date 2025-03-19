@@ -1,4 +1,6 @@
 
+#pragma once
+#define NOMINMAX //windows headers definesc min si max(eroare la distanta levenstein)
 #include <iostream>
 #include <string>
 #include <vector>
@@ -7,6 +9,7 @@
 #include <random>
 #include <cmath>
 #include <cpr/cpr.h>
+#include <algorithm>
 
 
 
@@ -412,6 +415,17 @@ class Game {
     }
     file >> this->data;
 
+    }
+    void playAgain() {
+        std::cout<<"Doriti sa jucati din nou? Da/Nu"<<'\n';
+        std::string answer;
+        std::cin>>answer;
+        if(answer == "Da") {
+            Game();
+        }
+        else {
+            std::cout<<"Multumim pentru participare!"<<'\n';
+        }
     }
 
     public:
