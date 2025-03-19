@@ -43,6 +43,7 @@ public:
     Player(const Player &other)
         : m_score(other.m_score),
           m_name(other.m_name),
+          answer_streak(other.answer_streak),
           m_family(other.m_family) {
     }
 
@@ -51,6 +52,7 @@ public:
             return *this;
         m_score = other.m_score;
         m_name = other.m_name;
+        answer_streak = other.answer_streak;
         m_family = other.m_family;
         return *this;
     }
@@ -89,6 +91,7 @@ public:
     Family(const Family &other)
         : family_name(other.family_name),
           family_score(other.family_score),
+
           strikes(other.strikes),
           players(other.players) {
     }
@@ -432,7 +435,7 @@ class Game {
         std::string answer;
         std::cin>>answer;
         if(answer == "Da") {
-            Game();
+            Game newGame;
         }
         else {
             std::cout<<"Multumim pentru participare!"<<'\n';
