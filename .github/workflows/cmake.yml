@@ -2,7 +2,7 @@ name: C++ CI
 
 on:
   push:
-    branches: ['**'] # NOTE: replace/update with appropriate branch name(s)
+    branches: ['**']
     tags: ['**']
   workflow_dispatch:
     inputs:
@@ -18,7 +18,7 @@ on:
           - MinSizeRel
 
 env:
-  BUILD_TYPE: ${{ inputs.build_type || 'Debug' }}
+  BUILD_TYPE: ${{ github.event.inputs.build_type || 'Debug' }}
   EXECUTABLE_NAME: "oop"
   INPUT_FILENAME: "tastatura.txt"
   BIN_DIR: "bin"
@@ -41,6 +41,11 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
+      - name: Verify scripts
+        run: |
+          ls -la ./scripts
+          chmod +x ./scripts/cmake.sh
+
       - name: Run cppcheck
         uses: ./.github/actions/cppcheck
 
@@ -53,6 +58,11 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+
+      - name: Verify scripts
+        run: |
+          ls -la ./scripts
+          chmod +x ./scripts/cmake.sh
 
       - name: Run clang-tidy
         uses: ./.github/actions/clang-tidy
@@ -138,14 +148,25 @@ jobs:
           # Clone the CPR repository
           git clone https://github.com/libcpr/cpr.git
           cd cpr
-          
+
           # Force Release build for CPR regardless of project build type
           mkdir build && cd build
           cmake .. -DCPR_USE_SYSTEM_CURL=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON
-          
+
           make -j$(nproc)
           sudo make install
           sudo ldconfig
+
+      - name: Install dependencies (Windows)
+        if: matrix.os == 'windows-2022'
+        shell: pwsh
+        run: |
+          choco install curl -y
+
+      - name: Install dependencies (macOS)
+        if: matrix.os == 'macos-14'
+        run: |
+          brew install curl
 
       - name: Configure CMake with static curl
         if: matrix.os == 'ubuntu-22.04'
@@ -187,20 +208,45 @@ jobs:
           path: ${{ env.ZIP_NAME }}
           retention-days: 30
 
-      - name: Find required libraries
+      - name: Find required libraries (Linux)
         if: matrix.os == 'ubuntu-22.04'
         run: |
           echo "Looking for required libraries in the executable..."
           ldd ${{ env.ZIP_NAME }}/${{ env.EXECUTABLE_NAME }} || true
-          
+
           echo "Updating LD_LIBRARY_PATH..."
           echo "LD_LIBRARY_PATH=/usr/local/lib:/usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}" >> ${GITHUB_ENV}
 
-      
+      - name: Find required libraries (macOS)
+        if: matrix.os == 'macos-14'
+        run: |
+          echo "Looking for required libraries in the executable..."
+          otool -L ${{ env.ZIP_NAME }}/${{ env.EXECUTABLE_NAME }} || true
+
+      - name: Set API Key (Linux/macOS)
+        if: runner.os != 'Windows'
+        run: |
+          echo "API_KEY=${{ secrets.CHATGPT_API_KEY }}" >> ${GITHUB_ENV}
+          echo "Checking API_KEY..."
+          env | grep API_KEY || echo "API_KEY NOT FOUND"
+
+      - name: Set API Key (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          echo "API_KEY=${{ secrets.CHATGPT_API_KEY }}" >> $env:GITHUB_ENV
+          echo "Checking API_KEY..."
+          Get-ChildItem Env:API_KEY || echo "API_KEY NOT FOUND"
+
+      - name: Create API key configuration file
+        run: |
+          echo "CHATGPT_API_KEY=${{ secrets.CHATGPT_API_KEY }}" > ${{ env.ZIP_NAME }}/api_config.txt
+          chmod 600 ${{ env.ZIP_NAME }}/api_config.txt
 
       - name: Runtime checks
         uses: ./.github/actions/runtime-checks
         env:
+          API_KEY: ${{ secrets.CHATGPT_API_KEY }}
           LD_LIBRARY_PATH: /usr/local/lib:/usr/lib/x86_64-linux-gnu:${{ env.LD_LIBRARY_PATH }}
 
       - name: Create release

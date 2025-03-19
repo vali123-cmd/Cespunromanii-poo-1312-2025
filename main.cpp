@@ -6,6 +6,7 @@
 #include <nlohmann/json.hpp>
 #include <random>
 #include <cmath>
+#include <cpr/cpr.h>
 
 
 #define ANSWERS_LIMIT 5
@@ -26,6 +27,20 @@ public:
         return m_score;
     }
 
+    Player(const Player &other)
+        : m_score(other.m_score),
+          m_name(other.m_name),
+          m_family(other.m_family) {
+    }
+
+    Player & operator=(const Player &other) {
+        if (this == &other)
+            return *this;
+        m_score = other.m_score;
+        m_name = other.m_name;
+        m_family = other.m_family;
+        return *this;
+    }
 
 
     Player(const std::string& name, const std::string& family): m_name(name), m_family(family) {
@@ -36,7 +51,7 @@ public:
 };
 std::ostream& operator<<(std::ostream& os, const Player& p ) {
 
-    std::cout<<"Nume jucator: "<<p.m_name<<" din familia"<< p.m_family<<'\n';
+    std::cout<<"Nume jucator: "<<p.m_name<<" din familia "<< p.m_family<<'\n';
     return os;
 
 }
@@ -155,6 +170,19 @@ public:
         }
         return 0;
     }
+
+    Question(const Question &other)
+        : m_text(other.m_text),
+          answers(other.answers) {
+    }
+
+    Question & operator=(const Question &other) {
+        if (this == &other)
+            return *this;
+        m_text = other.m_text;
+        answers = other.answers;
+        return *this;
+    }
 };
 std::ostream& operator<<(std::ostream& os, const Question& q) {
     os<<q.get_question_text()<<'\n';
@@ -225,7 +253,7 @@ class Round {
 
 public:
 
-    [[nodiscard]] int round_id1() const {
+    [[nodiscard]] int get_round_id() const {
         return round_id;
     }
 
@@ -253,7 +281,7 @@ public:
                 int givenScore = 0;
                 int bonus_multiplier = 1;
 
-                if (round_id1()==6) {
+                if (get_round_id()==6) {
                     bonus_multiplier = 2;
                 }
                 if  (currentQuestion.isAnswerRight(answer,givenScore,givenAns)) {
@@ -322,7 +350,7 @@ public:
      * pe baza acestei runde!' */
 };
 std::ostream& operator<<(std::ostream& os, const Round& q) {
-    os<<q.round_id1()<<'\n';
+    os<<q.get_round_id()<<'\n';
     return os;
 }
 
@@ -409,5 +437,10 @@ int main() {
         return 0;
     }
     Game main;
+
+
+
     return 0;
+
+
 }

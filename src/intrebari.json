@@ -1,55 +1,104 @@
-{
-  "intrebari": [
-    {
-      "intrebare": "Ce obiecte gasesti intr-un birou?",
-      "raspunsuri": [
-        { "raspuns": "Calculator", "punctaj": 40 },
-        { "raspuns": "Pix", "punctaj": 30 },
-        { "raspuns": "Caiet", "punctaj": 15 },
-        { "raspuns": "Telefon", "punctaj": 10 },
-        { "raspuns": "Scaun", "punctaj": 5 }
-      ]
-    },
-    {
-      "intrebare": "Ce faci dimineata imediat dupa ce te trezesti?",
-      "raspunsuri": [
-        { "raspuns": "Merg la baie", "punctaj": 35 },
-        { "raspuns": "Beau cafea", "punctaj": 25 },
-        { "raspuns": "Ma spal pe dinti", "punctaj": 20 },
-        { "raspuns": "Ma intind", "punctaj": 10 },
-        { "raspuns": "Verific telefonul", "punctaj": 10 }
-      ]
-    },
-    {
-      "intrebare": "Care sunt cele mai populare animale de companie?",
-      "raspunsuri": [
-        { "raspuns": "Caine", "punctaj": 50 },
-        { "raspuns": "Pisica", "punctaj": 30 },
-        { "raspuns": "Peste", "punctaj": 10 },
-        { "raspuns": "Papagal", "punctaj": 5 },
-        { "raspuns": "Hamster", "punctaj": 5 }
-      ]
-    },
-    {
-      "intrebare": "Ce alimente gasesti intr-un mic dejun traditional?",
-      "raspunsuri": [
-        { "raspuns": "Oua", "punctaj": 40 },
-        { "raspuns": "Lapte", "punctaj": 25 },
-        { "raspuns": "Paine", "punctaj": 15 },
-        { "raspuns": "Cafea", "punctaj": 10 },
-        { "raspuns": "Unt", "punctaj": 10 }
-      ]
-    },
-    {
-      "intrebare": "Ce lucruri iau oamenii cu ei la plaja?",
-      "raspunsuri": [
-        { "raspuns": "Prosop", "punctaj": 35 },
-        { "raspuns": "Costum de baie", "punctaj": 30 },
-        { "raspuns": "Crema de protectie solara", "punctaj": 20 },
-        { "raspuns": "Ochelari de soare", "punctaj": 10 },
-        { "raspuns": "Carte", "punctaj": 5 }
-      ]
-    }
-  ]
-}
+[
+  {
+    "intrebare": "Ce activitate fac oamenii dimineata?",
+    "raspunsuri": [
+      {"raspuns": "Spalat pe dinti", "punctaj": 35},
+      {"raspuns": "Fac dus", "punctaj": 25},
+      {"raspuns": "Beau cafea", "punctaj": 20},
+      {"raspuns": "Mananca mic dejun", "punctaj": 15},
+      {"raspuns": "Se imbraca", "punctaj": 5}
+    ]
+  },
+  {
+    "intrebare": "Ce fruct gasesti cel mai des intr-o salata de fructe?",
+    "raspunsuri": [
+      {"raspuns": "Mar", "punctaj": 30},
+      {"raspuns": "Banana", "punctaj": 25},
+      {"raspuns": "Struguri", "punctaj": 20},
+      {"raspuns": "Portocala", "punctaj": 15},
+      {"raspuns": "Ananas", "punctaj": 10}
+    ]
+  },
+  {
+    "intrebare": "Ce obiect nu lipseste dintr-un birou?",
+    "raspunsuri": [
+      {"raspuns": "Calculator", "punctaj": 40},
+      {"raspuns": "Birou", "punctaj": 25},
+      {"raspuns": "Scaun", "punctaj": 15},
+      {"raspuns": "Pix", "punctaj": 10},
+      {"raspuns": "Agenda", "punctaj": 10}
+    ]
+  },
+  {
+    "intrebare": "Ce sport este cel mai popular in lume?",
+    "raspunsuri": [
+      {"raspuns": "Fotbal", "punctaj": 50},
+      {"raspuns": "Baschet", "punctaj": 20},
+      {"raspuns": "Tenis", "punctaj": 15},
+      {"raspuns": "Cricket", "punctaj": 10},
+      {"raspuns": "Atletism", "punctaj": 5}
+    ]
+  },
+  {
+    "intrebare": "Ce animal de companie au cei mai multi oameni?",
+    "raspunsuri": [
+      {"raspuns": "Caine", "punctaj": 45},
+      {"raspuns": "Pisica", "punctaj": 35},
+      {"raspuns": "Pesti", "punctaj": 10},
+      {"raspuns": "Papagal", "punctaj": 5},
+      {"raspuns": "Hamster", "punctaj": 5}
+    ]
+  },
+  {
+    "intrebare": "Ce aliment este cel mai des folosit la micul dejun?",
+    "raspunsuri": [
+      {"raspuns": "Oua", "punctaj": 40},
+      {"raspuns": "Paine", "punctaj": 30},
+      {"raspuns": "Lapte", "punctaj": 15},
+      {"raspuns": "Cereale", "punctaj": 10},
+      {"raspuns": "Unt", "punctaj": 5}
+    ]
+  },
+  {
+    "intrebare": "Ce culoare este asociata cel mai des cu iubirea?",
+    "raspunsuri": [
+      {"raspuns": "Rosu", "punctaj": 50},
+      {"raspuns": "Roz", "punctaj": 25},
+      {"raspuns": "Alb", "punctaj": 15},
+      {"raspuns": "Mov", "punctaj": 5},
+      {"raspuns": "Galben", "punctaj": 5}
+    ]
+  },
+  {
+    "intrebare": "Ce lucru iei mereu cu tine cand iesi din casa?",
+    "raspunsuri": [
+      {"raspuns": "Telefon", "punctaj": 50},
+      {"raspuns": "Chei", "punctaj": 30},
+      {"raspuns": "Portofel", "punctaj": 15},
+      {"raspuns": "Ochelari de soare", "punctaj": 3},
+      {"raspuns": "Guma de mestecat", "punctaj": 2}
+    ]
+  },
+  {
+    "intrebare": "Ce leguma este cea mai populara?",
+    "raspunsuri": [
+      {"raspuns": "Cartof", "punctaj": 40},
+      {"raspuns": "Rosie", "punctaj": 30},
+      {"raspuns": "Castravete", "punctaj": 15},
+      {"raspuns": "Ceapa", "punctaj": 10},
+      {"raspuns": "Morcov", "punctaj": 5}
+    ]
+  },
+  {
+    "intrebare": "Ce tara este cunoscuta pentru pizza?",
+    "raspunsuri": [
+      {"raspuns": "Italia", "punctaj": 70},
+      {"raspuns": "Statele Unite", "punctaj": 15},
+      {"raspuns": "Franta", "punctaj": 5},
+      {"raspuns": "Spania", "punctaj": 5},
+      {"raspuns": "Germania", "punctaj": 5}
+    ]
+  }
+]
+
 
