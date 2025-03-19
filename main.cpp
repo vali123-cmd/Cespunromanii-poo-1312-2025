@@ -7,6 +7,7 @@
 #include <random>
 #include <cmath>
 #include <cpr/cpr.h>
+#include <algorithm>
 
 
 #define ANSWERS_LIMIT 5
@@ -149,9 +150,9 @@ public:
         return m_text;
     }
 
-   /* [[nodiscard]] const std::vector<std::pair<std::string, int>>& get_answers() const {
+    [[nodiscard]] const std::vector<std::pair<std::string, int>>& get_answers() const {
         return answers;
-    }*/
+    }
 
     bool isAnswerRight(const std::string& userString, int& score, std::string& foundAnswer) {
 
@@ -194,9 +195,21 @@ class Round {
     int round_id = 1;
     json data;
 
+
     static void printCurrentAnswers(const std::vector<std::pair<std::string, int>>& answers) {
         for (const auto& item : answers) {
             std::cout << item.first << " " << item.second << '\n';
+        }
+    }
+    void printAllAnswers(const Question& question) {
+        std::cout<<"Doriti sa vedeti toate raspunsurile posibile la intrebarea primita?"<<'\n';
+        std::string see_all_answers;
+        std::cin>>see_all_answers;
+        if(see_all_answers == "da") {
+            std::cout<<"BAREMUL DE RASPUNSURI: ";
+            for (const auto& item: question.get_answers()) {
+                std::cout<<item.first<<" "<<item.second<<'\n';
+            }
         }
     }
 
@@ -244,6 +257,7 @@ class Round {
             currentFamily = &f1;
         }
     }
+
 
 public:
     [[nodiscard]] int get_round_id() const {
@@ -317,6 +331,7 @@ public:
         leaderFamily->set_family_score(leaderFamily->get_family_score());
 
         std::cout << f1 << f2 << '\n';
+        printAllAnswers(currentQuestion);
     }
 
     ~Round() = default;
