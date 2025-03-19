@@ -95,8 +95,7 @@ public:
     }
    [[nodiscard]]  int get_family_score()  {
         int computedScore = calculate_total_score();
-        set_family_score(computedScore);
-        return family_score;
+        return computedScore;
     }
     explicit Family(const std::string &family_name, const int family_score=0, const std::vector<Player> &players = {})
         : family_name(family_name),
@@ -197,12 +196,11 @@ class Round {
 
     static void printCurrentAnswers(const std::vector<std::pair<std::string, int>>& answers) {
         for (const auto& item : answers) {
-            std::cout<<item.first<<" "<<item.second<<'\n';
+            std::cout << item.first << " " << item.second << '\n';
         }
     }
 
     static int pickRandIndex(const json &data) {
-        //Functie care alege o intrebare random din json,bazata pe mersenne.
         if (data["intrebari"].empty()) {
             return -1;
         }
@@ -211,119 +209,114 @@ class Round {
         std::mt19937 gen(rd());
         std::uniform_int_distribution<> distr(0, data["intrebari"].size() - 1);
 
-        int randomIndex = distr(gen);
-
-        return randomIndex;
+        return distr(gen);
     }
+
     Question getQuestion(const json &data_) {
         int randindex = pickRandIndex(data_);
         std::vector<std::pair<std::string, int>> answers;
         for (const auto& item : data_["intrebari"][randindex]["raspunsuri"]) {
             answers.emplace_back(item["raspuns"], item["punctaj"]);
         }
-        Question q = Question(data["intrebari"][randindex]["intrebare"],
-            answers);
-        data["intrebari"].erase(randindex); //nu vrem sa repetam intrebari, deci stergem.
+        Question q = Question(data["intrebari"][randindex]["intrebare"], answers);
+        data["intrebari"].erase(randindex);
         return q;
     }
-    const Family& whoPressedFirst(const Family& f1, const Family& f2) {
-        std::cout<<"Cine a apasat primul? Scrie 1 pentru familia "<<
-            f1.get_family_name()<<" si 2 pentru familia "<<f2.get_family_name()<<'\n';
+
+    Family& whoPressedFirst(Family& f1, Family& f2) {
+        std::cout << "Cine a apasat primul? Scrie 1 pentru familia " << f1.get_family_name() << " si 2 pentru familia " << f2.get_family_name() << '\n';
         int pick;
-        std::cin>>pick;
-        if (pick==1) {
+        std::cin >> pick;
+        if (pick == 1) {
             return f1;
-        }
-         if(pick==2) {
+        } else if (pick == 2) {
             return f2;
         }
 
-        std::cout<<"Ai introdus un numar gresit! Introdu 1 sau 2!"<<'\n';
-        return whoPressedFirst(f1,f2);
-
+        std::cout << "Ai introdus un numar gresit! Introdu 1 sau 2!" << '\n';
+        return whoPressedFirst(f1, f2);
     }
-    void SwitchFamily(Family& currentFamily, const Family& f1, const Family& f2) {
-         if (currentFamily==f1) {
-             currentFamily = f2;
-         }
-        else {
-            currentFamily = f1;
+
+    void SwitchFamily(Family*& currentFamily, Family& f1, Family& f2) {
+        if (currentFamily == &f1) {
+            currentFamily = &f2;
+        } else {
+            currentFamily = &f1;
         }
     }
 
 public:
-
     [[nodiscard]] int get_round_id() const {
         return round_id;
     }
 
-    Round(int round_id_, const json &data_, const Family& f1,const Family& f2):
-    data(data_) {
+    Round(int round_id_, const json &data_, Family& f1, Family& f2) : data(data_) {
         bool family_switched = false;
         round_id = round_id_;
 
-        std::cout<<"Runda "<<round_id<<" a inceput"<<'\n';
+        std::cout << "Runda " << round_id << " a inceput" << '\n';
 
-        Question currentQuestion =  getQuestion(data);
-        std::cout<<currentQuestion;
-        Family leaderFamily = whoPressedFirst(f1,f2);
+        Question currentQuestion = getQuestion(data);
+        std::cout << currentQuestion;
+        Family* leaderFamily = &whoPressedFirst(f1, f2);
         std::string answer;
         std::string givenAns;
-        std::cout<<leaderFamily;
+        std::cout << *leaderFamily;
         bool terminateRound = false;
-        while (answers_given.size()<=ANSWERS_LIMIT and (family_switched==false or leaderFamily.checkStrikes()==0)) {
-
-            for (auto& jucator: leaderFamily.get_players()) {
-                std::cout<<jucator<<" te rugam sa introduci un raspuns popular: "<<"\n";
+        while (answers_given.size() <= ANSWERS_LIMIT && (!family_switched || leaderFamily->checkStrikes() == 0)) {
+            for (auto& jucator : leaderFamily->get_players()) {
+                std::cout << jucator << " te rugam sa introduci un raspuns popular: " << "\n";
                 std::cin.clear();
                 std::cin.ignore();
                 std::getline(std::cin, answer);
                 int givenScore = 0;
                 int bonus_multiplier = 1;
 
-                if (get_round_id()==6) {
+                if (get_round_id() == 6) {
                     bonus_multiplier = 2;
                 }
-                if  (currentQuestion.isAnswerRight(answer,givenScore,givenAns)) {
-                    std::cout<<"Raspuns corect! Felicitari!"<<'\n';
-                    answers_given.emplace_back(givenAns,givenScore);
+                if (currentQuestion.isAnswerRight(answer, givenScore, givenAns)) {
+                    std::cout << "Raspuns corect! Felicitari!" << '\n';
+                    answers_given.emplace_back(givenAns, givenScore);
                     printCurrentAnswers(answers_given);
                     jucator.increaseScore(givenScore, bonus_multiplier);
                     if (answers_given.size() == ANSWERS_LIMIT) {
-                        std::cout<<"Ai raspuns la toate intrebarile! S-a terminat runda!"<<'\n';
-                        leaderFamily.set_family_score(leaderFamily.get_family_score());
+                        std::cout << "Ai raspuns la toate intrebarile! S-a terminat runda!" << '\n';
+                        leaderFamily->set_family_score(leaderFamily->get_family_score());
                         terminateRound = true;
                         break;
                     }
-                }
-                else {
-                    std::cout<<"Raspuns gresit! Mai incearca!"<<'\n';
-                    leaderFamily.increaseStrikes();
-                    std::cout<<leaderFamily;
-                    if (leaderFamily.checkStrikes() == 1 and family_switched == false) {
-                        std::cout<<"Ai primit 3 strikes! Se schimba familia!"<<'\n';
-                        leaderFamily.set_family_score(leaderFamily.get_family_score());
-                        leaderFamily.resetStrikes();
-                        SwitchFamily(leaderFamily,f1,f2);
+                } else {
+                    std::cout << "Raspuns gresit! Mai incearca!" << '\n';
+                    leaderFamily->increaseStrikes();
+                    leaderFamily->set_family_score(leaderFamily->get_family_score());
+
+                    std::cout << *leaderFamily;
+                    if (leaderFamily->checkStrikes() == 1 && !family_switched) {
+                        std::cout << "Ai primit 3 strikes! Se schimba familia!" << '\n';
+                        leaderFamily->set_family_score(leaderFamily->get_family_score());
+                        leaderFamily->resetStrikes();
+                        SwitchFamily(leaderFamily, f1, f2);
                         family_switched = true;
                         break;
                     }
-                    if (leaderFamily.checkStrikes() == 1 and  family_switched==true) {
-                        std::cout<<"Noua familie a primit si ea 3 strikes! S-a terminat runda."<<'\n';
-                        leaderFamily.resetStrikes();
-                        leaderFamily.set_family_score(leaderFamily.get_family_score());
+                    if (leaderFamily->checkStrikes() == 1 && family_switched) {
+                        std::cout << "Noua familie a primit si ea 3 strikes! S-a terminat runda." << '\n';
+                        leaderFamily->resetStrikes();
+                        leaderFamily->set_family_score(leaderFamily->get_family_score());
                         terminateRound = true;
                         break;
                     }
                 }
             }
-            if (terminateRound==true) {
+            if (terminateRound) {
                 break;
             }
         }
-        leaderFamily.resetStrikes();
+        leaderFamily->resetStrikes();
+        leaderFamily->set_family_score(leaderFamily->get_family_score());
 
-        std::cout<<f1<<f2<<'\n';
+        std::cout << f1 << f2 << '\n';
     }
 
     ~Round() = default;

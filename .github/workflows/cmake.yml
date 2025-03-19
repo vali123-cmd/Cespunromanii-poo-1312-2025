@@ -223,32 +223,6 @@ jobs:
           echo "Looking for required libraries in the executable..."
           otool -L ${{ env.ZIP_NAME }}/${{ env.EXECUTABLE_NAME }} || true
 
-      - name: Set API Key (Linux/macOS)
-        if: runner.os != 'Windows'
-        run: |
-          echo "API_KEY=${{ secrets.CHATGPT_API_KEY }}" >> ${GITHUB_ENV}
-          echo "Checking API_KEY..."
-          env | grep API_KEY || echo "API_KEY NOT FOUND"
-
-      - name: Set API Key (Windows)
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          echo "API_KEY=${{ secrets.CHATGPT_API_KEY }}" >> $env:GITHUB_ENV
-          echo "Checking API_KEY..."
-          Get-ChildItem Env:API_KEY || echo "API_KEY NOT FOUND"
-
-      - name: Create API key configuration file
-        run: |
-          echo "CHATGPT_API_KEY=${{ secrets.CHATGPT_API_KEY }}" > ${{ env.ZIP_NAME }}/api_config.txt
-          chmod 600 ${{ env.ZIP_NAME }}/api_config.txt
-
-      - name: Runtime checks
-        uses: ./.github/actions/runtime-checks
-        env:
-          API_KEY: ${{ secrets.CHATGPT_API_KEY }}
-          LD_LIBRARY_PATH: /usr/local/lib:/usr/lib/x86_64-linux-gnu:${{ env.LD_LIBRARY_PATH }}
-
       - name: Create release
         uses: ./.github/actions/create-release
         if: startsWith(github.ref, 'refs/tags/')
