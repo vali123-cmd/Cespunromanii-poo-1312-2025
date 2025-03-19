@@ -15,16 +15,26 @@
 #define ANSWERS_LIMIT 5
 
 using json = nlohmann::json;
+
 class Player {
     int m_score=0;
     std::string m_name;
     std::string m_family;
+    int answer_streak = 0;
+
 
 public:
     void increaseScore( int points_given, int bonus_multiplier) {
         m_score+= points_given*bonus_multiplier;
         //Functie care incrementeaza scorul in functie de punctele raspunsului si bonusul rundei.
     }
+    void resetAnswerStreak() {
+        answer_streak = 0;
+    }
+    void increaseAnswerStreak() {
+        answer_streak++;
+    }
+
 
     [[nodiscard]] int get_player_score() const {
         return m_score;
@@ -314,6 +324,7 @@ public:
                     answers_given.emplace_back(givenAns, givenScore);
                     printCurrentAnswers(answers_given);
                     jucator.increaseScore(givenScore, bonus_multiplier);
+                    jucator.increaseAnswerStreak();
                     if (answers_given.size() == ANSWERS_LIMIT) {
                         std::cout << "Ai raspuns la toate intrebarile! S-a terminat runda!" << '\n';
                         leaderFamily->set_family_score(leaderFamily->get_family_score());
@@ -321,6 +332,7 @@ public:
                         break;
                     }
                 } else {
+                    jucator.resetAnswerStreak();
                     std::cout << "Raspuns gresit! Mai incearca!" << '\n';
                     leaderFamily->increaseStrikes();
                     leaderFamily->set_family_score(leaderFamily->get_family_score());
@@ -454,6 +466,7 @@ class Game {
         else {
             std::cout<<"Familia "<<secondFam.get_family_name()<<" a castigat!"<<'\n';
         }
+        playAgain();
     }
     ~Game() {
         std::cout<<"Game over! Multumim pentru participare!"<<'\n';
