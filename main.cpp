@@ -7,7 +7,7 @@
 #include <random>
 #include <cmath>
 #include <cpr/cpr.h>
-#include <algorithm>
+
 
 
 #define ANSWERS_LIMIT 5
@@ -73,6 +73,24 @@ public:
     void resetStrikes() {
         strikes = 0;
     }
+
+    Family(const Family &other)
+        : family_name(other.family_name),
+          family_score(other.family_score),
+          strikes(other.strikes),
+          players(other.players) {
+    }
+
+    Family & operator=(const Family &other) {
+        if (this == &other)
+            return *this;
+        family_name = other.family_name;
+        family_score = other.family_score;
+        strikes = other.strikes;
+        players = other.players;
+        return *this;
+    }
+
     bool checkStrikes() {
         if (strikes == 3) {
 
@@ -131,7 +149,7 @@ class Question {
                 } else if (s1[i - 1] == s2[j - 1]) {
                     dp[i][j] = dp[i - 1][j - 1];
                 } else {
-                    dp[i][j] = 1 + std::min({dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]});
+                    dp[i][j] = 1 + std::min(dp[i - 1][j - 1], std::min(dp[i - 1][j], dp[i][j - 1]));
                 }
             }
         }
