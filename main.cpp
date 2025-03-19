@@ -43,8 +43,8 @@ public:
     Player(const Player &other)
         : m_score(other.m_score),
           m_name(other.m_name),
-          answer_streak(other.answer_streak),
-          m_family(other.m_family) {
+          m_family(other.m_family),
+           answer_streak(other.answer_streak) {
     }
 
     Player & operator=(const Player &other) {
@@ -52,8 +52,8 @@ public:
             return *this;
         m_score = other.m_score;
         m_name = other.m_name;
-        answer_streak = other.answer_streak;
         m_family = other.m_family;
+        answer_streak = other.answer_streak;
         return *this;
     }
 
