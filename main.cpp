@@ -1,5 +1,4 @@
 
-#pragma once
 #define NOMINMAX //windows headers definesc min si max(eroare la distanta levenstein)
 #include <iostream>
 #include <string>
