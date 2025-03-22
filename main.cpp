@@ -150,6 +150,20 @@ bool operator==(const Family& f1, const Family& f2) {
 class Question {
     std::string m_text;
     std::vector<std::pair<std::string, int>> answers;
+    void formatAnswer(std::string& s) {
+
+        if (s.length() == 1) {
+            s[0] = std::toupper(s[0]);
+        }
+
+        else {
+            s[0] = std::toupper(s[0]);
+            for (int i = 1; i < s.length(); i++) {
+                s[i] = std::tolower(s[i]);
+            }
+
+        }
+    }
     double similarity_percentage(const std::string& s1,const std::string& s2) {
         //Functie care calculeaza procentul de similaritate dintre doua stringuri.
         int n = s1.length();
@@ -171,6 +185,7 @@ class Question {
         return 100 - (dp[n][m] * 100.0 / std::max(n, m));
         //Am implementat distanta levenstein pentru a calcula procentul de similaritate, dar
         //in viitoare release-uri voi folosi un AI pentru a calcula procentul de similaritate.
+        //TODO: Comportament neasteptat pentru raspunsuri absolut identice ???! (de verificat)
     }
 
 public:
@@ -187,8 +202,9 @@ public:
         return answers;
     }
 
-    bool isAnswerRight(const std::string& userString, int& score, std::string& foundAnswer) {
-
+    bool isAnswerRight(std::string& userString, int& score, std::string& foundAnswer) {
+        //formatare pentru precizie mai buna cu ajutorul formatAnswer().
+        formatAnswer(userString);
         for (const auto& item : answers) {
             if (similarity_percentage(userString, item.first) > 70) {
                 //NOTA: 70% este un prag de similaritate,poate varia in urmatoarele release-uri,
@@ -258,29 +274,35 @@ class Round {
         return distr(gen);
     }
 
-    Question getQuestion(const json &data_) {
+    Question getQuestion(json &data_) {
         int randindex = pickRandIndex(data_);
         std::vector<std::pair<std::string, int>> answers;
         for (const auto& item : data_["intrebari"][randindex]["raspunsuri"]) {
             answers.emplace_back(item["raspuns"], item["punctaj"]);
         }
-        Question q = Question(data["intrebari"][randindex]["intrebare"], answers);
-        data["intrebari"].erase(randindex);
+        Question q = Question(data_["intrebari"][randindex]["intrebare"], answers);
+        data_["intrebari"].erase(randindex);
+        //BUG FIX: nu se sterge intrebarea din json dupa ce a fost folosita.
         return q;
     }
 
     Family& whoPressedFirst(Family& f1, Family& f2) {
-        std::cout << "Cine a apasat primul? Scrie 1 pentru familia " << f1.get_family_name() << " si 2 pentru familia " << f2.get_family_name() << '\n';
+        //FIXED BUG: Daca cineva introduce un string in loc de un numar, programul intra in bucla infinita.
         int pick;
-        std::cin >> pick;
-        if (pick == 1) {
-            return f1;
-        } else if (pick == 2) {
-            return f2;
+        while (true) {
+            std::cout << "Cine a apasat primul? Scrie 1 pentru familia " << f1.get_family_name() << " si 2 pentru familia " << f2.get_family_name() << '\n';
+            std::cin >> pick;
+
+            if (std::cin.fail() || (pick != 1 && pick != 2)) {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Ignore invalid input
+                std::cout << "Ai introdus un numar gresit! Introdu 1 sau 2!" << '\n';
+            } else {
+                break;
+            }
         }
 
-        std::cout << "Ai introdus un numar gresit! Introdu 1 sau 2!" << '\n';
-        return whoPressedFirst(f1, f2);
+        return (pick == 1) ? f1 : f2;
     }
 
     void SwitchFamily(Family*& currentFamily, Family& f1, Family& f2) {
@@ -297,13 +319,13 @@ public:
         return round_id;
     }
 
-    Round(int round_id_, const json &data_, Family& f1, Family& f2) : data(data_) {
+    Round(int round_id_,  json &data_, Family& f1, Family& f2) : data(data_) {
         bool family_switched = false;
         round_id = round_id_;
 
         std::cout << "Runda " << round_id << " a inceput" << '\n';
 
-        Question currentQuestion = getQuestion(data);
+        Question currentQuestion = getQuestion(data_);
         std::cout << currentQuestion;
         Family* leaderFamily = &whoPressedFirst(f1, f2);
         std::string answer;
@@ -428,7 +450,7 @@ class Game {
         //NOTA: De inchis fereastra atunci cand se intampla asta.
     }
     file >> this->data;
-
+    file.close();
     }
     void playAgain() {
         std::cout<<"Doriti sa jucati din nou? Da/Nu"<<'\n';
