@@ -158,7 +158,7 @@ class Question {
 
         else {
             s[0] = std::toupper(s[0]);
-            for (int i = 1; i < s.length(); i++) {
+            for (unsigned long long int i = 1; i < s.length(); i++) {
                 s[i] = std::tolower(s[i]);
             }
 
