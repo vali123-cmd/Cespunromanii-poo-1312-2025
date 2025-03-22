@@ -285,7 +285,6 @@ class Round {
         //BUG FIX: nu se sterge intrebarea din json dupa ce a fost folosita.
         return q;
     }
-
     Family& whoPressedFirst(Family& f1, Family& f2) {
         //FIXED BUG: Daca cineva introduce un string in loc de un numar, programul intra in bucla infinita.
         int pick;
@@ -301,8 +300,12 @@ class Round {
                 break;
             }
         }
+    if (pick==1) {
+        return f1;
+    }
+        return f2;
 
-        return (pick == 1) ? f1 : f2;
+
     }
 
     void SwitchFamily(Family*& currentFamily, Family& f1, Family& f2) {
