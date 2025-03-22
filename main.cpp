@@ -164,8 +164,6 @@ class Question {
 
         }
     }
-
-
     double similarity_percentage(const std::string& s1,const std::string& s2) {
         //Functie care calculeaza procentul de similaritate dintre doua stringuri.
         int n = s1.length();
