@@ -36,13 +36,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(json)
 
-FetchContent_Declare(
-        cpr
-        GIT_REPOSITORY https://github.com/libcpr/cpr
-        GIT_TAG        1.11.2
 
-)
-FetchContent_MakeAvailable(cpr)
 
 
 ###############################################################################
