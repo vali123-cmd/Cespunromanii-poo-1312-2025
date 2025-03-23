@@ -140,7 +140,7 @@ public:
 };
 std::ostream& operator<<(std::ostream& os, const Family& family) {
 
-    os<<family.get_family_name()<<": "<<family.family_score<<'\n';
+    os<<family.get_family_name()<<": "<<family.family_score<<'\n'<<family.players[0]; //NOTA:Adaugare compunere de apeluri <<
     os<<"Strikes: "<<family.strikes<<'\n';
     return os;
 }
@@ -232,9 +232,10 @@ public:
         answers = other.answers;
         return *this;
     }
+    friend std::ostream& operator<<(std::ostream& os, const Question& q);
 };
 std::ostream& operator<<(std::ostream& os, const Question& q) {
-    os<<q.get_question_text()<<'\n';
+    os<<q.get_question_text()<<'\n'<<q.m_text;
     return os;
 }
 
@@ -411,14 +412,14 @@ public:
         return *this;
     }
 
-
+    friend std::ostream& operator<<(std::ostream& os, const Round& q);
 
     /* Scopul constructorului de copiere, ti-au placut intrebarile dintr-o runda si vrei sa
      * o poti da si altor oameni/prieteni sa o joace sau optiune de 'Genereaza runda custom
      * pe baza acestei runde!' */
 };
 std::ostream& operator<<(std::ostream& os, const Round& q) {
-    os<<q.get_round_id()<<'\n';
+    os<<q.get_round_id()<<'\n'<<q.answers_given[0].first;
     return os;
 }
 
@@ -504,8 +505,8 @@ class Game {
 
 std::ostream& operator<<(std::ostream& os, const Game &g) {
     std::cout<<"Game currently initiated and running. Enjoy! -From Cabral himself. Captains: "<<'\n';
-    std::cout<<g.players1[0]<<'\n';
-    std::cout<<g.players2[0]<<'\n';
+    std::cout<<g.players1[0]<<'\n'<<g.players2[0]<<'\n';
+
     return os;
 }
 
