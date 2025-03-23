@@ -512,7 +512,8 @@ std::ostream& operator<<(std::ostream& os, const Game &g) {
 
 
 int main() {
-    std::ifstream file("../src/intrebari.json");
+    std::ifstream file("../intrebari.json");
+    //TODO: DE SCAPAT DE ..
     if (!file.is_open()) {
         return 0;
     }
