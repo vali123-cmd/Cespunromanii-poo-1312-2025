@@ -2,8 +2,10 @@ name: C++ CI
 
 on:
   push:
-    branches: ['**']
+    branches: ['**'] # NOTE: replace/update with appropriate branch name(s)
     tags: ['**']
+  # pull_request:
+  #   branches: ['**'] # NOTE: replace/update with appropriate branch name(s)
   workflow_dispatch:
     inputs:
       build_type:
@@ -18,39 +20,44 @@ on:
           - MinSizeRel
 
 env:
-  BUILD_TYPE: ${{ github.event.inputs.build_type || 'Debug' }}
+  BUILD_TYPE: ${{ inputs.build_type || 'Debug' }}
+  # NOTE: update executable name if it is changed in CMakeLists.txt
   EXECUTABLE_NAME: "oop"
   INPUT_FILENAME: "tastatura.txt"
-  BIN_DIR: "bin"
+  BIN_DIR: "bin"       # update in cmake/Options.cmake:6 if changing name here
   BUILD_DIR: "build"
   EXT_DIR: "ext"
   GEN_DIR: "generated"
 
 defaults:
   run:
+    # Use a bash shell, so we can use the same syntax for environment variable
+    # access regardless of the host operating system
+    # https://github.com/saxbophone/CPP20-Cross-Platform-Template
     shell: bash
 
 jobs:
   cppcheck:
     name: "Cppcheck"
+    # concurrency:
+    #   group: "Cppcheck"
     runs-on: ubuntu-22.04
     timeout-minutes: 5
     env:
+      # check https://github.com/danmar/cppcheck/releases for latest version
+      # NOTE: consider updating this value in scripts/build_cppcheck.sh:4 when changing this value
       CPPCHECK_VER: "2.14.2"
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
-
-      - name: Verify scripts
-        run: |
-          ls -la ./scripts
-          chmod +x ./scripts/cmake.sh
 
       - name: Run cppcheck
         uses: ./.github/actions/cppcheck
 
   clang-tidy:
     name: "Clang-Tidy"
+    # concurrency:
+    #   group: "Clang-Tidy"
     runs-on: ubuntu-22.04
     timeout-minutes: 5
     env:
@@ -59,16 +66,14 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Verify scripts
-        run: |
-          ls -la ./scripts
-          chmod +x ./scripts/cmake.sh
-
       - name: Run clang-tidy
         uses: ./.github/actions/clang-tidy
 
+
   build:
     name: ${{ matrix.name }}
+    # concurrency:
+    #   group: ${{ matrix.name }}
     runs-on: ${{ matrix.os }}
     timeout-minutes: 8
     permissions:
@@ -80,26 +85,40 @@ jobs:
       CC: ${{ matrix.c }}
       CXX: ${{ matrix.cxx }}
       VSCMD_SKIP_SENDTELEMETRY: 1
+
+      # NOTE: replace with another version if this one does not work
+      # For more versions, see https://winlibs.com or
+      # https://github.com/brechtsanders/winlibs_mingw/releases/
       MINGW_VER: "13.3.0posix-11.0.1-msvcrt-r1/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64msvcrt-11.0.1-r1.7z"
+      # Example:
+      # MINGW_VER: "13.3.0posix-11.0.1-ucrt-r1/winlibs-x86_64-posix-seh-gcc-13.3.0-mingw-w64ucrt-11.0.1-r1.7z"
+      # MINGW_VER: "14.1.0posix-18.1.7-12.0.0-ucrt-r2/winlibs-x86_64-posix-seh-gcc-14.1.0-mingw-w64ucrt-12.0.0-r2.7z"
+      # MINGW_VER: "14.1.0posix-18.1.7-12.0.0-msvcrt-r2/winlibs-x86_64-posix-seh-gcc-14.1.0-mingw-w64msvcrt-12.0.0-r2.7z"
+
 
     strategy:
       fail-fast: false
       matrix:
         include:
+
           - os: ubuntu-22.04
             c: gcc-12
             cxx: g++-12
             name: "ASan: Ubuntu 22.04 GCC 12"
             cmake_flags: "-DUSE_ASAN=ON"
             cmake_generator: Ninja
+            # This env runs address sanitizers
             runs_asan: true
+            # this is used to add a suffix to the archive name since we use the same compiler version
             asan_name: "-asan"
 
           - os: ubuntu-22.04
             c: gcc-12
             cxx: g++-12
             name: "Valgrind: Ubuntu 22.04 GCC 12"
+            # cmake_flags:
             cmake_generator: Ninja
+            # This env runs valgrind
             runs_valgrind: true
 
           - os: macos-14
@@ -107,24 +126,33 @@ jobs:
             cxx: clang++
             name: "macOS 14 Apple Clang 15"
             cmake_flags: "-DUSE_ASAN=OFF"
+            # cmake_generator:
+            # This env runs address sanitizers
             runs_asan: false
 
           - os: macos-14
             c: gcc-13
             cxx: g++-13
             name: "macOS 14 GCC 13"
+            # cmake_flags:
+            # cmake_generator: Ninja
 
           - os: windows-2022
             c: cl
             cxx: cl
             name: "ASan: Windows 2022 MSVC 19.43"
             cmake_flags: "-DUSE_ASAN=ON"
+            # Ninja is not faster on MSVC because... MSVC
+            # cmake_generator: "Ninja"
+            # cmake_generator: "Ninja Multi-Config"
+            # This env runs address sanitizers
             runs_asan: true
 
           - os: windows-2022
             c: gcc
             cxx: g++
             name: "Windows 2022 MinGW GCC 13"
+            # cmake_flags:
             cmake_generator: Ninja
 
     steps:
@@ -134,49 +162,18 @@ jobs:
       - name: Set timestamp and zip name
         run: |
           echo "TIMESTAMP=$(date +%Y-%m-%d-%H-%M-%S)" >> ${GITHUB_ENV}
+
+          # use the full name as prefix: {user_name}_{repo_name} (replace / with _)
           echo "ZIP_NAME=$(echo "${GITHUB_REPOSITORY}_${{ env.BUILD_TYPE }}_${{ matrix.os }}_${{ matrix.cxx }}${{ matrix.asan_name }}" | sed 's|/|_|')" >> ${GITHUB_ENV}
+
+          # or use only the repo name (github does not have a predefined environment variable for this)
+          # the regex splits by / and keeps everything after / without the / character
+          # echo "ZIP_NAME=$(echo "${GITHUB_REPOSITORY}_${{ env.BUILD_TYPE }}_${{ matrix.os }}_${{ matrix.cxx }}${{ matrix.asan_name }}" | sed -E 's|.+/(.+)|\1|')" >> ${GITHUB_ENV}
 
       - name: Install packages
         uses: ./.github/actions/install-packages
 
-      - name: Install CPR library (Release version)
-        if: matrix.os == 'ubuntu-22.04'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libcurl4-openssl-dev
-
-          # Clone the CPR repository
-          git clone https://github.com/libcpr/cpr.git
-          cd cpr
-
-          # Force Release build for CPR regardless of project build type
-          mkdir build && cd build
-          cmake .. -DCPR_USE_SYSTEM_CURL=ON -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON
-
-          make -j$(nproc)
-          sudo make install
-          sudo ldconfig
-
-      - name: Install dependencies (Windows)
-        if: matrix.os == 'windows-2022'
-        shell: pwsh
-        run: |
-          choco install curl -y
-
-      - name: Install dependencies (macOS)
-        if: matrix.os == 'macos-14'
-        run: |
-          brew install curl
-
-      - name: Configure CMake with static curl
-        if: matrix.os == 'ubuntu-22.04'
-        uses: ./.github/actions/configure-cmake
-        with:
-          custom_flags: "${{ matrix.cmake_flags }} -DCURL_STATICLIB=ON -DCPR_FORCE_USE_SYSTEM_CURL=ON"
-          warnings_as_errors: 'ON'
-
-      - name: Configure CMake (non-Ubuntu)
-        if: matrix.os != 'ubuntu-22.04'
+      - name: Configure CMake
         uses: ./.github/actions/configure-cmake
         with:
           custom_flags: ${{ matrix.cmake_flags }}
@@ -187,6 +184,7 @@ jobs:
           bash ./scripts/cmake.sh build -c ${{ env.BUILD_TYPE }}
 
       - name: Install
+        # Use CMake to "install" build artifacts (only interested in CMake registered targets) to our custom artifacts directory
         run: |
           bash ./scripts/cmake.sh install -c ${{ env.BUILD_TYPE }} -i artifacts
 
@@ -208,20 +206,8 @@ jobs:
           path: ${{ env.ZIP_NAME }}
           retention-days: 30
 
-      - name: Find required libraries (Linux)
-        if: matrix.os == 'ubuntu-22.04'
-        run: |
-          echo "Looking for required libraries in the executable..."
-          ldd ${{ env.ZIP_NAME }}/${{ env.EXECUTABLE_NAME }} || true
-
-          echo "Updating LD_LIBRARY_PATH..."
-          echo "LD_LIBRARY_PATH=/usr/local/lib:/usr/lib/x86_64-linux-gnu:${LD_LIBRARY_PATH}" >> ${GITHUB_ENV}
-
-      - name: Find required libraries (macOS)
-        if: matrix.os == 'macos-14'
-        run: |
-          echo "Looking for required libraries in the executable..."
-          otool -L ${{ env.ZIP_NAME }}/${{ env.EXECUTABLE_NAME }} || true
+      - name: Runtime checks
+        uses: ./.github/actions/runtime-checks
 
       - name: Create release
         uses: ./.github/actions/create-release
