@@ -4,10 +4,26 @@
 #include <string>
 #include <vector>
 #include <fstream>
-#include <nlohmann/json.hpp>
+///////////////////////////////////////////
+//nlohmann::json pt parsare de fisiere json
+#include <json.hpp>                     ///
+///////////////////////////////////////////
+
+
+///////////////////////////////////////////
+//// CPR pt a descarca date din api     ///
+#include <cpr/cpr.h>                    ///
+///////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////
+//// Vom folosi simsimd pentru a calcula similaritatea cosinus ////
+#include <simsimd/simsimd.h>                                   ////
+///////////////////////////////////////////////////////////////////
+
+
 #include <random>
 #include <cmath>
-
 #include <algorithm>
 
 
