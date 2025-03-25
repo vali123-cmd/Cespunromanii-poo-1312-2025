@@ -328,20 +328,22 @@ class Round {
         }
     }
 
-    static int pickRandIndex(const json &data) {
+    static int pickRandIndex(json &data) {
         if (data["intrebari"].empty()) {
             return -1;
         }
 
-        static std::random_device rd;
-        static std::mt19937 gen(rd());
-        static std::uniform_int_distribution<> distr(0, data["intrebari"].size() - 1);
-
+         std::random_device rd;
+         std::mt19937 gen(rd());
+         std::uniform_int_distribution<> distr(0, data["intrebari"].size() - 1);
+        //NOTA: Nu merge cu static deoarece raman initializate cu size-ul vechi...
         return distr(gen);
     }
 
     Question getQuestion(json &data_) {
         int randindex = pickRandIndex(data_);
+
+        std::cout<<randindex<<" "<<data_["intrebari"].size()<<'\n';
         std::vector<std::pair<std::string, int>> answers;
         for (const auto& item : data_["intrebari"][randindex]["raspunsuri"]) {
             answers.emplace_back(item["raspuns"], item["punctaj"]);
