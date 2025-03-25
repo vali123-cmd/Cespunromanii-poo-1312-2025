@@ -333,9 +333,9 @@ class Round {
             return -1;
         }
 
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_int_distribution<> distr(0, data["intrebari"].size() - 1);
+        static std::random_device rd;
+        static std::mt19937 gen(rd());
+        static std::uniform_int_distribution<> distr(0, data["intrebari"].size() - 1);
 
         return distr(gen);
     }
@@ -513,7 +513,7 @@ class Game {
         }
     }
     void parseJson() {
-        std::ifstream file("../intrebari.json");
+        std::ifstream file("intrebari.json");
     if (!file.is_open()) {
         std::cerr<<"Nu am putut deschide fisierul json!"<<'\n';
         //NOTA: De inchis fereastra atunci cand se intampla asta.
@@ -576,7 +576,7 @@ std::ostream& operator<<(std::ostream& os, const Game &g) {
 }
 
 int main() {
-    std::ifstream file("../intrebari.json");
+    std::ifstream file("intrebari.json");
 
     if (!file.is_open()) {
         return 0;

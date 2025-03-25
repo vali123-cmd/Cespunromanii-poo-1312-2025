@@ -134,7 +134,7 @@ if(APPLE)
     install(FILES launcher.command DESTINATION ${DESTINATION_DIR})
 endif()
 include(cmake/CopyHelper.cmake)
-
+copy_files(FILES intrebari.json COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 copy_files(FILES tastatura.txt COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 copy_files(FILES tastatura.txt scripts/run_llm.sh COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 # copy_files(FILES tastatura.txt config.json DIRECTORY images sounds COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
