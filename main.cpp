@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+
 ///////////////////////////////////////////
 //nlohmann::json pt parsare de fisiere json
 #include <json.hpp>                     ///
@@ -32,9 +33,9 @@
 
 using json = nlohmann::json;
 
-/*const std::string API_URL = "http://127.0.0.1:8080";
+const std::string API_URL = "http://127.0.0.1:8080";
 
-std::vector<simsimd_f32_t> getEmbeddings(const std::string& word)
+/*std::vector<simsimd_f32_t> getEmbeddings(const std::string& word)
 {
     std::string api_url = API_URL;
     if(const auto* url = std::getenv("LLM_URL")) {
@@ -80,6 +81,60 @@ std::vector<simsimd_f32_t> getEmbeddings(const std::string& word)
     return embedding;
 }
 */
+class AI {
+    std::string api_url = API_URL;
+
+
+
+    public:
+    float getScore(const std::string& word1, const std::string& word2) {
+        std::string prompt = std::string("return the cosine similarity between the following words: ") + word1 + " " + word2+
+            "respond with a real number between 0 and 1, nothing else.";
+
+
+        cpr::Url api_link = api_url;
+        cpr::Header header{
+                {"Content-Type", "application/json"}
+        };
+        // Adăugăm timeout la request, deoarece pot exista situații când durează foarte mult.
+        const int miliseconds = 15000;
+        using json = nlohmann::json;
+        json json_body;
+        json_body["model"] = "local model";
+
+        json_body["messages"] = json::array({
+            // json::object({{"role", "system"}, {"content", "You are a helpful assistant"}}),
+            json::object({{"role", "user"}, {"content", prompt}, {"temperature", 0.0}, {"seed", 42}})
+        });
+        // std::cout << "sending " << json_body << "\n";
+        cpr::Body body = {json_body.dump()};
+        cpr::Response res = cpr::Post(api_link, body, header, cpr::Timeout{miliseconds}); // Facem o cerere la API
+
+        if(res.elapsed * 1000 > miliseconds)
+        {
+            std::cout << "Request timeout" << std::endl;
+            return {};
+        }
+        if(res.status_code != 200) // Dacă status code-ul nu este 200 înseamnă că a apărut o eroare
+        {
+            std::cout << "Oops!! Got status " << res.status_code << std::endl;
+            return {};
+        }
+        if(res.text.empty())
+        {
+            std::cout << "Empty response" << std::endl;
+            return {};
+        }
+
+        json json_resp = json::parse(res.text); // Parsăm răspunsul primit
+        // std::cout << res.text << "\n";
+        // std::cout << json_resp["choices"] << "\n";
+        std::string str_score = json_resp["choices"][0]["message"]["content"];
+        float score = std::stof(str_score);
+        return score;
+    }
+};
+
 
 class Player {
     int m_score=0;
@@ -205,7 +260,7 @@ public:
 };
 std::ostream& operator<<(std::ostream& os, const Family& family) {
 
-    os<<family.get_family_name()<<": "<<family.family_score<<'\n'<<family.players[0]; //NOTA:Adaugare compunere de apeluri <<
+    os<<family.get_family_name()<<": "<<family.family_score<<'\n'<<"CAPITAN: "<<family.players[0]; //NOTA:Adaugare compunere de apeluri <<
     os<<"Strikes: "<<family.strikes<<'\n';
     return os;
 }
@@ -234,6 +289,9 @@ class Question {
         int n = s1.length();
         int m = s2.length();
         std::vector<std::vector<int>> dp(n + 1, std::vector<int>(m + 1));
+        if (s1 == s2) {
+            return 100;
+        }
         for (int i = 0; i <= n; i++) {
             for (int j = 0; j <= m; j++) {
                 if (i == 0) {
@@ -311,8 +369,8 @@ class Round {
     json data;
 
 
-    static void printCurrentAnswers(const std::vector<std::pair<std::string, int>>& answers) {
-        for (const auto& item : answers) {
+    void printCurrentAnswers() {
+        for (const auto& item : answers_given) {
             std::cout << item.first << " " << item.second << '\n';
         }
     }
@@ -418,7 +476,7 @@ public:
                 if (currentQuestion.isAnswerRight(answer, givenScore, givenAns)) {
                     std::cout << "Raspuns corect! Felicitari!" << '\n';
                     answers_given.emplace_back(givenAns, givenScore);
-                    printCurrentAnswers(answers_given);
+                    printCurrentAnswers();
                     jucator.increaseScore(givenScore, bonus_multiplier);
                     jucator.increaseAnswerStreak();
                     if (answers_given.size() == ANSWERS_LIMIT) {
@@ -584,6 +642,8 @@ int main() {
         return 0;
     }
     Game main;
+
+
     return 0;
 
 

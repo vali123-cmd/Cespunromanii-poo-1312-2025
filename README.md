@@ -1,4 +1,4 @@
-<h1>Ce spun romanii?</h1>
+## Ce spun romanii?
 
 <hr>
 Acesta este un joc de tipul Family Feud sau 
@@ -11,18 +11,27 @@ si vor sa retraiasca aceasta experienta.
 
 
 
-<h3>Viitoare feature-uri</h3>
+###Viitoare feature-uri
+
 - [ ] Adaugare de intrebari
+- 
 - [ ] Adaugare de raspunsuri
+- 
 - [ ] Adaugare de imagini cu SFML
+- 
 - [ ] Adaugare de sunete
+- 
 - [ ] Adaugare de animatii
+- 
 - [ ] Adaugare AI Similarity Calculator
+- 
 - [ ] Adaugare de statistici
+- 
 - [ ] Adaugare de AI pentru a juca impotriva calculatorului
+- 
 - [ ] Adaugare de AI Tips
 <hr>
-<h3>Resurse externe:</h3>
+###Resurse externe:
 
 - [cpr (1.11.0)](https://github.com/libcpr/cpr/releases/tag/1.11.0) (MIT)
 - [json (3.11.3)](https://github.com/nlohmann/json/releases/tag/v3.11.3) (MIT)
