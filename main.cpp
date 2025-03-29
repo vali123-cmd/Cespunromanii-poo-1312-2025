@@ -92,7 +92,7 @@ class AI {
             "respond with a real number between 0 and 1, nothing else.";
 
 
-        cpr::Url api_link = api_url;
+        cpr::Url api_link = api_url + "/v1/completions";
         cpr::Header header{
                 {"Content-Type", "application/json"}
         };
@@ -328,7 +328,10 @@ public:
     bool isAnswerRight(std::string& userString, int& score, std::string& foundAnswer) {
         //formatare pentru precizie mai buna cu ajutorul formatAnswer().
         formatAnswer(userString);
+
         for (const auto& item : answers) {
+
+
             if (similarity_percentage(userString, item.first) > 70) {
                 //NOTA: 70% este un prag de similaritate,poate varia in urmatoarele release-uri,
                 //in viitor vom folosi un AI pentru a calcula procentul de similaritate.
@@ -358,7 +361,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Question& q);
 };
 std::ostream& operator<<(std::ostream& os, const Question& q) {
-    os<<q.get_question_text()<<'\n'<<q.m_text;
+    os<<q.get_question_text()<<'\n';
     return os;
 }
 
@@ -401,7 +404,7 @@ class Round {
     Question getQuestion(json &data_) {
         int randindex = pickRandIndex(data_);
 
-        std::cout<<randindex<<" "<<data_["intrebari"].size()<<'\n';
+
         std::vector<std::pair<std::string, int>> answers;
         for (const auto& item : data_["intrebari"][randindex]["raspunsuri"]) {
             answers.emplace_back(item["raspuns"], item["punctaj"]);
@@ -461,11 +464,11 @@ public:
         std::string givenAns;
         std::cout << *leaderFamily;
         bool terminateRound = false;
+        std::cin.ignore();
         while (answers_given.size() <= ANSWERS_LIMIT && (!family_switched || leaderFamily->checkStrikes() == 0)) {
             for (auto& jucator : leaderFamily->get_players()) {
                 std::cout << jucator << " te rugam sa introduci un raspuns popular: " << "\n";
                 std::cin.clear();
-                std::cin.ignore();
                 std::getline(std::cin, answer);
                 int givenScore = 0;
                 int bonus_multiplier = 1;
