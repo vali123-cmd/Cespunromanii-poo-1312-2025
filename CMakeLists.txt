@@ -29,12 +29,7 @@ set(FETCHCONTENT_UPDATES_DISCONNECTED ON)
 
 set (WARNINGS_AS_ERRORS ON)
 
-FetchContent_Declare(
-        json
-        GIT_REPOSITORY https://github.com/nlohmann/json
-        GIT_TAG        v3.9.1
-)
-FetchContent_MakeAvailable(json)
+
 
 FetchContent_Declare(
         cpr
@@ -89,10 +84,24 @@ endif()
  find_package(Threads REQUIRED)
 
 ###############################################################################
-
+set(SOURCES
+    source/AI.cpp
+    source/AI.h
+    source/Family.cpp
+    source/Family.h
+    source/Game.cpp
+    source/Game.h
+    source/Player.cpp
+    source/Player.h
+    source/Question.cpp
+    source/Question.h
+    source/Round.cpp
+    source/Round.h
+)
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${MAIN_EXECUTABLE_NAME}
-        main.cpp
+        source/main.cpp
+        ${SOURCES}
 
 )
 include(cmake/CompilerFlags.cmake)
@@ -112,6 +121,7 @@ target_include_directories(
         ${MAIN_EXECUTABLE_NAME} SYSTEM PRIVATE
         ext/include/json
         ${simsimd_SOURCE_DIR}/include
+        source
 )
 
 target_link_libraries(
@@ -134,7 +144,7 @@ if(APPLE)
     install(FILES launcher.command DESTINATION ${DESTINATION_DIR})
 endif()
 include(cmake/CopyHelper.cmake)
-copy_files(FILES intrebari.json COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
+copy_files(FILES source/intrebari.json COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 copy_files(FILES tastatura.txt COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 copy_files(FILES tastatura.txt scripts/run_llm.sh COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 # copy_files(FILES tastatura.txt config.json DIRECTORY images sounds COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
