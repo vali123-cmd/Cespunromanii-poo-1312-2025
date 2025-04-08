@@ -1,7 +1,7 @@
 //
 // Created by Vali on 05/04/2025.
 //
-#pragma once
+
 #include "Question.h"
 
 #include <algorithm>
