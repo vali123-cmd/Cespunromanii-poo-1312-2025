@@ -12,17 +12,20 @@
 
 
 class Question {
-    std::string m_text;
-    std::vector<std::pair<std::string, int>> answers;
 
+
+    virtual bool useQuestion();
 
     void formatAnswer(std::string &s);
 
     double similarity_percentage(const std::string &s1, const std::string &s2);
+protected:
+    std::string m_text;
+    std::vector<std::pair<std::string, int>> answers;
 public:
     explicit Question(const std::string &text_, const std::vector<std::pair<std::string, int>> &answers_);
 
-    const std::string &get_question_text() const;
+    virtual const std::string &get_question_text();
 
     const std::vector<std::pair<std::string, int>> &get_answers() const;
 

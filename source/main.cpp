@@ -1,8 +1,4 @@
 #include <fstream>
-
-
-
-
 /*std::vector<simsimd_f32_t> getEmbeddings(const std::string& word)
 {
     std::string api_url = API_URL;
@@ -49,11 +45,6 @@
     return embedding;
 }
 */
-
-
-
-
-
 
 
 

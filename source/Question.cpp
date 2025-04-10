@@ -54,7 +54,7 @@ void Question::formatAnswer(std::string& s) {
 
     }
 
-    [[nodiscard]] const std::string& Question::get_question_text() const {
+    [[nodiscard]] const std::string& Question::get_question_text() {
         return m_text;
     }
 
@@ -97,7 +97,7 @@ void Question::formatAnswer(std::string& s) {
     }
 
 
-    std::ostream& operator<<(std::ostream& os, const Question& q) {
+    std::ostream& operator<<(std::ostream& os,  Question& q) {
         os<<q.get_question_text()<<'\n';
         return os;
     }

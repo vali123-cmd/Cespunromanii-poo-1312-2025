@@ -97,6 +97,12 @@ set(SOURCES
     source/Question.h
     source/Round.cpp
     source/Round.h
+        source/QuestionKiller.cpp
+        source/QuestionKiller.h
+        source/QuestionOptional.cpp
+        source/QuestionOptional.h
+        source/QuestionRandBonus.cpp
+        source/QuestionRandBonus.h
 )
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${MAIN_EXECUTABLE_NAME}
