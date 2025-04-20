@@ -4,6 +4,7 @@
 
 #ifndef QUESTIONRANDBONUS_H
 #define QUESTIONRANDBONUS_H
+#include "Family.h"
 #include "Question.h"
 
 /* daca raspunzi corect la aceasta intrebare,
@@ -13,11 +14,14 @@ intre 0 si 10%. ACEASTA VA FI O INTREBARE DE LOGICA
 
 class QuestionRandBonus : public Question
 {
-    bool useQuestion();
 
+
+    const std::string& get_question_text() override;
 public:
+    bool useQuestion(Family &f) override;
     double generateBonus();
-
+    QuestionRandBonus(const std::string& text_, const std::vector<std::pair<std::string, int>>& answers_);
+    bool isAnswerRight(std::string &userString, int &score, std::string &foundAnswer) override;
 
 };
 

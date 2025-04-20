@@ -10,11 +10,10 @@
 #include <string>
 #include <vector>
 
+#include "Family.h"
+
 
 class Question {
-
-
-    virtual bool useQuestion();
 
     void formatAnswer(std::string &s);
 
@@ -23,18 +22,21 @@ protected:
     std::string m_text;
     std::vector<std::pair<std::string, int>> answers;
 public:
+    virtual bool useQuestion(Family& family);
+
     explicit Question(const std::string &text_, const std::vector<std::pair<std::string, int>> &answers_);
 
     virtual const std::string &get_question_text();
 
     const std::vector<std::pair<std::string, int>> &get_answers() const;
 
-    bool isAnswerRight(std::string &userString, int &score, std::string &foundAnswer);
+    virtual bool isAnswerRight(std::string &userString, int &score, std::string &foundAnswer);
 
     Question(const Question &other);
+    virtual ~Question() = default;
 
     Question &operator=(const Question &other);
-    friend std::ostream& operator<<(std::ostream& os, const Question& q);
+    friend std::ostream& operator<<(std::ostream& os, Question& q);
 };
 
 

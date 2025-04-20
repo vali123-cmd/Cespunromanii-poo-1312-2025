@@ -4,19 +4,21 @@
 
 #ifndef QUESTIONOPTIONAL_H
 #define QUESTIONOPTIONAL_H
-#include "QuestionKiller.h"
+#include "Family.h"
+#include "Question.h"
 
-// o intrebare cu sansa de 30% sa apara pentru fiecare echipa la inceputul fiecarei runde,
-// in care se va da un raspuns corect, echipa va primi 10% din punctajul maxim al rundei
+//O intrebare care iti mareste scorul cu 10% daca raspunzi corect,
+//ai dreptul la aceasta, daca o familie castiga fara sa ia vreun streak in vreo runda
 
-class QuestionOptional : QuestionKiller{
+class QuestionOptional :public Question{
 
 
 public:
-
+    QuestionOptional(const std::string& text_, const std::vector<std::pair<std::string, int>>& answers_);
+    bool useQuestion(Family &f) override;
+    bool isAnswerRight(std::string &userString, int &score, std::string &foundAnswer) override;
+    const std::string& get_question_text() override;
 
 };
-
-
 
 #endif //QUESTIONOPTIONAL_H

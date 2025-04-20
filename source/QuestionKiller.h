@@ -4,18 +4,27 @@
 #pragma once
 #ifndef QUESTIONKILLER_H
 #define QUESTIONKILLER_H
+#include <unordered_map>
+
 #include "Question.h"
 /*Un question killer este o intrebare foarte grea, care are un singur raspuns corect. O familie
 are voie sa foloseasca maxim 2 intrebari QuestionKiller pe meci, prin care poate sa ia toate punctele
 de la intrebarea initiala */
 
 
+class Family;
+
 class QuestionKiller : public Question {
-    const std::string& get_question_text();
+
     int calculateDeductedPoints();
-    bool useQuestion();
+
+    static std::unordered_map<std::string, int> usedQuestionKillers;
+
 public:
+    bool useQuestion(Family& family) override;
     QuestionKiller(const std::string& text_, const std::vector<std::pair<std::string, int>>& answers_);
+    const std::string& get_question_text() override;
+    bool isAnswerRight(std::string &userString, int &score, std::string &foundAnswer) override;
 };
 
 

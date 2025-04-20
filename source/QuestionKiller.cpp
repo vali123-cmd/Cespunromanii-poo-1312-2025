@@ -6,6 +6,8 @@
 
 #include <iostream>
 
+#include "Family.h"
+
 const std::string& QuestionKiller::get_question_text(){
 
     m_text  = "----------------------------------------------------------------------------------------------------------------"
@@ -30,17 +32,12 @@ int QuestionKiller::calculateDeductedPoints() {
     return deductedPoints;
 }
 
-bool QuestionKiller::useQuestion() {
-    std::cout<<"Doriti sa folositi un Question Killer? (da/nu)"<<'\n';
-    std::string answer;
-    std::cin>>answer;
-    if (answer == "da") {
-        std::cout<<"Folositi-l cu intelepciune!"<<'\n';
-        return true;
-    } else {
-        std::cout<<"Succes la intrebarea rundei!"<<'\n';
-        return false;
+bool QuestionKiller::useQuestion(Family& family) {
+    if (!usedQuestionKillers.contains(family.get_family_name())) {
+        usedQuestionKillers[family.get_family_name()] = 0;
     }
+    usedQuestionKillers[family.get_family_name()] += 1;
+    return usedQuestionKillers[family.get_family_name()] <= 2;
 }
 
 QuestionKiller::QuestionKiller(const std::string &text_, const std::vector<std::pair<std::string, int> > &answers_):
@@ -51,3 +48,14 @@ Question(text_, answers_) {
 
 }
 
+bool QuestionKiller::isAnswerRight(std::string &userString, int &score, std::string &foundAnswer) {
+    // Verificam daca raspunsul este corect
+    for (const auto& answer : answers) {
+        if (userString == answer.first) {
+            foundAnswer = answer.first;
+            score = calculateDeductedPoints();
+            return true;
+        }
+    }
+    return false;
+}

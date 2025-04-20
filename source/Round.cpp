@@ -7,8 +7,8 @@
 #include <random>
 
 #include "Family.h"
-#define ANSWERS_LIMIT 5
 
+//Impart in normalRound, specialRound si astfel folosesc functii virtuale pure.
 void Round::printCurrentAnswers() {
         for (const auto& item : answers_given) {
             std::cout << item.first << " " << item.second << '\n';
@@ -39,6 +39,7 @@ int Round::pickRandIndex(json &data) {
     }
 
     Question Round::getQuestion(json &data_) {
+
         int randindex = pickRandIndex(data_);
 
 
@@ -83,70 +84,94 @@ int Round::pickRandIndex(json &data) {
     }
 
 
+    bool Round::isRoundOverStreaks(Family *leaderFamily, const bool& family_switched) {
+    if (leaderFamily->checkStrikes() == 1 && family_switched) {
+        std::cout << "Noua familie a primit si ea 3 strikes! S-a terminat runda." << '\n';
+        leaderFamily->resetStrikes();
+        leaderFamily->set_family_score(leaderFamily->get_family_score());
+
+        return true;
+    }
+    return false;
+    }
+
+    bool Round::isRoundOverAnswers(Family *leaderFamily, std::vector<std::pair<std::string, int>> &answers_given,
+        Player& jucator, const std::string& givenAns, const int& givenScore, const int& bonus_multiplier) {
+        std::cout << "Raspuns corect! Felicitari!" << '\n';
+        answers_given.emplace_back(givenAns, givenScore);
+        printCurrentAnswers();
+        jucator.increaseScore(givenScore, bonus_multiplier);
+        jucator.increaseAnswerStreak();
+        if (answers_given.size() == ANSWER_LIMIT) {
+            std::cout << "S-au epuizat toate raspunsurile. S-a terminat runda!" << '\n';
+            leaderFamily->set_family_score(leaderFamily->get_family_score());
+            return true;
+
+        }
+        return false;
+    }
+    void Round::getAnswerFromPlayer(std::string &answer, const Player& jucator) {
+    std::cout << jucator << " te rugam sa introduci un raspuns popular: " << "\n";
+    std::cin.clear();
+    std::getline(std::cin, answer);
+    }
+
+
 
     [[nodiscard]] int Round::get_round_id() const {
         return round_id;
     }
+    void Round::pickBonus(int& bonus_multiplier) {
+    //implementare virtuala ulterioara pentru QRB.
+    if (get_round_id() == 6) {
+        bonus_multiplier = 2;
+    }
+    }
 
-    Round::Round(int round_id_,  json &data_, Family& f1, Family& f2) : data(data_) {
-        bool family_switched = false;
-        round_id = round_id_;
 
+    void Round::answerWasWrong(Player& jucator, Family* leaderFamily, Family &f1, Family& f2, bool& family_switched) {
+        jucator.resetAnswerStreak();
+        std::cout << "Raspuns gresit! Mai incearca!" << '\n';
+        leaderFamily->increaseStrikes();
+        leaderFamily->set_family_score(leaderFamily->get_family_score());
+
+        std::cout << *leaderFamily;
+        if (leaderFamily->checkStrikes() == 1 && !family_switched) {
+            std::cout << "Ai primit 3 strikes! Se schimba familia!" << '\n';
+            leaderFamily->set_family_score(leaderFamily->get_family_score());
+            leaderFamily->resetStrikes();
+            SwitchFamily(leaderFamily, f1, f2);
+            family_switched = true;
+        }
+    }
+
+    void Round::playRound(Family& f1, Family& f2) {
         std::cout << "Runda " << round_id << " a inceput" << '\n';
 
-        Question currentQuestion = getQuestion(data_);
+        Question currentQuestion = getQuestion(data);
         std::cout << currentQuestion;
         Family* leaderFamily = &whoPressedFirst(f1, f2);
-        std::string answer;
         std::string givenAns;
         std::cout << *leaderFamily;
-        bool terminateRound = false;
-        std::cin.ignore();
-        while (answers_given.size() <= ANSWERS_LIMIT && (!family_switched || leaderFamily->checkStrikes() == 0)) {
-            for (auto& jucator : leaderFamily->get_players()) {
-                std::cout << jucator << " te rugam sa introduci un raspuns popular: " << "\n";
-                std::cin.clear();
-                std::getline(std::cin, answer);
-                int givenScore = 0;
-                int bonus_multiplier = 1;
 
-                if (get_round_id() == 6) {
-                    bonus_multiplier = 2;
-                }
+        std::string answer;
+        std::cin.ignore();
+
+        while (answers_given.size() <= ANSWER_LIMIT && (!family_switched || leaderFamily->checkStrikes() == 0)) {
+            for (auto& jucator : leaderFamily->get_players()) {
+                getAnswerFromPlayer(answer, jucator);
+                pickBonus(bonus_multiplier);
                 if (currentQuestion.isAnswerRight(answer, givenScore, givenAns)) {
-                    std::cout << "Raspuns corect! Felicitari!" << '\n';
-                    answers_given.emplace_back(givenAns, givenScore);
-                    printCurrentAnswers();
-                    jucator.increaseScore(givenScore, bonus_multiplier);
-                    jucator.increaseAnswerStreak();
-                    if (answers_given.size() == ANSWERS_LIMIT) {
-                        std::cout << "Ai raspuns la toate intrebarile! S-a terminat runda!" << '\n';
-                        leaderFamily->set_family_score(leaderFamily->get_family_score());
-                        terminateRound = true;
+                    terminateRound = isRoundOverAnswers(leaderFamily, answers_given, jucator, answer, givenScore, bonus_multiplier);
+                    if (terminateRound) {
                         break;
                     }
                 } else {
-                    jucator.resetAnswerStreak();
-                    std::cout << "Raspuns gresit! Mai incearca!" << '\n';
-                    leaderFamily->increaseStrikes();
-                    leaderFamily->set_family_score(leaderFamily->get_family_score());
-
-                    std::cout << *leaderFamily;
-                    if (leaderFamily->checkStrikes() == 1 && !family_switched) {
-                        std::cout << "Ai primit 3 strikes! Se schimba familia!" << '\n';
-                        leaderFamily->set_family_score(leaderFamily->get_family_score());
-                        leaderFamily->resetStrikes();
-                        SwitchFamily(leaderFamily, f1, f2);
-                        family_switched = true;
+                    answerWasWrong( jucator, leaderFamily, f1, f2, family_switched);
+                    if (family_switched) {break;}
+                    terminateRound = isRoundOverStreaks(leaderFamily,family_switched);
+                    if (terminateRound)
                         break;
-                    }
-                    if (leaderFamily->checkStrikes() == 1 && family_switched) {
-                        std::cout << "Noua familie a primit si ea 3 strikes! S-a terminat runda." << '\n';
-                        leaderFamily->resetStrikes();
-                        leaderFamily->set_family_score(leaderFamily->get_family_score());
-                        terminateRound = true;
-                        break;
-                    }
                 }
             }
             if (terminateRound) {
@@ -155,9 +180,12 @@ int Round::pickRandIndex(json &data) {
         }
         leaderFamily->resetStrikes();
         leaderFamily->set_family_score(leaderFamily->get_family_score());
-
         std::cout << f1 << f2 << '\n';
         printAllAnswers(currentQuestion);
+    }
+
+    Round::Round(int round_id_,  json& data_, Family& f1, Family &f2) : data(data_), round_id(round_id_) {
+
     }
 
     Round::~Round() = default;

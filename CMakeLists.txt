@@ -103,6 +103,18 @@ set(SOURCES
         source/QuestionOptional.h
         source/QuestionRandBonus.cpp
         source/QuestionRandBonus.h
+        source/SpecialGame.cpp
+        source/SpecialGame.h
+        source/NormalGame.cpp
+        source/NormalGame.h
+        source/SpecialRound.cpp
+        source/SpecialRound.h
+        source/FileReadException.cpp
+        source/FileReadException.h
+        source/AITimeoutException.cpp
+        source/AITimeoutException.h
+        source/OutOfRangeException.cpp
+        source/OutOfRangeException.h
 )
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${MAIN_EXECUTABLE_NAME}
@@ -150,6 +162,7 @@ if(APPLE)
     install(FILES launcher.command DESTINATION ${DESTINATION_DIR})
 endif()
 include(cmake/CopyHelper.cmake)
+copy_files(FILES source/killerQresources.json COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 copy_files(FILES source/intrebari.json COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 copy_files(FILES tastatura.txt COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 copy_files(FILES tastatura.txt scripts/run_llm.sh COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})

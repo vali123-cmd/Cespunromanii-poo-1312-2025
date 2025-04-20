@@ -7,10 +7,15 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <bits/random.h>
 
+#include "AI.h"
 #include "Family.h"
+#include "FileReadException.h"
+#include "NormalGame.h"
 #include "Player.h"
 #include "Round.h"
+#include "SpecialGame.h"
 /* bool buttonPressed() {
         O functie care ar trebui sa detecteze daca un buton a fost apasat,
           un pic de bataie de cap aici, deoarece trebuie sa facem asta diferit
@@ -18,8 +23,30 @@
 
         return 1;
     }*/
-    void Game::getPlayers(std::vector<Player>& players_, const std::string& family_name)
+    void Game::establishWinner(Family &firstFam, Family &secondFam)  {
+        if(firstFam.get_family_score()>secondFam.get_family_score()) {
+            std::cout<<"Familia "<<firstFam.get_family_name()<<" a castigat!"<<'\n';
+        }
+        else {
+            std::cout<<"Familia "<<secondFam.get_family_name()<<" a castigat!"<<'\n';
+        }
+    }
+
+    void Game::askForAI() {
+        AI helper;
+        AI::switchAIErrors();
+    }
+    void Game::setUp(std::string& family1, std::string& family2) {
+        std::cout << "Salut! Bine ai venit la Family feud/(Ce spun romanii?)! Eu sunt gazda emisiunii, Cabral./"
+                "Te rog sa introduci mai jos numele celor doua familii:" << '\n';
+        std::cout << "Nume familie 1: " << '\n';
+        std::cin >> family1;
+        std::cout << "Nume familie 2: " << '\n';
+        std::cin >> family2;
+    }
+    void Game::initPlayers(std::vector<Player>& players_, const std::string& family_name)
     {
+        std::cout << "Introdu 5 membri ai familiei: " << '\n';
         for (int i=0;i<5;i++) {
             std::string member_name;
             std::cout<<"Membru "<< i+1<<": "<<'\n';
@@ -32,18 +59,42 @@
     void Game::parseJson() {
         std::ifstream file("intrebari.json");
     if (!file.is_open()) {
-        std::cerr<<"Nu am putut deschide fisierul json!"<<'\n';
+        throw FileReadException("Nu am putut deschide fisierul.");
         //NOTA: De inchis fereastra atunci cand se intampla asta.
     }
     file >> this->data;
     file.close();
+    }
+void Game::playGame() {
+        parseJson();
+        std::string family1;
+        std::string family2;
+        setUp(family1, family2);
+        initPlayers(players1, family1);
+        Family firstFam(family1, 0, players1);
+        initPlayers(players2, family2);
+        Family secondFam(family2, 0, players2);
+        makeRounds(firstFam, secondFam);
+        playAgain();
     }
     void Game::playAgain() {
         std::cout<<"Doriti sa jucati din nou? Da/Nu"<<'\n';
         std::string answer;
         std::cin>>answer;
         if(answer == "Da") {
-            Game newGame;
+            std::cout<<"Reincepem jocul!"<<'\n';
+            std::string gameType;
+            std::cout << "Introdu tipul jocului (Normal/Special): ";
+            std::cin>> gameType;
+            if (gameType == "Normal") {
+                NormalGame game;
+                game.playGame();
+            } else if (gameType == "Special") {
+                SpecialGame game;
+                game.playGame();
+            } else {
+                std::cout << "Tip de joc invalid!" << '\n';
+            }
         }
         else {
             std::cout<<"Multumim pentru participare!"<<'\n';
@@ -51,43 +102,20 @@
     }
 
 
-    Game::Game() {
-        parseJson();
-        std::string family1;
-        std::string family2;
-        std::cout << "Salut! Bine ai venit la Family feud/(Ce spun romanii?)! Eu sunt gazda emisiunii, Cabral./"
-                "Te rog sa introduci mai jos numele celor doua familii:" << '\n';
-        std::cout << "Nume familie 1: " << '\n';
-        std::cin >> family1;
-        std::cout << "Introdu 5 membri ai primei familii: " << '\n';
-        getPlayers(players1, family1);
-        Family firstFam(family1, 0, players1);
-        std::cout << "Nume familie 2: " << '\n';
-        std::cin >> family2;
-        getPlayers(players2, family2);
-        Family secondFam(family2, 0, players2);
 
-        for (int i=1;i<=6;i++) {
 
-            Round round(i, data,firstFam,secondFam);
-        }
-        if(firstFam.get_family_score()>secondFam.get_family_score()) {
-            std::cout<<"Familia "<<firstFam.get_family_name()<<" a castigat!"<<'\n';
-        }
-        else {
-            std::cout<<"Familia "<<secondFam.get_family_name()<<" a castigat!"<<'\n';
-        }
-        playAgain();
+
+bool Game::getRandomBool() {
+        static std::random_device rd;
+        static std::mt19937 gen(rd());
+        static std::uniform_int_distribution<> dis(0, 1);
+        return dis(gen) == 1;
     }
-    Game::~Game() {
-        std::cout<<"Game over! Multumim pentru participare!"<<'\n';
-    }
-
 
 
 std::ostream& operator<<(std::ostream& os, const Game &g) {
-    std::cout<<"Game currently initiated and running. Enjoy! -From Cabral himself. Captains: "<<'\n';
-    std::cout<<g.players1[0]<<'\n'<<g.players2[0]<<'\n';
+    os<<"Game currently initiated and running. Enjoy! -From Cabral himself. Captains: "<<'\n';
+    os<<g.players1[0]<<'\n'<<g.players2[0]<<'\n';
 
     return os;
 }

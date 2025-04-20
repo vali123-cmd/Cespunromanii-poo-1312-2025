@@ -1,0 +1,62 @@
+[
+  {
+    "intrebare": "Cine a scris 'Maitreyi' si 'Patul lui Procust'?",
+    "raspunsuri": [
+      {"raspuns": "Eliade", "punctaj": 1}
+    ]
+  },
+  {
+    "intrebare": "Cine este cunoscut ca 'Marele Nostalgic' al picturii romanesti?",
+    "raspunsuri": [
+      {"raspuns": "Grigorescu", "punctaj": 1}
+    ]
+  },
+  {
+    "intrebare": "Cine a compus 'Cei trei iepurasi' si 'Balada pentru vioara'?",
+    "raspunsuri": [
+      {"raspuns": "Porumbescu", "punctaj": 1}
+    ]
+  },
+  {
+    "intrebare": "Prima femeie din lume care a ajuns in varful Everestului?",
+    "raspunsuri": [
+      {"raspuns": "Dinescu", "punctaj": 1}
+    ]
+  },
+  {
+    "intrebare": "Cine a inventat penicilina sintetica in 1959?",
+    "raspunsuri": [
+      {"raspuns": "Pauker", "punctaj": 1}
+    ]
+  },
+  {
+    "intrebare": "Actorul care a jucat rolul lui Badescu in 'Filantropica'?",
+    "raspunsuri": [
+      {"raspuns": "Iordache", "punctaj": 1}
+    ]
+  },
+  {
+    "intrebare": "Cine a fondat prima scoala de circometrie din lume?",
+    "raspunsuri": [
+      {"raspuns": "Marin", "punctaj": 1}
+    ]
+  },
+  {
+    "intrebare": "Cine a creat sculptura 'Sarutul' din Bucuresti?",
+    "raspunsuri": [
+      {"raspuns": "Brancusi", "punctaj": 1}
+    ]
+  },
+  {
+    "intrebare": "Singurul roman care a castigat Premiul Nobel pentru Literatura?",
+    "raspunsuri": [
+      {"raspuns": "Sorescu", "punctaj": 1}
+    ]
+  },
+  {
+    "intrebare": "Cine a fost primul cosmonaut roman?",
+    "raspunsuri": [
+      {"raspuns": "Prunariu", "punctaj": 1}
+    ]
+  }
+]

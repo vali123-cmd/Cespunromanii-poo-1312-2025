@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <iostream>
 
+#include "AI.h"
+
 void Question::formatAnswer(std::string& s) {
 
         if (s.length() == 1) {
@@ -48,10 +50,8 @@ void Question::formatAnswer(std::string& s) {
         //TODO: Comportament neasteptat pentru raspunsuri absolut identice ???! (de verificat)
     }
 
-
      Question::Question(const std::string& text_, const std::vector<std::pair<std::string, int>>& answers_):
     m_text(text_), answers(answers_) {
-
     }
 
     [[nodiscard]] const std::string& Question::get_question_text() {
@@ -65,11 +65,12 @@ void Question::formatAnswer(std::string& s) {
     bool Question::isAnswerRight(std::string& userString, int& score, std::string& foundAnswer) {
         //formatare pentru precizie mai buna cu ajutorul formatAnswer().
         formatAnswer(userString);
+        AI helper; //daca nu s-a creat serverul AI va intoarce automat -1.
 
         for (const auto& item : answers) {
 
 
-            if (similarity_percentage(userString, item.first) > 70) {
+            if (similarity_percentage(userString, item.first) > 70 or helper.getScore(userString, item.first) > 70) {
                 //NOTA: 70% este un prag de similaritate,poate varia in urmatoarele release-uri,
                 //in viitor vom folosi un AI pentru a calcula procentul de similaritate.
                 score = item.second;

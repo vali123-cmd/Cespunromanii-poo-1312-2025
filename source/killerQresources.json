@@ -1,0 +1,64 @@
+{
+  "intrebari": [
+    {
+      "intrebare": "În ce an a căzut Imperiul Roman de Apus?",
+      "raspunsuri": [
+        {"raspuns": "476", "punctaj": 1}
+      ]
+    },
+    {
+      "intrebare": "În ce an a fost descoperită America de către Cristofor Columb?",
+      "raspunsuri": [
+        {"raspuns": "1492", "punctaj": 1}
+      ]
+    },
+    {
+      "intrebare": "În ce an a avut loc Revoluția Rusă din Octombrie?",
+      "raspunsuri": [
+        {"raspuns": "1917", "punctaj": 1}
+      ]
+    },
+    {
+      "intrebare": "În ce an s-a născut Leonardo da Vinci?",
+      "raspunsuri": [
+        {"raspuns": "1452", "punctaj": 1}
+      ]
+    },
+    {
+      "intrebare": "În ce an a fost semnat Tratatul de la Versailles?",
+      "raspunsuri": [
+        {"raspuns": "1919", "punctaj": 1}
+      ]
+    },
+    {
+      "intrebare": "În ce an a fost lansat primul satelit artificial, Sputnik 1?",
+      "raspunsuri": [
+        {"raspuns": "1957", "punctaj": 1}
+      ]
+    },
+    {
+      "intrebare": "În ce an a murit William Shakespeare?",
+      "raspunsuri": [
+        {"raspuns": "1616", "punctaj": 1}
+      ]
+    },
+    {
+      "intrebare": "În ce an a avut loc Revoluția Română din 1989?",
+      "raspunsuri": [
+        {"raspuns": "1989", "punctaj": 1}
+      ]
+    },
+    {
+      "intrebare": "În ce an a fost înființată Universitatea din Bologna?",
+      "raspunsuri": [
+        {"raspuns": "1088", "punctaj": 1}
+      ]
+    },
+    {
+      "intrebare": "În ce an a intrat România în Uniunea Europeană?",
+      "raspunsuri": [
+        {"raspuns": "2007", "punctaj": 1}
+      ]
+    }
+  ]
+}
