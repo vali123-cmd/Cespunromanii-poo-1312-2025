@@ -1,9 +1,9 @@
 #include <fstream>
 #include <iostream>
 
-#include "Game.h"
-#include "NormalGame.h"
-#include "SpecialGame.h"
+#include "gameClasses/Game.h"
+#include "gameClasses/NormalGame.h"
+#include "gameClasses/SpecialGame.h"
 
 
 int main() {
@@ -15,16 +15,18 @@ int main() {
     std::string gameType;
     std::cout << "Introdu tipul jocului (Normal/Special): ";
     std::cin>> gameType;
+    Game *game;
     if (gameType == "Normal") {
-        NormalGame game;
+        game = new NormalGame();
 
-        game.playGame();
+
     } else if (gameType == "Special") {
-        SpecialGame game;
-        game.playGame();
+        game = new SpecialGame();
     } else {
         std::cout << "Tip de joc invalid!" << '\n';
+        return 0;
     }
+    game->playGame();
     return 0;
 
 

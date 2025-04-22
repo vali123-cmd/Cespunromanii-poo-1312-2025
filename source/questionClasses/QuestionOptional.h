@@ -13,12 +13,13 @@
 class QuestionOptional :public Question{
 
 
+
 public:
     QuestionOptional(const std::string& text_, const std::vector<std::pair<std::string, int>>& answers_);
     bool useQuestion(Family &f) override;
     bool isAnswerRight(std::string &userString, int &score, std::string &foundAnswer) override;
     const std::string& get_question_text() override;
-
+    void takeAction(Family& leaderFamily, Family&  f1, Family& f2) override;
 };
 
 #endif //QUESTIONOPTIONAL_H

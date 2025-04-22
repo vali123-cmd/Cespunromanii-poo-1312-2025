@@ -89,32 +89,32 @@ set(SOURCES
     source/AI.h
     source/Family.cpp
     source/Family.h
-    source/Game.cpp
-    source/Game.h
+        source/gameClasses/Game.cpp
+        source/gameClasses/Game.h
     source/Player.cpp
     source/Player.h
-    source/Question.cpp
-    source/Question.h
-    source/Round.cpp
-    source/Round.h
-        source/QuestionKiller.cpp
-        source/QuestionKiller.h
-        source/QuestionOptional.cpp
-        source/QuestionOptional.h
-        source/QuestionRandBonus.cpp
-        source/QuestionRandBonus.h
-        source/SpecialGame.cpp
-        source/SpecialGame.h
-        source/NormalGame.cpp
-        source/NormalGame.h
-        source/SpecialRound.cpp
-        source/SpecialRound.h
-        source/FileReadException.cpp
-        source/FileReadException.h
-        source/AITimeoutException.cpp
-        source/AITimeoutException.h
-        source/OutOfRangeException.cpp
-        source/OutOfRangeException.h
+        source/questionClasses/Question.cpp
+        source/questionClasses/Question.h
+        source/roundClasses/Round.cpp
+        source/roundClasses/Round.h
+        source/questionClasses/QuestionKiller.cpp
+        source/questionClasses/QuestionKiller.h
+        source/questionClasses/QuestionOptional.cpp
+        source/questionClasses/QuestionOptional.h
+        source/questionClasses/QuestionRandBonus.cpp
+        source/questionClasses/QuestionRandBonus.h
+        source/gameClasses/SpecialGame.cpp
+        source/gameClasses/SpecialGame.h
+        source/gameClasses/NormalGame.cpp
+        source/gameClasses/NormalGame.h
+        source/roundClasses/SpecialRound.cpp
+        source/roundClasses/SpecialRound.h
+        source/exceptions/FileReadException.cpp
+        source/exceptions/FileReadException.h
+        source/exceptions/AITimeoutException.cpp
+        source/exceptions/AITimeoutException.h
+        source/exceptions/OutOfRangeException.cpp
+        source/exceptions/OutOfRangeException.h
 )
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${MAIN_EXECUTABLE_NAME}
@@ -162,8 +162,8 @@ if(APPLE)
     install(FILES launcher.command DESTINATION ${DESTINATION_DIR})
 endif()
 include(cmake/CopyHelper.cmake)
-copy_files(FILES source/killerQresources.json COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
-copy_files(FILES source/intrebari.json COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
+copy_files(FILES source/questionResources/killerQresources.json COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
+copy_files(FILES source/questionResources/intrebari.json COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 copy_files(FILES tastatura.txt COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 copy_files(FILES tastatura.txt scripts/run_llm.sh COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 # copy_files(FILES tastatura.txt config.json DIRECTORY images sounds COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})

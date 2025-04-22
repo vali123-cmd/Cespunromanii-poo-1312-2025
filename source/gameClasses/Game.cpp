@@ -11,10 +11,10 @@
 
 #include "AI.h"
 #include "Family.h"
-#include "FileReadException.h"
+#include "exceptions/FileReadException.h"
 #include "NormalGame.h"
 #include "Player.h"
-#include "Round.h"
+#include "roundClasses/Round.h"
 #include "SpecialGame.h"
 /* bool buttonPressed() {
         O functie care ar trebui sa detecteze daca un buton a fost apasat,
@@ -56,17 +56,20 @@
 
         }
     }
-    void Game::parseJson() {
-        std::ifstream file("intrebari.json");
+    void Game::parseJson(const std::string& filePath, json& data_) {
+        std::ifstream file(filePath);
     if (!file.is_open()) {
         throw FileReadException("Nu am putut deschide fisierul.");
         //NOTA: De inchis fereastra atunci cand se intampla asta.
     }
-    file >> this->data;
+    file >> data_;
     file.close();
     }
+void Game::initFiles() {
+        parseJson("intrebari.json", data);
+    }
 void Game::playGame() {
-        parseJson();
+
         std::string family1;
         std::string family2;
         setUp(family1, family2);

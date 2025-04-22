@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "Player.h"
-#include "Question.h"
+#include "questionClasses/Question.h"
 
 class Question;
 
@@ -18,9 +18,7 @@ class Family {
     std::vector<Player> players;
     [[nodiscard]] int calculate_total_score() const;
 public:
-    void useQuestion(Question& question) {
-        question.useQuestion(*this);
-    }
+    bool useQuestion(Question& question);
     void resetStrikes();
     Family(const Family &other);
     Family & operator=(const Family &other);

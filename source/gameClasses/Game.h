@@ -7,7 +7,8 @@
 
 
 #include "Player.h"
-#include "Round.h"
+#include "roundClasses/Round.h"
+#include "Family.h"
 using json = nlohmann::json;
 
 class Game {
@@ -21,21 +22,23 @@ class Game {
 
     void initPlayers(std::vector<Player> &players_, const std::string &family_name);
 
-    void parseJson();
 
+    virtual void initFiles();
     void playAgain();
 
     static void askForAI();
 
     virtual void makeRounds(Family &f1, Family &f2)  = 0;
-    Round *round;
+
 
     static bool getRandomBool();
-
+protected:
+    Round *round;
+    static void parseJson(const std::string& filePath, json& data);
 
 
 public:
-    virtual void playGame();
+    void playGame();
 
     virtual ~Game() = default;
 

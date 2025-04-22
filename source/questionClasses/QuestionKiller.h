@@ -12,7 +12,7 @@ are voie sa foloseasca maxim 2 intrebari QuestionKiller pe meci, prin care poate
 de la intrebarea initiala */
 
 
-class Family;
+
 
 class QuestionKiller : public Question {
 
@@ -21,6 +21,8 @@ class QuestionKiller : public Question {
     static std::unordered_map<std::string, int> usedQuestionKillers;
 
 public:
+    static void takeActionNegative(Family& leaderFamily);
+    void takeAction(Family& leaderFamily, Family &f1, Family &f2) override;
     bool useQuestion(Family& family) override;
     QuestionKiller(const std::string& text_, const std::vector<std::pair<std::string, int>>& answers_);
     const std::string& get_question_text() override;

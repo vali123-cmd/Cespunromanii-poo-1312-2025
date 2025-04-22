@@ -8,6 +8,10 @@
 
 #include "Family.h"
 
+#include "questionClasses/QuestionKiller.h"
+#include "questionClasses/QuestionOptional.h"
+#include "questionClasses/QuestionRandBonus.h"
+
 //Impart in normalRound, specialRound si astfel folosesc functii virtuale pure.
 void Round::printCurrentAnswers() {
         for (const auto& item : answers_given) {
@@ -26,31 +30,41 @@ void Round::printCurrentAnswers() {
         }
     }
 
-int Round::pickRandIndex(json &data) {
-        if (data["intrebari"].empty()) {
+int Round::pickRandIndex(int maxsize) {
+        if (maxsize == 0) {
             return -1;
         }
 
-         std::random_device rd;
-         std::mt19937 gen(rd());
-         std::uniform_int_distribution<> distr(0, data["intrebari"].size() - 1);
+         static std::random_device rd;
+         static std::mt19937 gen(rd());
+         static std::uniform_int_distribution<> distr(0, maxsize - 1);
         //NOTA: Nu merge cu static deoarece raman initializate cu size-ul vechi...
         return distr(gen);
     }
-
-    Question Round::getQuestion(json &data_) {
-
-        int randindex = pickRandIndex(data_);
-
-
-        std::vector<std::pair<std::string, int>> answers;
+    void Round::dataSetup(std::vector<std::pair<std::string,int>> answers, std::string& text, json& data_) {
+        int randindex = pickRandIndex(data_["intrebari"].size());
+        text = data_["intrebari"][randindex]["intrebare"];
         for (const auto& item : data_["intrebari"][randindex]["raspunsuri"]) {
             answers.emplace_back(item["raspuns"], item["punctaj"]);
         }
-        Question q = Question(data_["intrebari"][randindex]["intrebare"], answers);
         data_["intrebari"].erase(randindex);
+
+    }
+
+
+    Question* Round::getQuestion(json &data_) {
+
+
+
+
+        std::vector<std::pair<std::string, int>> answers;
+        std::string text;
+        dataSetup(answers, text, data_);
+        auto* q = new Question(text, answers);
+
         //BUG FIX: nu se sterge intrebarea din json dupa ce a fost folosita.
         return q;
+
     }
     Family& Round::whoPressedFirst(Family& f1, Family& f2) {
         //FIXED BUG: Daca cineva introduce un string in loc de un numar, programul intra in bucla infinita.
@@ -103,6 +117,7 @@ int Round::pickRandIndex(json &data) {
         jucator.increaseScore(givenScore, bonus_multiplier);
         jucator.increaseAnswerStreak();
         if (answers_given.size() == ANSWER_LIMIT) {
+
             std::cout << "S-au epuizat toate raspunsurile. S-a terminat runda!" << '\n';
             leaderFamily->set_family_score(leaderFamily->get_family_score());
             return true;
@@ -144,47 +159,79 @@ int Round::pickRandIndex(json &data) {
             family_switched = true;
         }
     }
+    bool Round::checkIfDerived(Question& question) {
+        return dynamic_cast<QuestionKiller*>(&question) ||
+        dynamic_cast<QuestionOptional*>(&question) ||
+         dynamic_cast<QuestionRandBonus*>(&question);
+    }
+    void Round::generateSpecialQuestion(Family* leaderFamily, Question& currentQuestion) {
+    }
+
+    void Round::loopRound(Family *leaderFamily, Question &currentQuestion, Family &f1, Family &f2) {
+    while (answers_given.size() <= ANSWER_LIMIT && (!family_switched || leaderFamily->checkStrikes() == 0)) {
+        for (auto& jucator : leaderFamily->get_players()) {
+            getAnswerFromPlayer(answer, jucator);
+            pickBonus(bonus_multiplier);
+            if (currentQuestion.isAnswerRight(answer, givenScore, givenAns)) {
+                terminateRound = isRoundOverAnswers(leaderFamily, answers_given, jucator, answer, givenScore, bonus_multiplier);
+                if (terminateRound) {
+                    break;
+                }
+            } else {
+                answerWasWrong( jucator, leaderFamily, f1, f2, family_switched);
+                if (family_switched) {break;}
+                terminateRound = isRoundOverStreaks(leaderFamily,family_switched);
+                if (terminateRound)
+                    break;
+            }
+        }
+        if (terminateRound) {
+            break;
+        }
+    }
+    leaderFamily->resetStrikes();
+    leaderFamily->set_family_score(leaderFamily->get_family_score());
+
+    std::cout << f1 << f2 << '\n';
+    printAllAnswers(currentQuestion);
+    }
+
+
+
 
     void Round::playRound(Family& f1, Family& f2) {
         std::cout << "Runda " << round_id << " a inceput" << '\n';
 
-        Question currentQuestion = getQuestion(data);
-        std::cout << currentQuestion;
+        currentQuestion = getQuestion(data);
+        std::cout << *currentQuestion;
         Family* leaderFamily = &whoPressedFirst(f1, f2);
-        std::string givenAns;
         std::cout << *leaderFamily;
 
-        std::string answer;
-        std::cin.ignore();
 
-        while (answers_given.size() <= ANSWER_LIMIT && (!family_switched || leaderFamily->checkStrikes() == 0)) {
-            for (auto& jucator : leaderFamily->get_players()) {
-                getAnswerFromPlayer(answer, jucator);
-                pickBonus(bonus_multiplier);
-                if (currentQuestion.isAnswerRight(answer, givenScore, givenAns)) {
-                    terminateRound = isRoundOverAnswers(leaderFamily, answers_given, jucator, answer, givenScore, bonus_multiplier);
-                    if (terminateRound) {
-                        break;
-                    }
-                } else {
-                    answerWasWrong( jucator, leaderFamily, f1, f2, family_switched);
-                    if (family_switched) {break;}
-                    terminateRound = isRoundOverStreaks(leaderFamily,family_switched);
-                    if (terminateRound)
-                        break;
+        std::cin.ignore();
+        loopRound(leaderFamily, *currentQuestion, f1, f2);
+        generateSpecialQuestion(leaderFamily, *currentQuestion);
+        if (checkIfDerived(*currentQuestion)) {
+
+            if (leaderFamily->useQuestion(*currentQuestion)) {
+                std::cout<<*currentQuestion;
+                getAnswerFromPlayer(answer, leaderFamily->get_players()[0]);
+                if (currentQuestion->isAnswerRight(answer, givenScore, givenAns)) {
+                    currentQuestion->takeAction(leaderFamily, f1, f2);
+
                 }
+                else if (QuestionKiller* qk = dynamic_cast<QuestionKiller*>(currentQuestion)) {
+                    qk->takeActionNegative(*leaderFamily);
+
+                }
+
             }
-            if (terminateRound) {
-                break;
-            }
+
         }
-        leaderFamily->resetStrikes();
-        leaderFamily->set_family_score(leaderFamily->get_family_score());
-        std::cout << f1 << f2 << '\n';
-        printAllAnswers(currentQuestion);
+
     }
 
-    Round::Round(int round_id_,  json& data_, Family& f1, Family &f2) : data(data_), round_id(round_id_) {
+    Round::Round(int round_id_,  json& data_) : data(data_), round_id(round_id_) {
 
     }
 

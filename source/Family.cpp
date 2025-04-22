@@ -6,14 +6,9 @@
 #include <iostream>
 
 
-bool Family::canUseQuestionKillers() {
-    if (usedQuestionKillers < 2) {
-        return true;
-    }
-    return false;
-}
-void Family::increaseQuestionKillers() {
-    usedQuestionKillers++;
+
+bool Family::useQuestion(Question& question) {
+       return question.useQuestion(*this);
 }
 
 void Family::resetStrikes() {

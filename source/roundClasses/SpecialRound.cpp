@@ -1,0 +1,38 @@
+//
+// Created by Vali on 17/04/2025.
+//
+
+#include "SpecialRound.h"
+
+#include "exceptions/OutOfRangeException.h"
+#include "questionClasses/QuestionKiller.h"
+#include "questionClasses/QuestionOptional.h"
+#include "questionClasses/QuestionRandBonus.h"
+
+
+void SpecialRound::generateSpecialQuestion(Family* leaderFamily, Question& question) {
+    int randomDerived = pickRandIndex(NUMBER_OF_DERIVED);
+    Question* q;
+    std::string text;
+    std::vector<std::pair<std::string, int>> answers;
+    switch (randomDerived) {
+        case 0:
+            dataSetup(answers, text, dataQO);
+            q = new QuestionOptional(text, answers);
+            break;
+        case 1:
+            dataSetup(answers, text, dataQRB);
+            q = new QuestionKiller(text, answers);
+            break;
+        case 2:
+            dataSetup(answers, text, dataQK);
+            q = new QuestionRandBonus(text, answers);
+            break;
+        default:
+            throw OutOfRangeException(0, NUMBER_OF_DERIVED);
+
+    }
+    question = *q;
+    delete q;
+
+}

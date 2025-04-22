@@ -9,6 +9,15 @@
 
 #include "AI.h"
 
+
+bool Question::useQuestion(Family &family) {
+    return false;
+}
+void Question::takeAction(Family &leaderFamily, Family &f1, Family &f2) {
+
+}
+
+
 void Question::formatAnswer(std::string& s) {
 
         if (s.length() == 1) {

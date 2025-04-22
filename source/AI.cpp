@@ -7,7 +7,7 @@
 #include <cpr/cpr.h>
 #include <json.hpp>
 
-#include "AITimeoutException.h"
+#include "exceptions/AITimeoutException.h"
 
 using json = nlohmann::json;
 void AI::switchAIErrors() {

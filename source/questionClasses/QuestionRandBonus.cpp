@@ -28,21 +28,28 @@ bool QuestionRandBonus::useQuestion(Family &f) {
     {
         return true;
     }
-    else if(answer == "nu")
+    if(answer == "nu")
     {
         return false;
     }
-    else
-    {
+
+
         std::cout<<"Raspuns invalid. Te rugam sa introduci 'da' sau 'nu'."<<std::endl;
         return useQuestion(f);
-    }
+
 }
+
 double QuestionRandBonus::generateBonus() {
     std::random_device rd;
     std::mt19937 gen(rd());
     std::uniform_real_distribution<> dis(0, 10);
     return dis(gen);
+}
+void QuestionRandBonus::takeAction(Family& leaderFamily, Family&  f1, Family& f2) {
+    const int rb = static_cast<int>(generateBonus());
+    leaderFamily.set_family_score((100+rb)*leaderFamily.get_family_score()/100);
+
+
 }
 QuestionRandBonus::QuestionRandBonus(const std::string &text_, const std::vector<std::pair<std::string, int> > &answers_):
         Question(text_, answers_) {

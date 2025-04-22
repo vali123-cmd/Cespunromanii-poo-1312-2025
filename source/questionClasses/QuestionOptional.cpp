@@ -4,6 +4,9 @@
 
 #include "QuestionOptional.h"
 
+#include <iostream>
+#include <ostream>
+
 const std::string& QuestionOptional::get_question_text() {
     m_text  = "----------------------------------------------------------------------------------------------------------------"
                "\n"
@@ -23,10 +26,27 @@ Question(text_, answers_) {
     // Nu este nevoie sa facem nimic aici
 
 }
+bool QuestionOptional::useQuestion(Family &f) {
+    std::cout<<"Doresti sa folosesti intrebarea optionala? (da/nu)"<<std::endl;
+    std::string answer;
+    std::cin>>answer;
+    if(answer == "da")
+    {
+        return true;
+    }
+    if(answer == "nu")
+    {
+        return false;
+    }
 
+    std::cout<<"Raspuns invalid. Te rugam sa introduci 'da' sau 'nu'."<<std::endl;
+    return useQuestion(f);
+}
 bool QuestionOptional::isAnswerRight(std::string &userString, int &score, std::string &foundAnswer) {
     return true;
 }
-bool QuestionOptional::useQuestion(Family &f) {
-    return true;
+
+void QuestionOptional::takeAction(Family &leaderFamily, Family &f1, Family &f2) {
+    leaderFamily.set_family_score(110*leaderFamily.get_family_score()/100);
+
 }

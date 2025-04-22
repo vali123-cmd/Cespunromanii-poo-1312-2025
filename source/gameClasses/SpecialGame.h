@@ -5,6 +5,7 @@
 #ifndef SPECIALGAME_H
 #define SPECIALGAME_H
 #include "Game.h"
+#include <fstream>
 
 
 class SpecialGame : public Game {
@@ -14,7 +15,7 @@ class SpecialGame : public Game {
     nlohmann::json dataQK;
     nlohmann::json dataQO;
     nlohmann::json dataQRB;
-
+    void initFiles() override;
     void makeRounds(Family &f1, Family &f2)  override;
 
 };

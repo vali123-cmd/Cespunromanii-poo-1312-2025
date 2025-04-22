@@ -4,7 +4,7 @@
 
 #ifndef NORMALGAME_H
 #define NORMALGAME_H
-#include <Game.h>
+#include "Game.h"
 
 
 class NormalGame : public Game {

@@ -47,7 +47,16 @@ Question(text_, answers_) {
 
 
 }
-
+void QuestionKiller::takeAction(Family &leaderFamily, Family& f1, Family& f2) {
+   if (leaderFamily == f1) {
+       f2.set_family_score(90*f2.get_family_score()/100);
+   } else {
+       f1.set_family_score(90*f1.get_family_score()/100);
+   }
+}
+void QuestionKiller::takeActionNegative(Family& leaderFamily) {
+    leaderFamily.set_family_score(99*leaderFamily.get_family_score()/100);
+}
 bool QuestionKiller::isAnswerRight(std::string &userString, int &score, std::string &foundAnswer) {
     // Verificam daca raspunsul este corect
     for (const auto& answer : answers) {
