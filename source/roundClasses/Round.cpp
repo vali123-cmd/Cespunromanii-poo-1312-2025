@@ -220,17 +220,18 @@ int Round::pickRandIndex(int maxsize) {
         std::cin.ignore();
         loopRound(leaderFamily, *currentQuestion, f1, f2);
         generateSpecialQuestion(leaderFamily, *currentQuestion);
+        if (checkIfDerived(*currentQuestion)) {
+            if (leaderFamily->useQuestion(*currentQuestion)) {
+                std::cout<<*currentQuestion;
+                getAnswerFromPlayer(answer, leaderFamily->get_players()[0]);
+                if (currentQuestion->isAnswerRight(answer, givenScore, givenAns)) {
+                    currentQuestion->takeAction(*leaderFamily, f1, f2);
+                }
+                else if (const auto* qk = dynamic_cast<QuestionKiller*>(currentQuestion)) {
+                    QuestionKiller::takeActionNegative(*leaderFamily);
+                    delete qk;
 
-        if (leaderFamily->useQuestion(*currentQuestion)) {
-            std::cout<<*currentQuestion;
-            getAnswerFromPlayer(answer, leaderFamily->get_players()[0]);
-            if (currentQuestion->isAnswerRight(answer, givenScore, givenAns)) {
-                currentQuestion->takeAction(*leaderFamily, f1, f2);
-            }
-            else if (const auto* qk = dynamic_cast<QuestionKiller*>(currentQuestion)) {
-                QuestionKiller::takeActionNegative(*leaderFamily);
-                delete qk;
-
+                }
             }
         }
 

@@ -72,6 +72,8 @@ void Game::playGame() {
 
         std::string family1;
         std::string family2;
+
+        AI::switchAIErrors();
         initFiles();
         setUp(family1, family2);
         initPlayers(players1, family1);
@@ -79,6 +81,7 @@ void Game::playGame() {
         initPlayers(players2, family2);
         Family secondFam(family2, 0, players2);
         makeRounds(firstFam, secondFam);
+        establishWinner(firstFam, secondFam);
         playAgain();
     }
     void Game::playAgain() {
@@ -109,13 +112,13 @@ void Game::playGame() {
 
 
 
-bool Game::getRandomBool() {
+/*bool Game::getRandomBool() {
         static std::random_device rd;
         static std::mt19937 gen(rd());
         static std::uniform_int_distribution<> dis(0, 1);
         return dis(gen) == 1;
     }
-
+*/
 
 std::ostream& operator<<(std::ostream& os, const Game &g) {
     os<<"Game currently initiated and running. Enjoy! -From Cabral himself. Captains: "<<'\n';
