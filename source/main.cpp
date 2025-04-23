@@ -26,7 +26,10 @@ int main() {
         std::cout << "Tip de joc invalid!" << '\n';
         return 0;
     }
+    file.close();
     game->playGame();
+
+    delete game;
     return 0;
 
 

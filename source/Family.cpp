@@ -3,6 +3,7 @@
 //
 
 #include "Family.h"
+#include "questionClasses/Question.h"
 #include <iostream>
 
 

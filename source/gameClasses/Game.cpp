@@ -72,6 +72,7 @@ void Game::playGame() {
 
         std::string family1;
         std::string family2;
+        initFiles();
         setUp(family1, family2);
         initPlayers(players1, family1);
         Family firstFam(family1, 0, players1);

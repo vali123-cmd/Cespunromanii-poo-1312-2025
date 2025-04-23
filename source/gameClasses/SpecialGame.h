@@ -9,9 +9,7 @@
 
 
 class SpecialGame : public Game {
-    std::vector<Player> players1;
-    std::vector<Player> players2;
-    nlohmann::json data;
+
     nlohmann::json dataQK;
     nlohmann::json dataQO;
     nlohmann::json dataQRB;

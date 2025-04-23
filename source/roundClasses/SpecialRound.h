@@ -15,7 +15,7 @@ class SpecialRound : public Round {
     void generateSpecialQuestion(Family* leaderFamily, Question& question) override;
 
 public:
-    SpecialRound(int round_id_, json &dataQO_, json &dataQK, json &dataQRB);
+    SpecialRound(int round_id_, json& data_, json &dataQO_, json &dataQK, json &dataQRB);
 
 
 

@@ -5,9 +5,12 @@
 #include "QuestionKiller.h"
 
 #include <iostream>
+#include <map>
+#include <set>
 
 #include "Family.h"
 
+std::unordered_map<std::string, int> QuestionKiller::usedQuestionKillers;
 const std::string& QuestionKiller::get_question_text(){
 
     m_text  = "----------------------------------------------------------------------------------------------------------------"

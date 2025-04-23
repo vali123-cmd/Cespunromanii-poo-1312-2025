@@ -11,8 +11,10 @@
 
 void NormalGame::makeRounds(Family& f1, Family& f2)  {
     for (int i=1;i<=6;i++) {
-        round = new Round(i, data, f1, f2);
+        round = new Round(i, data);
         round->playRound(f1,f2);
+        delete round;
+
     }
 }
 

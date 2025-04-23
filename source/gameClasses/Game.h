@@ -13,9 +13,7 @@ using json = nlohmann::json;
 
 class Game {
 
-    std::vector<Player> players1;
-    std::vector<Player> players2;
-    nlohmann::json data;
+
     static void establishWinner(Family &f1, Family &f2);
 
     static void setUp(std::string& family1, std::string& family2);
@@ -33,6 +31,9 @@ class Game {
 
     static bool getRandomBool();
 protected:
+    std::vector<Player> players1;
+    std::vector<Player> players2;
+    nlohmann::json data;
     Round *round;
     static void parseJson(const std::string& filePath, json& data);
 

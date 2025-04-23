@@ -8,9 +8,8 @@
 
 
 class NormalGame : public Game {
-    std::vector<Player> players1;
-    std::vector<Player> players2;
-    nlohmann::json data;
+
+
 
     void makeRounds(Family& f1, Family& f2)  override;
 

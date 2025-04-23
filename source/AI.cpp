@@ -10,6 +10,7 @@
 #include "exceptions/AITimeoutException.h"
 
 using json = nlohmann::json;
+bool AI::useAIErrors = false;
 void AI::switchAIErrors() {
     std::cout<<"Doresti sa activezi erorile AI? Daca ai o conexiune de internet slaba sau"
                "nu ai configurat Ollama bine jocul va da crash(vezi tutorial in README) (1 - da, 0 - nu): ";
@@ -18,7 +19,7 @@ void AI::switchAIErrors() {
 
 float AI::getScore(const std::string& word1, const std::string& word2) const {
     std::string prompt = std::string("cat de similare sunt urmatoarele cuvinte ca sens, cuvintele sunt in limba romana:  ") + word1 + " " + word2+
-        "raspunde cu un numar real intre 0 si 1, vreau doar numarul, fara nimic altceva in raspunsul tau.";
+        "raspunde cu un numar real intre 0 si 1, vreau doar numarul, FARA NIMIC ALTCEVA IN RASPUNSUL TAU.";
 
 
     cpr::Url api_link = api_url;
@@ -48,12 +49,12 @@ float AI::getScore(const std::string& word1, const std::string& word2) const {
     }
     if(res.status_code != 200) // Dacă status code-ul nu este 200 înseamnă că a apărut o eroare
     {
-        std::cout << "Oops!! Got status " << res.status_code << std::endl;
+
         return -1;
     }
     if(res.text.empty())
     {
-        std::cout << "Empty response" << std::endl;
+
         return -1;
     }
 

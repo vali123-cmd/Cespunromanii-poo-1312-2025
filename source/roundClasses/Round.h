@@ -11,6 +11,7 @@
 
 using json = nlohmann::json;
 class Round {
+    json& data;
     Question* currentQuestion;
     std::string answer;
     std::string givenAns;
@@ -21,7 +22,7 @@ class Round {
     const int ANSWER_LIMIT = 5;
     std::vector<std::pair<std::string, int>> answers_given;
     int round_id = 1;
-    json data;
+
 
 
     void loopRound(Family* leaderFamily, Question& currentQuestion, Family& f1, Family& f2);
@@ -30,7 +31,7 @@ class Round {
     void printCurrentAnswers();
     void printAllAnswers(const Question& question);
     virtual void generateSpecialQuestion(Family* leaderFamily, Question& currentQuestion);
-    bool checkIfDerived(Question& question);
+    static bool checkIfDerived(Question& question);
 
 
     static Question* getQuestion(json &data_);
@@ -47,7 +48,7 @@ class Round {
     static void getAnswerFromPlayer(std::string& answer, const Player& jucator);
 protected:
     static int pickRandIndex(int maxsize);
-    static void dataSetup(std::vector<std::pair<std::string,int>> answers, std::string& text, json& data_);
+    static void dataSetup(std::vector<std::pair<std::string,int>>& answers, std::string& text, json& data_);
 public:
     int get_round_id() const;
 

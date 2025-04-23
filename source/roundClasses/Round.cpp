@@ -35,18 +35,21 @@ int Round::pickRandIndex(int maxsize) {
             return -1;
         }
 
-         static std::random_device rd;
-         static std::mt19937 gen(rd());
-         static std::uniform_int_distribution<> distr(0, maxsize - 1);
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> distr(0, maxsize - 1);
         //NOTA: Nu merge cu static deoarece raman initializate cu size-ul vechi...
         return distr(gen);
     }
-    void Round::dataSetup(std::vector<std::pair<std::string,int>> answers, std::string& text, json& data_) {
+    void Round::dataSetup(std::vector<std::pair<std::string,int>>& answers, std::string& text, json& data_) {
+
         int randindex = pickRandIndex(data_["intrebari"].size());
+
         text = data_["intrebari"][randindex]["intrebare"];
         for (const auto& item : data_["intrebari"][randindex]["raspunsuri"]) {
             answers.emplace_back(item["raspuns"], item["punctaj"]);
         }
+
         data_["intrebari"].erase(randindex);
 
     }
@@ -61,6 +64,7 @@ int Round::pickRandIndex(int maxsize) {
         std::string text;
         dataSetup(answers, text, data_);
         auto* q = new Question(text, answers);
+
 
         //BUG FIX: nu se sterge intrebarea din json dupa ce a fost folosita.
         return q;
@@ -129,6 +133,8 @@ int Round::pickRandIndex(int maxsize) {
     std::cout << jucator << " te rugam sa introduci un raspuns popular: " << "\n";
     std::cin.clear();
     std::getline(std::cin, answer);
+    answer.erase(0, answer.find_first_not_of(" \t\n\r\f\v"));
+    answer.erase(answer.find_last_not_of(" \t\n\r\f\v") + 1);
     }
 
 
@@ -168,9 +174,12 @@ int Round::pickRandIndex(int maxsize) {
     }
 
     void Round::loopRound(Family *leaderFamily, Question &currentQuestion, Family &f1, Family &f2) {
+    Question copy = currentQuestion;
     while (answers_given.size() <= ANSWER_LIMIT && (!family_switched || leaderFamily->checkStrikes() == 0)) {
         for (auto& jucator : leaderFamily->get_players()) {
             getAnswerFromPlayer(answer, jucator);
+            std::cout<<"Raspunsul dat este: "<<answer<<'\n';
+
             pickBonus(bonus_multiplier);
             if (currentQuestion.isAnswerRight(answer, givenScore, givenAns)) {
                 terminateRound = isRoundOverAnswers(leaderFamily, answers_given, jucator, answer, givenScore, bonus_multiplier);
@@ -193,7 +202,7 @@ int Round::pickRandIndex(int maxsize) {
     leaderFamily->set_family_score(leaderFamily->get_family_score());
 
     std::cout << f1 << f2 << '\n';
-    printAllAnswers(currentQuestion);
+    printAllAnswers(copy);
     }
 
 
@@ -211,31 +220,36 @@ int Round::pickRandIndex(int maxsize) {
         std::cin.ignore();
         loopRound(leaderFamily, *currentQuestion, f1, f2);
         generateSpecialQuestion(leaderFamily, *currentQuestion);
-        if (checkIfDerived(*currentQuestion)) {
 
-            if (leaderFamily->useQuestion(*currentQuestion)) {
-                std::cout<<*currentQuestion;
-                getAnswerFromPlayer(answer, leaderFamily->get_players()[0]);
-                if (currentQuestion->isAnswerRight(answer, givenScore, givenAns)) {
-                    currentQuestion->takeAction(leaderFamily, f1, f2);
-
-                }
-                else if (QuestionKiller* qk = dynamic_cast<QuestionKiller*>(currentQuestion)) {
-                    qk->takeActionNegative(*leaderFamily);
-
-                }
+        if (leaderFamily->useQuestion(*currentQuestion)) {
+            std::cout<<*currentQuestion;
+            getAnswerFromPlayer(answer, leaderFamily->get_players()[0]);
+            if (currentQuestion->isAnswerRight(answer, givenScore, givenAns)) {
+                currentQuestion->takeAction(*leaderFamily, f1, f2);
+            }
+            else if (const auto* qk = dynamic_cast<QuestionKiller*>(currentQuestion)) {
+                QuestionKiller::takeActionNegative(*leaderFamily);
+                delete qk;
 
             }
-
         }
 
     }
+
+
+
+
+
+
+
 
     Round::Round(int round_id_,  json& data_) : data(data_), round_id(round_id_) {
 
     }
 
-    Round::~Round() = default;
+    Round::~Round() {
+        delete currentQuestion;
+    }
 
 
     Round::Round(const Round &other)

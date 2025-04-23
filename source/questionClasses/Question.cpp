@@ -8,6 +8,7 @@
 #include <iostream>
 
 #include "AI.h"
+class Family;
 
 
 bool Question::useQuestion(Family &family) {
@@ -74,6 +75,7 @@ void Question::formatAnswer(std::string& s) {
     bool Question::isAnswerRight(std::string& userString, int& score, std::string& foundAnswer) {
         //formatare pentru precizie mai buna cu ajutorul formatAnswer().
         formatAnswer(userString);
+
         AI helper; //daca nu s-a creat serverul AI va intoarce automat -1.
 
         for (const auto& item : answers) {

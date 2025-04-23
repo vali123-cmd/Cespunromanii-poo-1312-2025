@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "Player.h"
-#include "questionClasses/Question.h"
+
 
 class Question;
 
@@ -29,7 +29,7 @@ public:
     void set_family_score(int family_score_temp);
     [[nodiscard]] int get_family_score();
 
-    explicit Family(const std::string &family_name, const int family_score=0, const std::vector<Player> &players = {});
+    explicit Family(const std::string &family_name, int family_score=0, const std::vector<Player> &players = {});
 
     friend std::ostream& operator<<(std::ostream &os, const Family &family);
     bool operator==( const Family& f1);
