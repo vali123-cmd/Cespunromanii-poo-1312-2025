@@ -73,7 +73,7 @@ void Game::playGame() {
         std::string family1;
         std::string family2;
 
-        AI::switchAIErrors();
+        askForAI();
         initFiles();
         setUp(family1, family2);
         initPlayers(players1, family1);
