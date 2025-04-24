@@ -12,9 +12,15 @@ class Family;
 
 
 bool Question::useQuestion(Family &family) {
+    std::cout<<family;
     return false;
+
 }
 void Question::takeAction(Family &leaderFamily, Family &f1, Family &f2) {
+    if (leaderFamily == f1)
+        std::cout<<"Familia "<<f1.get_family_name()<<" a raspuns corect!"<<'\n';
+    else if (leaderFamily == f2)
+        std::cout<<"Familia "<<f2.get_family_name()<<" a raspuns corect!"<<'\n';
 
 }
 

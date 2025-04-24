@@ -120,7 +120,7 @@ int Round::pickRandIndex(int maxsize) {
         printCurrentAnswers();
         jucator.increaseScore(givenScore, bonus_multiplier);
         jucator.increaseAnswerStreak();
-        if (answers_given.size() == ANSWER_LIMIT) {
+        if (answers_given.size() == (unsigned long long int)ANSWER_LIMIT) {
 
             std::cout << "S-au epuizat toate raspunsurile. S-a terminat runda!" << '\n';
             leaderFamily->set_family_score(leaderFamily->get_family_score());
@@ -171,6 +171,7 @@ int Round::pickRandIndex(int maxsize) {
          dynamic_cast<QuestionRandBonus*>(&question);
     }
     void Round::generateSpecialQuestion(Family* leaderFamily, Question& currentQuestion) {
+
     }
 
     void Round::loopRound(Family *leaderFamily, Question &currentQuestion, Family &f1, Family &f2) {
@@ -254,10 +255,10 @@ int Round::pickRandIndex(int maxsize) {
 
 
     Round::Round(const Round &other)
-        : answers_given(other.answers_given),
-          round_id(other.round_id),
-          data(other.data) {
-    }
+        : data(other.data),
+        round_id(other.round_id),
+        answers_given(other.answers_given)
+           {}
 
     Round& Round::operator=(const Round &other) {
         if (this == &other)
