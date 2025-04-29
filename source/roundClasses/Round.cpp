@@ -220,6 +220,7 @@ int Round::pickRandIndex(int maxsize) {
 
         std::cin.ignore();
         loopRound(leaderFamily, *currentQuestion, f1, f2);
+
         generateSpecialQuestion(leaderFamily, *currentQuestion);
         if (checkIfDerived(*currentQuestion)) {
             if (leaderFamily->useQuestion(*currentQuestion)) {

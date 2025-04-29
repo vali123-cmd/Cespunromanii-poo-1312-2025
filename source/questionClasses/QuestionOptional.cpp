@@ -43,10 +43,14 @@ bool QuestionOptional::useQuestion(Family &f) {
     return useQuestion(f);
 }
 bool QuestionOptional::isAnswerRight(std::string &userString, int &score, std::string &foundAnswer) {
+    std::cout<<"Raspuns corect! Felicitari!"<<'\n';
+    foundAnswer = userString;
+    score = 10;
+    std::cout<<"Scorul tau a crescut cu 10%!"<<'\n';
     return true;
-}
 
-void QuestionOptional::takeAction(Family &leaderFamily, Family &f1, Family &f2) {
+}
+void QuestionOptional::takeAction(Family &leaderFamily, Family&, Family&) {
     leaderFamily.set_family_score(110*leaderFamily.get_family_score()/100);
 
 }

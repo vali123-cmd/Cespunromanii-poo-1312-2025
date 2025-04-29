@@ -23,7 +23,7 @@ public:
     static double generateBonus();
     QuestionRandBonus(const std::string& text_, const std::vector<std::pair<std::string, int>>& answers_);
     bool isAnswerRight(std::string &userString, int &score, std::string &foundAnswer) override;
-    void takeAction(Family& leaderFamily, Family&  f1, Family& f2) override;
+    void takeAction(Family& leaderFamily, Family&, Family&) override;
 };
 
 

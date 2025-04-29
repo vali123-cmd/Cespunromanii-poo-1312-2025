@@ -19,7 +19,7 @@ public:
     bool useQuestion(Family &f) override;
     bool isAnswerRight(std::string &userString, int &score, std::string &foundAnswer) override;
     const std::string& get_question_text() override;
-    void takeAction(Family& leaderFamily, Family&  f1, Family& f2) override;
+    void takeAction(Family& leaderFamily, Family&, Family&) override;
 };
 
 #endif //QUESTIONOPTIONAL_H

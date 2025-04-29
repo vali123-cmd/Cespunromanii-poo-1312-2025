@@ -45,7 +45,7 @@ double QuestionRandBonus::generateBonus() {
     std::uniform_real_distribution<> dis(0, 10);
     return dis(gen);
 }
-void QuestionRandBonus::takeAction(Family& leaderFamily, Family&  f1, Family& f2) {
+void QuestionRandBonus::takeAction(Family& leaderFamily, Family&, Family&) {
     const int rb = static_cast<int>(generateBonus());
     leaderFamily.set_family_score((100+rb)*leaderFamily.get_family_score()/100);
 
