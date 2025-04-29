@@ -17,7 +17,7 @@ SpecialRound::SpecialRound(int round_id_, json &data_, json &dataQO_, json &data
 
 }
 
-void SpecialRound::generateSpecialQuestion(Family* leaderFamily, Question& question) {
+void SpecialRound::generateSpecialQuestion(Family*, Question& question) {
     int randomDerived = pickRandIndex(NUMBER_OF_DERIVED);
     std::cout<<randomDerived<<'\n';
     Question* q;
