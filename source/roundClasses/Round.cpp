@@ -170,7 +170,7 @@ int Round::pickRandIndex(int maxsize) {
         dynamic_cast<QuestionOptional*>(&question) ||
          dynamic_cast<QuestionRandBonus*>(&question);
     }
-    void Round::generateSpecialQuestion(Family* leaderFamily, Question& currentQuestion) {
+    void Round::generateSpecialQuestion(Family* , Question&) {
 
     }
 
