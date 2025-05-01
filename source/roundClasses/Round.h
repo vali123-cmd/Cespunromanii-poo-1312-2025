@@ -12,6 +12,7 @@
 using json = nlohmann::json;
 class Round {
     json& data;
+    int round_id = 1;
     std::vector<std::pair<std::string, int>> answers_given;
     Question* currentQuestion;
     std::string answer;
@@ -21,7 +22,7 @@ class Round {
     int bonus_multiplier = 1;
     bool terminateRound = false;
     long unsigned int ANSWER_LIMIT = 5;
-	int round_id = 1;
+
 
 
 
