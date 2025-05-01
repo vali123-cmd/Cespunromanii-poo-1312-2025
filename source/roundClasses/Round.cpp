@@ -102,7 +102,7 @@ int Round::pickRandIndex(int maxsize) {
     }
 
 
-    bool Round::isRoundOverStreaks(Family *leaderFamily, const bool& family_switched) {
+    /*bool Round::isRoundOverStreaks(Family *leaderFamily, const bool& family_switched) {
     if (leaderFamily->checkStrikes() == 1 && family_switched) {
         std::cout << "Noua familie a primit si ea 3 strikes! S-a terminat runda." << '\n';
         leaderFamily->resetStrikes();
@@ -111,7 +111,7 @@ int Round::pickRandIndex(int maxsize) {
         return true;
     }
     return false;
-    }
+    }*/
 
     bool Round::isRoundOverAnswers(Family *leaderFamily, std::vector<std::pair<std::string, int>> &answers_given,
         Player& jucator, const std::string& givenAns, const int& givenScore, const int& bonus_multiplier) {

@@ -12,6 +12,7 @@
 using json = nlohmann::json;
 class Round {
     json& data;
+    std::vector<std::pair<std::string, int>> answers_given;
     Question* currentQuestion;
     std::string answer;
     std::string givenAns;
@@ -21,7 +22,7 @@ class Round {
     bool terminateRound = false;
     long unsigned int ANSWER_LIMIT = 5;
 	int round_id = 1;
-    std::vector<std::pair<std::string, int>> answers_given;
+
 
 
 
@@ -44,7 +45,7 @@ class Round {
     bool isRoundOverAnswers(Family *leaderFamily, std::vector<std::pair<std::string, int>> &answers_given,
         Player& jucator, const std::string& givenAns, const int& givenScore, const int& bonus_multiplier);
 
-    bool isRoundOverStreaks(Family* leaderFamily, const bool& Switched);
+    //bool isRoundOverStreaks(Family* leaderFamily, const bool& Switched);
 
     static void getAnswerFromPlayer(std::string& answer, const Player& jucator);
 protected:
