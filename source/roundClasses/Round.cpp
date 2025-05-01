@@ -190,9 +190,10 @@ int Round::pickRandIndex(int maxsize) {
             } else {
                 answerWasWrong( jucator, leaderFamily, f1, f2, family_switched);
                 if (family_switched) {break;}
-                terminateRound = isRoundOverStreaks(leaderFamily,family_switched);
+                /*terminateRound = isRoundOverStreaks(leaderFamily,family_switched);
                 if (terminateRound)
                     break;
+                */
             }
         }
         if (terminateRound) {
@@ -246,7 +247,7 @@ int Round::pickRandIndex(int maxsize) {
 
 
 
-    Round::Round(int round_id_,  json& data_) : data(data_), round_id(round_id_) {
+    Round::Round(int round_id_,  json& data_) : data(data_), round_id(round_id_), currentQuestion(nullptr) {
 
     }
 
@@ -258,7 +259,8 @@ int Round::pickRandIndex(int maxsize) {
     Round::Round(const Round &other)
         : data(other.data),
         round_id(other.round_id),
-        answers_given(other.answers_given)
+        answers_given(other.answers_given),
+        currentQuestion(other.currentQuestion)
            {}
 
     Round& Round::operator=(const Round &other) {
@@ -267,6 +269,11 @@ int Round::pickRandIndex(int maxsize) {
         answers_given = other.answers_given;
         round_id = other.round_id;
         data = other.data;
+        currentQuestion = other.currentQuestion;
+        givenScore = other.givenScore;
+        bonus_multiplier = other.bonus_multiplier;
+        ANSWER_LIMIT = other.ANSWER_LIMIT;
+
         return *this;
     }
 
