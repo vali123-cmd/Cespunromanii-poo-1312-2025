@@ -77,6 +77,6 @@ std::ostream& operator<<(std::ostream &os, const Family &family) {
     return os;
 }
 
-bool Family::operator==(const Family& f1) {
-    return this->get_family_name() == f1.get_family_name();
+bool Family::operator==(const Family& f1)  const {
+    return this == &f1;
 }

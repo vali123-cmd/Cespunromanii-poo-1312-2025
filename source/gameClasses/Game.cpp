@@ -7,7 +7,6 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-#include <bits/random.h>
 
 #include "AI.h"
 #include "Family.h"

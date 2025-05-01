@@ -32,7 +32,7 @@ public:
     explicit Family(const std::string &family_name, int family_score=0, const std::vector<Player> &players = {});
 
     friend std::ostream& operator<<(std::ostream &os, const Family &family);
-    bool operator==( const Family& f1);
+    bool operator==( const Family& f1) const;
 
 };
 
