@@ -113,14 +113,14 @@ int Round::pickRandIndex(int maxsize) {
     return false;
     }*/
 
-    bool Round::isRoundOverAnswers(Family *leaderFamily, std::vector<std::pair<std::string, int>> &answers_given,
-        Player& jucator, const std::string& givenAns, const int& givenScore, const int& bonus_multiplier) {
+    bool Round::isRoundOverAnswers(Family *leaderFamily, std::vector<std::pair<std::string, int>> &answers_given_,
+        Player& jucator, const std::string& givenAns_, const int& givenScore_, const int& bonus_multiplier_) {
         std::cout << "Raspuns corect! Felicitari!" << '\n';
-        answers_given.emplace_back(givenAns, givenScore);
+        answers_given_.emplace_back(givenAns_, givenScore_);
         printCurrentAnswers();
-        jucator.increaseScore(givenScore, bonus_multiplier);
+        jucator.increaseScore(givenScore_, bonus_multiplier_);
         jucator.increaseAnswerStreak();
-        if (answers_given.size() == (unsigned long long int)ANSWER_LIMIT) {
+        if (answers_given_.size() == (unsigned long long int)ANSWER_LIMIT) {
 
             std::cout << "S-au epuizat toate raspunsurile. S-a terminat runda!" << '\n';
             leaderFamily->set_family_score(leaderFamily->get_family_score());
@@ -142,10 +142,10 @@ int Round::pickRandIndex(int maxsize) {
     [[nodiscard]] int Round::get_round_id() const {
         return round_id;
     }
-    void Round::pickBonus(int& bonus_multiplier) {
+    void Round::pickBonus(int& bonus_multiplier_) {
     //implementare virtuala ulterioara pentru QRB.
     if (get_round_id() == 6) {
-        bonus_multiplier = 2;
+        bonus_multiplier_ = 2;
     }
     }
 
@@ -174,15 +174,15 @@ int Round::pickRandIndex(int maxsize) {
 
     }
 
-    void Round::loopRound(Family *leaderFamily, Question &currentQuestion, Family &f1, Family &f2) {
-    Question copy = currentQuestion;
+    void Round::loopRound(Family *leaderFamily, Question &currentQuestion_, Family &f1, Family &f2) {
+    Question copy = currentQuestion_;
     while (answers_given.size() <= ANSWER_LIMIT && (!family_switched || leaderFamily->checkStrikes() == 0)) {
         for (auto& jucator : leaderFamily->get_players()) {
             getAnswerFromPlayer(answer, jucator);
             std::cout<<"Raspunsul dat este: "<<answer<<'\n';
 
             pickBonus(bonus_multiplier);
-            if (currentQuestion.isAnswerRight(answer, givenScore, givenAns)) {
+            if (currentQuestion_.isAnswerRight(answer, givenScore, givenAns)) {
                 terminateRound = isRoundOverAnswers(leaderFamily, answers_given, jucator, answer, givenScore, bonus_multiplier);
                 if (terminateRound) {
                     break;
