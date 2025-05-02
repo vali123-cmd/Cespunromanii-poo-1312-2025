@@ -28,13 +28,13 @@ class Round {
 
 
 
-    void loopRound(Family* leaderFamily, Question& currentQuestion, Family& f1, Family& f2);
-    static void answerWasWrong(Player& jucator, Family* leaderFamily, Family &f1, Family& f2, bool& family_switched);
+    void loopRound(Family*& leaderFamily, Question& currentQuestion, Family& f1, Family& f2);
+    static void answerWasWrong(Player& jucator, Family*& leaderFamily, Family &f1, Family& f2, bool& family_switched);
     void pickBonus(int& bonus_multiplier);
     void printCurrentAnswers();
     void printAllAnswers(const Question& question);
     virtual void generateSpecialQuestion(Family*, Question&);
-    static bool checkIfDerived(Question& question);
+    static bool checkIfDerived(const Question& question);
 
 
     static Question* getQuestion(json &data_);
@@ -43,10 +43,10 @@ class Round {
 
     static void SwitchFamily(Family *&currentFamily, Family &f1, Family &f2);
 
-    bool isRoundOverAnswers(Family *leaderFamily, std::vector<std::pair<std::string, int>> &answers_given,
+    bool isRoundOverAnswers(Family *&leaderFamily, std::vector<std::pair<std::string, int>> &answers_given,
         Player& jucator, const std::string& givenAns, const int& givenScore, const int& bonus_multiplier);
 
-    //bool isRoundOverStreaks(Family* leaderFamily, const bool& Switched);
+
 
     static void getAnswerFromPlayer(std::string& answer, const Player& jucator);
 protected:

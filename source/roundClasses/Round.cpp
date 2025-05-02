@@ -102,18 +102,9 @@ int Round::pickRandIndex(int maxsize) {
     }
 
 
-    /*bool Round::isRoundOverStreaks(Family *leaderFamily, const bool& family_switched) {
-    if (leaderFamily->checkStrikes() == 1 && family_switched) {
-        std::cout << "Noua familie a primit si ea 3 strikes! S-a terminat runda." << '\n';
-        leaderFamily->resetStrikes();
-        leaderFamily->set_family_score(leaderFamily->get_family_score());
 
-        return true;
-    }
-    return false;
-    }*/
 
-    bool Round::isRoundOverAnswers(Family *leaderFamily, std::vector<std::pair<std::string, int>> &answers_given_,
+    bool Round::isRoundOverAnswers(Family *&leaderFamily, std::vector<std::pair<std::string, int>> &answers_given_,
         Player& jucator, const std::string& givenAns_, const int& givenScore_, const int& bonus_multiplier_) {
         std::cout << "Raspuns corect! Felicitari!" << '\n';
         answers_given_.emplace_back(givenAns_, givenScore_);
@@ -150,34 +141,36 @@ int Round::pickRandIndex(int maxsize) {
     }
 
 
-    void Round::answerWasWrong(Player& jucator, Family* leaderFamily, Family &f1, Family& f2, bool& family_switched) {
+    void Round::answerWasWrong(Player& jucator, Family*& leaderFamily, Family &f1, Family& f2, bool& family_switched_) {
         jucator.resetAnswerStreak();
         std::cout << "Raspuns gresit! Mai incearca!" << '\n';
         leaderFamily->increaseStrikes();
         leaderFamily->set_family_score(leaderFamily->get_family_score());
 
         std::cout << *leaderFamily;
-        if (leaderFamily->checkStrikes() == 1 && !family_switched) {
+        if (leaderFamily->checkStrikes() == 1 && !family_switched_) {
             std::cout << "Ai primit 3 strikes! Se schimba familia!" << '\n';
             leaderFamily->set_family_score(leaderFamily->get_family_score());
             leaderFamily->resetStrikes();
             SwitchFamily(leaderFamily, f1, f2);
-            family_switched = true;
+            family_switched_ = true;
         }
     }
-    bool Round::checkIfDerived(Question& question) {
-        return dynamic_cast<QuestionKiller*>(&question) ||
-        dynamic_cast<QuestionOptional*>(&question) ||
-         dynamic_cast<QuestionRandBonus*>(&question);
+    bool Round::checkIfDerived(const Question& question) {
+    return (dynamic_cast<const QuestionKiller*>(&question) != nullptr ||
+        dynamic_cast<const QuestionOptional*>(&question) != nullptr ||
+        dynamic_cast<const QuestionRandBonus*>(&question) != nullptr);
     }
     void Round::generateSpecialQuestion(Family* , Question&) {
 
     }
 
-    void Round::loopRound(Family *leaderFamily, Question &currentQuestion_, Family &f1, Family &f2) {
+    void Round::loopRound(Family *&leaderFamily, Question &currentQuestion_, Family &f1, Family &f2) {
     Question copy = currentQuestion_;
+    bool restart = false;
     while (answers_given.size() <= ANSWER_LIMIT && (!family_switched || leaderFamily->checkStrikes() == 0)) {
         for (auto& jucator : leaderFamily->get_players()) {
+
             getAnswerFromPlayer(answer, jucator);
             std::cout<<"Raspunsul dat este: "<<answer<<'\n';
 
@@ -189,17 +182,19 @@ int Round::pickRandIndex(int maxsize) {
                 }
             } else {
                 answerWasWrong( jucator, leaderFamily, f1, f2, family_switched);
-                if (family_switched) {break;}
-                /*terminateRound = isRoundOverStreaks(leaderFamily,family_switched);
-                if (terminateRound)
+                if (leaderFamily->checkStrikes() and family_switched) {
+                    terminateRound = true;
                     break;
-                */
+                }
+                if (family_switched and restart == 0) {restart =true;
+                    break;}
             }
         }
         if (terminateRound) {
             break;
         }
     }
+    std::cout<<"Noua familie a primit si ea 3 strikes. Runda s-a terminat!"<<'\n';
     leaderFamily->resetStrikes();
     leaderFamily->set_family_score(leaderFamily->get_family_score());
 
@@ -222,9 +217,11 @@ int Round::pickRandIndex(int maxsize) {
         std::cin.ignore();
         loopRound(leaderFamily, *currentQuestion, f1, f2);
 
-        generateSpecialQuestion(leaderFamily, *currentQuestion);
+        this->generateSpecialQuestion(leaderFamily, *currentQuestion);
+
+
         if (checkIfDerived(*currentQuestion)) {
-            if (leaderFamily->useQuestion(*currentQuestion)) {
+
                 std::cout<<*currentQuestion;
                 getAnswerFromPlayer(answer, leaderFamily->get_players()[0]);
                 if (currentQuestion->isAnswerRight(answer, givenScore, givenAns)) {
@@ -235,7 +232,7 @@ int Round::pickRandIndex(int maxsize) {
                     delete qk;
 
                 }
-            }
+
         }
 
     }
