@@ -18,7 +18,7 @@ const std::string& QuestionKiller::get_question_text(){
                "               Question Killer\n"
                "-----------------------------------------------------------------------------------------------------\n"
                "               Acesta este un QuestionKiller. Raspunsul tau le poate scadea celeilalte familii din punctaj\n"
-                "              cu 50% din punctajul maxim al intrebarii, daca raspunsul este corect."
+                "              cu 10% din punctajul maxim al intrebarii, daca raspunsul este corect."
                "               Le poate oferi randul de a raspunde imediat celeilalte familii. Este permis un singur strike.\n"
                "-----------------------------------------------------------------------------------------------------\n"
                 + m_text;

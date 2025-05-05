@@ -1,64 +1,94 @@
-{"intrebari":
-[
-  {
-    "intrebare": "Ce devine mai ud cu cat se usuca mai mult?",
-    "raspunsuri": [
-      {"raspuns": "Prosop", "punctaj": 1}
-    ]
-  },
-  {
-    "intrebare": "Ce poti prinde dar nu poti arunca?",
-    "raspunsuri": [
-      {"raspuns": "Raceala", "punctaj": 1}
-    ]
-  },
-  {
-    "intrebare": "Ce are orase dar nu are case, are paduri dar nu are copaci?",
-    "raspunsuri": [
-      {"raspuns": "Harta", "punctaj": 1}
-    ]
-  },
-  {
-    "intrebare": "Ce trece prin oras fara sa se miste?",
-    "raspunsuri": [
-      {"raspuns": "Strada", "punctaj": 1}
-    ]
-  },
-  {
-    "intrebare": "Ce se sparge cand ii spui numele?",
-    "raspunsuri": [
-      {"raspuns": "Tacerea", "punctaj": 1}
-    ]
-  },
-  {
-    "intrebare": "Ce poate calatori in jurul lumii ramanand intr-un colt?",
-    "raspunsuri": [
-      {"raspuns": "Timbru", "punctaj": 1}
-    ]
-  },
-  {
-    "intrebare": "Ce are maini dar nu poate aplauda?",
-    "raspunsuri": [
-      {"raspuns": "Ceas", "punctaj": 1}
-    ]
-  },
-  {
-    "intrebare": "Ce umple o camera dar nu ocupa spatiu?",
-    "raspunsuri": [
-      {"raspuns": "Lumina", "punctaj": 1}
-    ]
-  },
-  {
-    "intrebare": "Ce creste doar in jos?",
-    "raspunsuri": [
-      {"raspuns": "Radacina", "punctaj": 1}
-    ]
-  },
-  {
-    "intrebare": "Ce are cap dar nu creier?",
-    "raspunsuri": [
-      {"raspuns": "Pumn", "punctaj": 1}
-    ]
-  }
-]
+{
+  "intrebari": [
+    {
+      "intrebare": "Ce devine mai ud cu cat se usuca mai mult?",
+      "raspunsuri": [
+        {
+          "raspuns": "Prosop",
+          "punctaj": 1
+        }
+      ]
+    },
+    {
+      "intrebare": "Ce poti prinde dar nu poti arunca?",
+      "raspunsuri": [
+        {
+          "raspuns": "Raceala",
+          "punctaj": 1
+        }
+      ]
+    },
+    {
+      "intrebare": "Ce are orase dar nu are case, are paduri dar nu are copaci?",
+      "raspunsuri": [
+        {
+          "raspuns": "Harta",
+          "punctaj": 1
+        }
+      ]
+    },
+    {
+      "intrebare": "Ce trece prin oras fara sa se miste?",
+      "raspunsuri": [
+        {
+          "raspuns": "Strada",
+          "punctaj": 1
+        }
+      ]
+    },
+    {
+      "intrebare": "Ce se sparge cand ii spui numele?",
+      "raspunsuri": [
+        {
+          "raspuns": "Tacerea",
+          "punctaj": 1
+        }
+      ]
+    },
+    {
+      "intrebare": "Ce poate calatori in jurul lumii ramanand intr-un colt?",
+      "raspunsuri": [
+        {
+          "raspuns": "Timbru",
+          "punctaj": 1
+        }
+      ]
+    },
+    {
+      "intrebare": "Ce are maini dar nu poate aplauda?",
+      "raspunsuri": [
+        {
+          "raspuns": "Ceas",
+          "punctaj": 1
+        }
+      ]
+    },
+    {
+      "intrebare": "Ce umple o camera dar nu ocupa spatiu?",
+      "raspunsuri": [
+        {
+          "raspuns": "Lumina",
+          "punctaj": 1
+        }
+      ]
+    },
+    {
+      "intrebare": "Ce creste doar in jos?",
+      "raspunsuri": [
+        {
+          "raspuns": "Radacina",
+          "punctaj": 1
+        }
+      ]
+    },
+    {
+      "intrebare": "Ce are cap dar nu creier?",
+      "raspunsuri": [
+        {
+          "raspuns": "Pumn",
+          "punctaj": 1
+        }
+      ]
+    }
+  ]
 }

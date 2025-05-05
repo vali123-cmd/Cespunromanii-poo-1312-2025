@@ -32,10 +32,8 @@ bool QuestionRandBonus::useQuestion(Family &f) {
     {
         return false;
     }
-
-
-        std::cout<<"Raspuns invalid. Te rugam sa introduci 'da' sau 'nu'."<<std::endl;
-        return useQuestion(f);
+    std::cout<<"Raspuns invalid. Te rugam sa introduci 'da' sau 'nu'."<<std::endl;
+    return useQuestion(f);
 
 }
 
@@ -48,8 +46,7 @@ double QuestionRandBonus::generateBonus() {
 void QuestionRandBonus::takeAction(Family& leaderFamily, Family&, Family&) {
     const int rb = static_cast<int>(generateBonus());
     leaderFamily.set_family_score((100+rb)*leaderFamily.get_family_score()/100);
-
-
+    std::cout<<"Ai primit un bonus de "<<rb<<"%"<<std::endl;
 }
 QuestionRandBonus::QuestionRandBonus(const std::string &text_, const std::vector<std::pair<std::string, int> > &answers_):
         Question(text_, answers_) {
@@ -61,8 +58,10 @@ bool QuestionRandBonus::isAnswerRight(std::string &userString, int &score, std::
         if (userString == answer.first) {
             foundAnswer = answer.first;
             score = static_cast<int>(generateBonus());
+            std::cout<<"Raspuns corect"<<std::endl;
             return true;
         }
     }
+    std::cout<<"Raspuns gresit"<<std::endl;
     return false;
 }

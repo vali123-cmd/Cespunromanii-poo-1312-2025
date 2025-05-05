@@ -22,6 +22,8 @@ void Round::printCurrentAnswers() {
         std::cout<<"Doriti sa vedeti toate raspunsurile posibile la intrebarea primita?"<<'\n';
         std::string see_all_answers;
         std::cin>>see_all_answers;
+        std::cin.ignore();
+        std::cin.clear();
         if(see_all_answers == "da") {
             std::cout<<"BAREMUL DE RASPUNSURI: ";
             for (const auto& item: question.get_answers()) {
@@ -161,8 +163,8 @@ int Round::pickRandIndex(int maxsize) {
         dynamic_cast<const QuestionOptional*>(&question) != nullptr ||
         dynamic_cast<const QuestionRandBonus*>(&question) != nullptr);
     }
-    void Round::generateSpecialQuestion(Family* , Question&) {
-
+    Question* Round::generateSpecialQuestion(Family*) {
+        return nullptr;
     }
 
     void Round::loopRound(Family *&leaderFamily, Question &currentQuestion_, Family &f1, Family &f2) {
@@ -194,7 +196,9 @@ int Round::pickRandIndex(int maxsize) {
             break;
         }
     }
-    std::cout<<"Noua familie a primit si ea 3 strikes. Runda s-a terminat!"<<'\n';
+    if (leaderFamily->checkStrikes() == 1) {
+        std::cout<<"Noua familie a primit si ea 3 strikes. Runda s-a terminat!"<<'\n';
+    }
     leaderFamily->resetStrikes();
     leaderFamily->set_family_score(leaderFamily->get_family_score());
 
@@ -217,7 +221,9 @@ int Round::pickRandIndex(int maxsize) {
         std::cin.ignore();
         loopRound(leaderFamily, *currentQuestion, f1, f2);
 
-        this->generateSpecialQuestion(leaderFamily, *currentQuestion);
+        currentQuestion = generateSpecialQuestion(leaderFamily);
+
+
 
 
         if (checkIfDerived(*currentQuestion)) {
@@ -229,7 +235,7 @@ int Round::pickRandIndex(int maxsize) {
                 }
                 else if (const auto* qk = dynamic_cast<QuestionKiller*>(currentQuestion)) {
                     QuestionKiller::takeActionNegative(*leaderFamily);
-                    delete qk;
+
 
                 }
 

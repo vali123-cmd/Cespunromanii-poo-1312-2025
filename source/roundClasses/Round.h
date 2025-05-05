@@ -33,7 +33,7 @@ class Round {
     void pickBonus(int& bonus_multiplier);
     void printCurrentAnswers();
     void printAllAnswers(const Question& question);
-    virtual void generateSpecialQuestion(Family*, Question&);
+    virtual Question* generateSpecialQuestion(Family*);
     static bool checkIfDerived(const Question& question);
 
 

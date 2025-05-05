@@ -22,8 +22,7 @@ const std::string& QuestionOptional::get_question_text() {
 QuestionOptional::QuestionOptional(const std::string &text_, const std::vector<std::pair<std::string, int> > &answers_):
 
 Question(text_, answers_) {
-    // Constructorul clasei de baza este apelat automat
-    // Nu este nevoie sa facem nimic aici
+
 
 }
 bool QuestionOptional::useQuestion(Family &f) {
@@ -43,14 +42,18 @@ bool QuestionOptional::useQuestion(Family &f) {
     return useQuestion(f);
 }
 bool QuestionOptional::isAnswerRight(std::string &userString, int &score, std::string &foundAnswer) {
-    std::cout<<"Raspuns corect! Felicitari!"<<'\n';
-    foundAnswer = userString;
-    score = 10;
-    std::cout<<"Scorul tau a crescut cu 10%!"<<'\n';
-    return true;
+    if (foundAnswer == answers[0].first) {
+        std::cout<<"Raspuns corect"<<std::endl;
+        std::cout<<"Scorul tau va fi marit cu 5%."<<std::endl;
+        return true;
+    }
+
+    std::cout<<"Raspuns gresit"<<std::endl;
+
+    return false;
 
 }
 void QuestionOptional::takeAction(Family &leaderFamily, Family&, Family&) {
-    leaderFamily.set_family_score(110*leaderFamily.get_family_score()/100);
+    leaderFamily.set_family_score(105*leaderFamily.get_family_score()/100);
 
 }

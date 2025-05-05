@@ -17,7 +17,7 @@ SpecialRound::SpecialRound(int round_id_, json &data_, json &dataQO_, json &data
 
 }
 
-void SpecialRound::generateSpecialQuestion(Family*, Question& question) {
+Question* SpecialRound::generateSpecialQuestion(Family*) {
     int randomDerived = pickRandIndex(NUMBER_OF_DERIVED);
 
     Question* q;
@@ -25,24 +25,27 @@ void SpecialRound::generateSpecialQuestion(Family*, Question& question) {
     std::vector<std::pair<std::string, int>> answers;
     switch (randomDerived) {
         case 0:
+            std::cout<<"Intrebare optionala"<<std::endl;
             dataSetup(answers, text, dataQO);
+
             q = new QuestionOptional(text, answers);
             break;
         case 1:
+            std::cout<<"Intrebare killer"<<std::endl;
             dataSetup(answers, text, dataQRB);
+
             q = new QuestionKiller(text, answers);
             break;
         case 2:
+            std::cout<<"Intrebare bonus"<<std::endl;
             dataSetup(answers, text, dataQK);
+
             q = new QuestionRandBonus(text, answers);
             break;
         default:
             throw OutOfRangeException(0, NUMBER_OF_DERIVED);
-
     }
-    question = *q;
-
-    delete q;
+    return q;
 
 }
 

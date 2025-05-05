@@ -14,8 +14,6 @@ intre 0 si 10%. ACEASTA VA FI O INTREBARE DE LOGICA
 
 class QuestionRandBonus : public Question
 {
-
-
     const std::string& get_question_text() override;
 public:
     bool useQuestion(Family &f) override;
