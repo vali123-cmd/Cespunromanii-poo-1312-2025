@@ -233,7 +233,7 @@ int Round::pickRandIndex(int maxsize) {
                 if (currentQuestion->isAnswerRight(answer, givenScore, givenAns)) {
                     currentQuestion->takeAction(*leaderFamily, f1, f2);
                 }
-                else if (const auto* qk = dynamic_cast<QuestionKiller*>(currentQuestion)) {
+                else if (dynamic_cast<QuestionKiller*>(currentQuestion)) {
                     QuestionKiller::takeActionNegative(*leaderFamily);
 
 

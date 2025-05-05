@@ -41,10 +41,10 @@ bool QuestionOptional::useQuestion(Family &f) {
     std::cout<<"Raspuns invalid. Te rugam sa introduci 'da' sau 'nu'."<<std::endl;
     return useQuestion(f);
 }
-bool QuestionOptional::isAnswerRight(std::string &userString, int &score, std::string &foundAnswer) {
-    if (foundAnswer == answers[0].first) {
+bool QuestionOptional::isAnswerRight(std::string &userString_, int &score_, std::string &foundAnswer) {
+    if (foundAnswer == answers[0].first and userString_ == answers[0].first) {
         std::cout<<"Raspuns corect"<<std::endl;
-        std::cout<<"Scorul tau va fi marit cu 5%."<<std::endl;
+        std::cout<<"Scorul tau"<<score_<<" va fi marit cu 5%."<<std::endl;
         return true;
     }
 
