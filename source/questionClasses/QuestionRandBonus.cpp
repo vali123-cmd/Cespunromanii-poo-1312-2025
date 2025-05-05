@@ -52,12 +52,12 @@ QuestionRandBonus::QuestionRandBonus(const std::string &text_, const std::vector
         Question(text_, answers_) {
 }
 
-bool QuestionRandBonus::isAnswerRight(std::string &userString, int &score, std::string &foundAnswer) {
+bool QuestionRandBonus::isAnswerRight(std::string &userString_, int &score_, std::string &foundAnswer) {
     // Verificam daca raspunsul este corect
     for (const auto& answer : answers) {
-        if (userString == answer.first) {
+        if (userString_ == answer.first) {
             foundAnswer = answer.first;
-            score = static_cast<int>(generateBonus());
+            score_ = static_cast<int>(generateBonus());
             std::cout<<"Raspuns corect"<<std::endl;
             return true;
         }
