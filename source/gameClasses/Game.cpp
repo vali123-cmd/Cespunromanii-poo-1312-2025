@@ -143,7 +143,7 @@ void Game::saveWinnerScores( Family& winnerFamily)
 
 std::ostream& operator<<(std::ostream& os, const Game &g) {
     os<<"Game currently initiated and running. Enjoy! -From Cabral himself. Captains: "<<'\n';
-        const std::string CabralART =
+       /* const std::string CabralART =
         "...................................:*###****+======+**+++=-......................................... \n"
         "..................................=+*##**#####*++*###*++===-........................................ \n"
         "..................................+**##*****+**+=+**+++++==:........................................ \n"
@@ -181,7 +181,7 @@ std::ostream& operator<<(std::ostream& os, const Game &g) {
         "..........=%%%%%############%#####**+-::::::::::::::+#++=:+++++++*=.:+*++++*****+:............\n";
 
     // Output the ASCII art
-    os << CabralART;
+    os << CabralART; */
     os<<g.players1[0]<<'\n'<<g.players2[0]<<'\n';
 
     return os;
