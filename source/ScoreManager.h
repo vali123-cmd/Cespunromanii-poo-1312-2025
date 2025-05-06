@@ -4,7 +4,7 @@
 #include <unordered_map>
 
 class ScoreManager {
-private:
+
     std::string filename;
 
 public:
@@ -14,5 +14,6 @@ public:
     std::unordered_map<std::string, int> loadScores();
     void printScores();
     void clearScores();
+
 
 };

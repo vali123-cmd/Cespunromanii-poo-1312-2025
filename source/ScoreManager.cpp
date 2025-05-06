@@ -7,7 +7,9 @@
 #include <iostream>
 #include <json.hpp>
 
-ScoreManager::ScoreManager(const std::string& file) : filename(file) {}
+ScoreManager::ScoreManager( const std::string& file) : filename(file) {
+
+}
 
 void ScoreManager::saveScores(const std::unordered_map<std::string, int>& scores) {
     nlohmann::json j;
@@ -59,4 +61,3 @@ void ScoreManager::clearScores() {
         std::cerr << "Failed to open " << filename << " for writing.\n";
     }
 }
-
