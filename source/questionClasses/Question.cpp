@@ -24,6 +24,16 @@ void Question::takeAction(Family &leaderFamily, Family &f1, Family &f2) {
 
 }
 
+    void swap(Question &lhs, Question &rhs) noexcept {
+    using std::swap;
+    swap(lhs.m_text, rhs.m_text);
+    swap(lhs.answers, rhs.answers);
+}
+
+Question::Question(Question &&other) noexcept
+        : m_text(std::move(other.m_text)),
+          answers(std::move(other.answers)) {
+}
 
 void Question::formatAnswer(std::string& s) {
 

@@ -41,6 +41,13 @@ public:
     Question(const Question &other);
     virtual ~Question() = default;
 
+    friend void swap(Question &lhs, Question &rhs);
+
+    Question(Question &&other);
+
+
+
+
     Question &operator=(const Question &other);
     friend std::ostream& operator<<(std::ostream& os, Question& q);
 };

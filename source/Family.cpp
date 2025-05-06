@@ -80,3 +80,11 @@ std::ostream& operator<<(std::ostream &os, const Family &family) {
 bool Family::operator==(const Family& f1)  const {
     return this == &f1;
 }
+
+void swap(Family &lhs, Family &rhs) noexcept {
+    using std::swap;
+    swap(lhs.family_name, rhs.family_name);
+    swap(lhs.family_score, rhs.family_score);
+    swap(lhs.strikes, rhs.strikes);
+    swap(lhs.players, rhs.players);
+}
