@@ -25,9 +25,11 @@
     void Game::establishWinner(Family &firstFam, Family &secondFam)  {
         if(firstFam.get_family_score()>secondFam.get_family_score()) {
             std::cout<<"Familia "<<firstFam.get_family_name()<<" a castigat!"<<'\n';
+            saveWinnerScores(firstFam);
         }
         else {
             std::cout<<"Familia "<<secondFam.get_family_name()<<" a castigat!"<<'\n';
+            saveWinnerScores(secondFam);
         }
     }
 
@@ -81,6 +83,7 @@ void Game::playGame() {
         Family secondFam(family2, 0, players2);
         makeRounds(firstFam, secondFam);
         establishWinner(firstFam, secondFam);
+
         playAgain();
     }
     void Game::playAgain() {
@@ -106,6 +109,25 @@ void Game::playGame() {
             std::cout<<"Multumim pentru participare!"<<'\n';
         }
     }
+void Game::saveWinnerScores( Family& winnerFamily)
+{
+    ScoreManager scoreManager("scores.json");
+    std::unordered_map<std::string, int> scores = scoreManager.loadScores();
+    std::string winnerName = winnerFamily.get_family_name();
+    int winnerScore = winnerFamily.get_family_score();
+
+    scores[winnerName] = winnerScore;
+    scoreManager.saveScores(scores);
+        std::cout<<"Acestea sunt scorurile inregistrate pe acest PC local:"<<'\n';
+        scoreManager.printScores();
+        std::cout<<"Doresti sa stergi scorurile? Da/Nu"<<'\n';
+        std::string answer;
+        std::cin>>answer;
+        if (answer == "Da") {
+            scoreManager.clearScores();
+        }
+}
+
 
 
 

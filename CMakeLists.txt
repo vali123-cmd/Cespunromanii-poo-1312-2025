@@ -115,6 +115,8 @@ set(SOURCES
         source/exceptions/AITimeoutException.h
         source/exceptions/OutOfRangeException.cpp
         source/exceptions/OutOfRangeException.h
+        source/ScoreManager.cpp
+        source/ScoreManager.h
 
 )
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here

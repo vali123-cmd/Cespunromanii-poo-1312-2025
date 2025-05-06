@@ -3,12 +3,14 @@
 //
 #pragma once
 
+#include <iostream>
 #include <json.hpp>
 
 
 #include "Player.h"
 #include "roundClasses/Round.h"
 #include "Family.h"
+#include "ScoreManager.h"
 using json = nlohmann::json;
 
 class Game {
@@ -30,6 +32,8 @@ class Game {
 
 
     static bool getRandomBool();
+
+    static void saveWinnerScores( Family& winnerFamily);
 protected:
     std::vector<Player> players1;
     std::vector<Player> players2;
