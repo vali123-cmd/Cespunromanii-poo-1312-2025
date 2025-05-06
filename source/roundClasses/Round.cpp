@@ -1,3 +1,4 @@
+// cppcheck-suppress buildinclude
 //
 // Created by Vali on 05/04/2025.
 //
@@ -280,6 +281,19 @@ int Round::pickRandIndex(int maxsize) {
         return *this;
     }
 
+    void swap(Round &lhs , Round &rhs) noexcept {
+        using std::swap;
+        swap(lhs.round_id, rhs.round_id);
+        swap(lhs.answers_given, rhs.answers_given);
+        swap(lhs.currentQuestion, rhs.currentQuestion);
+        swap(lhs.answer, rhs.answer);
+        swap(lhs.givenAns, rhs.givenAns);
+        swap(lhs.family_switched, rhs.family_switched);
+        swap(lhs.givenScore, rhs.givenScore);
+        swap(lhs.bonus_multiplier, rhs.bonus_multiplier);
+        swap(lhs.terminateRound, rhs.terminateRound);
+    }
+
     std::ostream& operator<<(std::ostream& os, const Round& q) {
         os<<q.get_round_id()<<'\n'<<q.answers_given[0].first;
         return os;
@@ -287,4 +301,5 @@ int Round::pickRandIndex(int maxsize) {
     /* Scopul constructorului de copiere, ti-au placut intrebarile dintr-o runda si vrei sa
      * o poti da si altor oameni/prieteni sa o joace sau optiune de 'Genereaza runda custom
      * pe baza acestei runde!' */
+
 

@@ -16,9 +16,20 @@ class SpecialRound : public Round {
 
 public:
     SpecialRound(int round_id_, json& data_, json &dataQO_, json &dataQK, json &dataQRB);
+    ~SpecialRound() override = default;
+ SpecialRound(const SpecialRound &other)
+    : Round(other),
+      dataQO(other.dataQO),
+          dataQK(other.dataQK),
+          dataQRB(other.dataQRB),
+          NUMBER_OF_DERIVED(other.NUMBER_OF_DERIVED) {
+    }
 
-
-
+    SpecialRound & operator=(SpecialRound other) {
+        using std::swap;
+        swap(*this, other);
+        return *this;
+    }
 };
 
 

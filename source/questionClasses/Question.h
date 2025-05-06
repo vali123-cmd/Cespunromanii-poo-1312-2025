@@ -24,6 +24,8 @@ protected:
     std::string m_text;
     std::vector<std::pair<std::string, int>> answers;
 public:
+
+
     virtual bool useQuestion(Family& family);
 
     virtual void takeAction(Family& leaderFamily, Family &f1, Family& f2);

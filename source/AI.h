@@ -13,9 +13,6 @@ public:
     static void switchAIErrors();
     float getScore(const std::string& word1, const std::string& word2) const;
 
-
-
-
 };
 
 

@@ -68,6 +68,8 @@ public:
 
     Round &operator=(const Round &other);
 
+    friend void swap(Round &lhs, Round &rhs) noexcept;
+
     friend std::ostream& operator<<(std::ostream& os, const Round& q);
 };
 
