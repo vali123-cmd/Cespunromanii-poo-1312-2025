@@ -117,6 +117,8 @@ set(SOURCES
         source/exceptions/OutOfRangeException.h
         source/ScoreManager.cpp
         source/ScoreManager.h
+        source/ClipArts.cpp
+        source/ClipArts.h
 
 )
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
