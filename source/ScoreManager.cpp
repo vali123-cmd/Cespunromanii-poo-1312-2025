@@ -61,3 +61,15 @@ void ScoreManager::clearScores() {
         std::cerr << "Failed to open " << filename << " for writing.\n";
     }
 }
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//ScoreManager este o clasa care gestioneaza scorurile jucatorilor.
+// Aceasta clasa are metode pentru a salva, incarca, afisa si sterge scorurile.
+// Scorurile sunt salvate intr-un fisier JSON, iar fiecare jucator are un nume si un scor.
+// Metoda saveScores salveaza scorurile intr-un fisier JSON.
+// Metoda loadScores incarca scorurile din fisierul JSON.
+// Metoda printScores afiseaza scorurile jucatorilor.
+// Metoda clearScores sterge scorurile din fisierul JSON.
+////////////////////////////////////////////////////////////////////////////////////////////////
