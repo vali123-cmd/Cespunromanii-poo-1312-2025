@@ -10,6 +10,7 @@
 #include "Family.h"
 
 #include "questionClasses/QuestionKiller.h"
+#include "questionClasses/QuestionMath.h"
 #include "questionClasses/QuestionOptional.h"
 #include "questionClasses/QuestionRandBonus.h"
 
@@ -162,7 +163,8 @@ int Round::pickRandIndex(int maxsize) {
     bool Round::checkIfDerived(const Question& question) {
     return (dynamic_cast<const QuestionKiller*>(&question) != nullptr ||
         dynamic_cast<const QuestionOptional*>(&question) != nullptr ||
-        dynamic_cast<const QuestionRandBonus*>(&question) != nullptr);
+        dynamic_cast<const QuestionRandBonus*>(&question) != nullptr) ||
+            dynamic_cast<const QuestionMath*>(&question) != nullptr;
     }
     Question* Round::generateSpecialQuestion(Family*) {
         return nullptr;

@@ -17,6 +17,7 @@ void SpecialGame::initFiles() {
         parseJson("killerQresources.json", dataQK);
         parseJson("QOresources.json", dataQO);
         parseJson("QRBresources.json", dataQRB);
+        parseJson("QMresources.json", dataQM);
     } catch (const FileReadException& e) {
         std::cerr << e.what() << '\n';
     }
@@ -24,7 +25,7 @@ void SpecialGame::initFiles() {
 
 void SpecialGame::makeRounds(Family &f1, Family &f2)  {
     for (int i = 1;i<=6;i++) {
-        round = new SpecialRound(i, data, dataQK, dataQO, dataQRB);
+        round = new SpecialRound(i, data, dataQK, dataQO, dataQRB, dataQM);
         round->playRound(f1,f2);
         delete round;
     }

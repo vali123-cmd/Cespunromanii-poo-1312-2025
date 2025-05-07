@@ -11,11 +11,12 @@ class SpecialRound : public Round {
     json dataQO;
     json dataQK;
     json dataQRB;
-    const int NUMBER_OF_DERIVED = 3; //de modificat daca se adauga tipuri de intrebari noi
+    json dataQM;
+    const int NUMBER_OF_DERIVED = 4; //de modificat daca se adauga tipuri de intrebari noi
     Question* generateSpecialQuestion(Family*) override;
 
 public:
-    SpecialRound(int round_id_, json& data_, json &dataQO_, json &dataQK, json &dataQRB);
+    SpecialRound(int round_id_, json& data_, json &dataQO_, json &dataQK, json &dataQRB, json& dataQM);
     ~SpecialRound() override = default;
  SpecialRound(const SpecialRound &other)
     : Round(other),

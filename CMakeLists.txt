@@ -119,6 +119,8 @@ set(SOURCES
         source/ScoreManager.h
         source/ClipArts.cpp
         source/ClipArts.h
+        source/questionClasses/QuestionMath.cpp
+        source/questionClasses/QuestionMath.h
 
 )
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here

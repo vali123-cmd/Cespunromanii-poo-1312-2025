@@ -1,0 +1,94 @@
+{
+  "intrebari": [
+    {
+      "intrebare": "Cât este 7 + 8?",
+      "raspunsuri": [
+        {
+          "raspuns": "15",
+          "punctaj": 1
+        }
+      ]
+    },
+    {
+      "intrebare": "Care este rezultatul înmulțirii 6 × 9?",
+      "raspunsuri": [
+        {
+          "raspuns": "54",
+          "punctaj": 1
+        }
+      ]
+    },
+    {
+      "intrebare": "Ce este 100 împărțit la 4?",
+      "raspunsuri": [
+        {
+          "raspuns": "25",
+          "punctaj": 1
+        }
+      ]
+    },
+    {
+      "intrebare": "Cât este pătratul lui 12?",
+      "raspunsuri": [
+        {
+          "raspuns": "144",
+          "punctaj": 1
+        }
+      ]
+    },
+    {
+      "intrebare": "Care este valoarea lui π (pi) aproximativă până la două zecimale?",
+      "raspunsuri": [
+        {
+          "raspuns": "3.14",
+          "punctaj": 1
+        }
+      ]
+    },
+    {
+      "intrebare": "Cât este 5 la puterea a treia?",
+      "raspunsuri": [
+        {
+          "raspuns": "125",
+          "punctaj": 1
+        }
+      ]
+    },
+    {
+      "intrebare": "Care este media aritmetică a numerelor 4, 8 și 12?",
+      "raspunsuri": [
+        {
+          "raspuns": "8",
+          "punctaj": 1
+        }
+      ]
+    },
+    {
+      "intrebare": "Cât este 81 rădăcină pătrată?",
+      "raspunsuri": [
+        {
+          "raspuns": "9",
+          "punctaj": 1
+        }
+      ]
+    },
+    {
+      "intrebare": "Care este perimetrul unui pătrat cu latura de 6 cm?",
+      "raspunsuri": [
+        {
+          "raspuns": "24",
+          "punctaj": 1
+        }
+      ]
+    },
+    {
+      "intrebare": "Cât face 3 + 4 × 2?",
+      "raspunsuri": [
+        {
+          "raspuns": "11",
+          "punctaj": 1
+        }
+      ]
+    }
+  ]
+}

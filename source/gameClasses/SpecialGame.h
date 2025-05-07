@@ -13,6 +13,7 @@ class SpecialGame : public Game {
     nlohmann::json dataQK;
     nlohmann::json dataQO;
     nlohmann::json dataQRB;
+    nlohmann::json dataQM;
     void initFiles() override;
     void makeRounds(Family &f1, Family &f2)  override;
 
