@@ -41,9 +41,9 @@ public:
     Question(const Question &other);
     virtual ~Question() = default;
 
-    friend void swap(Question &lhs, Question &rhs);
+    friend void swap(Question &lhs, Question &rhs) noexcept;
 
-    Question(Question &&other);
+    Question(Question &&other) noexcept;
 
 
 
