@@ -13,7 +13,7 @@
 #include "ScoreManager.h"
 using json = nlohmann::json;
 
-class Game {
+class GameStars {
 
 
     static void establishWinner(Family &f1, Family &f2);
@@ -45,9 +45,9 @@ protected:
 public:
     void playGame();
 
-    virtual ~Game() = default;
+    virtual ~GameStars() = default;
 
-    friend std::ostream& operator<<(std::ostream& os, const Game &g);
+    friend std::ostream& operator<<(std::ostream& os, const GameStars &g);
 
 
 };

@@ -2,7 +2,7 @@
 // Created by Vali on 05/04/2025.
 //
 
-#include "Game.h"
+#include "GameStars.h"
 
 #include <iostream>
 #include <vector>
@@ -22,7 +22,7 @@
 
         return 1;
     }*/
-    void Game::establishWinner(Family &firstFam, Family &secondFam)  {
+    void GameStars::establishWinner(Family &firstFam, Family &secondFam)  {
         if(firstFam.get_family_score()>secondFam.get_family_score()) {
             std::cout<<"Familia "<<firstFam.get_family_name()<<" a castigat!"<<'\n';
             saveWinnerScores(firstFam);
@@ -33,11 +33,11 @@
         }
     }
 
-    void Game::askForAI() {
+    void GameStars::askForAI() {
         AI helper;
         AI::switchAIErrors();
     }
-    void Game::setUp(std::string& family1, std::string& family2) {
+    void GameStars::setUp(std::string& family1, std::string& family2) {
         std::cout << "Salut! Bine ai venit la Family feud/(Ce spun romanii?)! Eu sunt gazda emisiunii, Cabral./"
                 "Te rog sa introduci mai jos numele celor doua familii:" << '\n';
         std::cout << "Nume familie 1: " << '\n';
@@ -45,7 +45,7 @@
         std::cout << "Nume familie 2: " << '\n';
         std::cin >> family2;
     }
-    void Game::initPlayers(std::vector<Player>& players_, const std::string& family_name)
+    void GameStars::initPlayers(std::vector<Player>& players_, const std::string& family_name)
     {
         std::cout << "Introdu 5 membri ai familiei: " << '\n';
         for (int i=0;i<5;i++) {
@@ -57,7 +57,7 @@
 
         }
     }
-    void Game::parseJson(const std::string& filePath, json& data_) {
+    void GameStars::parseJson(const std::string& filePath, json& data_) {
         std::ifstream file(filePath);
     if (!file.is_open()) {
         throw FileReadException("Nu am putut deschide fisierul.");
@@ -66,10 +66,10 @@
     file >> data_;
     file.close();
     }
-void Game::initFiles() {
+void GameStars::initFiles() {
         parseJson("intrebari.json", data);
     }
-void Game::playGame() {
+void GameStars::playGame() {
 
         std::string family1;
         std::string family2;
@@ -86,7 +86,7 @@ void Game::playGame() {
 
         playAgain();
     }
-    void Game::playAgain() {
+    void GameStars::playAgain() {
         std::cout<<"Doriti sa jucati din nou? Da/Nu"<<'\n';
         std::string answer;
         std::cin>>answer;
@@ -109,7 +109,7 @@ void Game::playGame() {
             std::cout<<"Multumim pentru participare!"<<'\n';
         }
     }
-void Game::saveWinnerScores( Family& winnerFamily)
+void GameStars::saveWinnerScores( Family& winnerFamily)
 {
     ScoreManager scoreManager("scores.json");
     std::unordered_map<std::string, int> scores = scoreManager.loadScores();
@@ -141,7 +141,7 @@ void Game::saveWinnerScores( Family& winnerFamily)
     }
 */
 
-std::ostream& operator<<(std::ostream& os, const Game &g) {
+std::ostream& operator<<(std::ostream& os, const GameStars &g) {
     os<<"Game currently initiated and running. Enjoy! -From Cabral himself. Captains: "<<'\n';
         const std::string CabralART =
         "...................................:*###****+======+**+++=-......................................... \n"
