@@ -117,10 +117,12 @@ void Question::formatAnswer(std::string& s) {
                     return p.first == item.first;
                 }));
                 ai->disconnect();
+
                 return 1;
             }
         }
         ai->disconnect();
+        pool.releaseConnection(ai);
         return 0;
     }
 

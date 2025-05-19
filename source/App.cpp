@@ -19,13 +19,11 @@ App& App::getInstance() {
 }
 
 void App::run() {
-     std::ifstream file("intrebari.json");
+
     ClipArts art;
     art.printLogo();
 
-    if (!file.is_open()) {
-       throw FileReadException("intrebari.json");
-    }
+
     std::string gameType;
     std::cout << "Introdu tipul jocului (Normal/Special): ";
     std::cin>> gameType;
@@ -59,7 +57,7 @@ void App::run() {
     std::cout << "+++++++++++++++++++++++++++++++++++++++++++++++======++++++++++++++++++++++++++++++++++++++++=++++=+\n";
         game = new SpecialGame();
     }
-    file.close();
+
     game->playGame();
 
     delete game;
