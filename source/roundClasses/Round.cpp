@@ -304,7 +304,7 @@ int Round::pickRandIndex(int maxsize) {
 
     /* Scopul constructorului de copiere, ti-au placut intrebarile dintr-o runda si vrei sa
      * o poti da si altor oameni/prieteni sa o joace sau optiune de 'Genereaza runda custom
-     * pe baza acestei runde!' */
+     * pe baza acestei runde' */
 
 
 std::ostream& operator<<(std::ostream& os, const Round& q) {
