@@ -61,7 +61,7 @@
         std::ifstream file(filePath);
     if (!file.is_open()) {
         throw FileReadException("Nu am putut deschide fisierul." + filePath);
-        //NOTA: De inchis fereastra atunci cand se intampla asta.
+        //NOTA: De inchis fereastra atunci cand se intampla asta
     }
     file >> data_;
     file.close();
