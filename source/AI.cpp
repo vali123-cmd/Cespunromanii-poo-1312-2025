@@ -19,7 +19,7 @@ void AI::switchAIErrors() {
 
 float AI::getScore(const std::string& word1, const std::string& word2) const {
     std::string prompt = std::string("cat de similare sunt urmatoarele cuvinte ca sens, cuvintele sunt in limba romana:  ") + word1 + " " + word2+
-        "raspunde cu un numar real intre 0 si 1, vreau doar numarul in formmatul 0.xx";
+        "raspunde cu un numar real intre 0 si 1, vreau doar numarul in formatul 0.xx";
 
 
     cpr::Url api_link = api_url;

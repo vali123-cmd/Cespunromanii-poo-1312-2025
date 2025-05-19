@@ -60,7 +60,7 @@
     void Game::parseJson(const std::string& filePath, json& data_) {
         std::ifstream file(filePath);
     if (!file.is_open()) {
-        throw FileReadException("Nu am putut deschide fisierul.");
+        throw FileReadException("Nu am putut deschide fisierul." + filePath);
         //NOTA: De inchis fereastra atunci cand se intampla asta.
     }
     file >> data_;
