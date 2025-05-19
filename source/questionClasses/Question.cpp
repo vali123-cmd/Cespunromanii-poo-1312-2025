@@ -6,8 +6,10 @@
 
 #include <algorithm>
 #include <iostream>
+#include <utility>
 
 #include "AI.h"
+#include "AIConnectionPool.h"
 class Family;
 
 
@@ -76,8 +78,8 @@ void Question::formatAnswer(std::string& s) {
         //TODO: Comportament neasteptat pentru raspunsuri absolut identice ???! (de verificat)
     }
 
-     Question::Question(const std::string& text_, const std::vector<std::pair<std::string, int>>& answers_):
-    m_text(text_), answers(answers_) {
+     Question::Question(std::string  text_, const std::vector<std::pair<std::string, int>>& answers_):
+    m_text(std::move(text_)), answers(answers_) {
     }
 
     [[nodiscard]] const std::string& Question::get_question_text() {
@@ -88,16 +90,25 @@ void Question::formatAnswer(std::string& s) {
         return answers;
     }
 
+    Question* Question::clone() const {
+    return new Question(*this);
+
+
+};
+
     bool Question::isAnswerRight(std::string& userString, int& score, std::string& foundAnswer) {
         //formatare pentru precizie mai buna cu ajutorul formatAnswer().
         formatAnswer(userString);
 
-        AI helper; //daca nu s-a creat serverul AI va intoarce automat -1.
+        AIConnectionPool pool;
+        AI* ai = pool.getConnection();
+        ai->connect();
+
 
         for (const auto& item : answers) {
 
 
-            if (similarity_percentage(userString, item.first) > 70 or helper.getScore(userString, item.first) > 70) {
+            if (similarity_percentage(userString, item.first) > 70 or ai->getScore(userString, item.first) > 70) {
                 //NOTA: 70% este un prag de similaritate,poate varia in urmatoarele release-uri,
                 //in viitor vom folosi un AI pentru a calcula procentul de similaritate.
                 score = item.second;
@@ -105,9 +116,11 @@ void Question::formatAnswer(std::string& s) {
                 answers.erase(std::find_if(answers.begin(), answers.end(),[&](const std::pair<std::string, int>& p) {
                     return p.first == item.first;
                 }));
+                ai->disconnect();
                 return 1;
             }
         }
+        ai->disconnect();
         return 0;
     }
 

@@ -19,7 +19,7 @@ void AI::switchAIErrors() {
 
 float AI::getScore(const std::string& word1, const std::string& word2) const {
     std::string prompt = std::string("cat de similare sunt urmatoarele cuvinte ca sens, cuvintele sunt in limba romana:  ") + word1 + " " + word2+
-        "raspunde cu un numar real intre 0 si 1, vreau doar numarul, FARA NIMIC ALTCEVA IN RASPUNSUL TAU.";
+        "raspunde cu un numar real intre 0 si 1, vreau doar numarul in formmatul 0.xx";
 
 
     cpr::Url api_link = api_url;
@@ -89,10 +89,24 @@ float AI::getScore(const std::string& word1, const std::string& word2) const {
         std::cerr << "Failed to convert response to float: '" << accumulated << "'\n";
         return -1.0f;
     }
+
     //json json_resp = json::parse(res.text); // Parsăm răspunsul primit
     // std::cout << res.text << "\n";
     // std::cout << json_resp["choices"] << "\n";
     //std::string str_score = json_resp["choices"][0]["message"]["content"];
     //float score = std::stof(str_score);
     //return score;
+}
+
+bool AI::isActive() const {
+    return active;
+}
+
+void AI::disconnect() {
+    active = false;
+    std::cout << "Disconnected from AI.\n";
+}
+
+void AI::connect() {
+    active = true;
 }

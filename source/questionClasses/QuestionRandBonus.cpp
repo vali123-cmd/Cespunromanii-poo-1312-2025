@@ -37,6 +37,10 @@ bool QuestionRandBonus::useQuestion(Family &f) {
 
 }
 
+QuestionRandBonus * QuestionRandBonus::clone() const {
+    return new QuestionRandBonus(*this);
+}
+
 double QuestionRandBonus::generateBonus() {
     std::random_device rd;
     std::mt19937 gen(rd());

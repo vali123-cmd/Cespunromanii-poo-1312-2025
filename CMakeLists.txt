@@ -121,6 +121,14 @@ set(SOURCES
         source/ClipArts.h
         source/questionClasses/QuestionMath.cpp
         source/questionClasses/QuestionMath.h
+        source/App.cpp
+        source/App.h
+        source/AIConnectionPool.cpp
+        source/AIConnectionPool.h
+        source/questionClasses/QuestionFactory.cpp
+        source/questionClasses/QuestionFactory.h
+        source/RollDice.cpp
+        source/RollDice.h
 
 )
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
@@ -169,6 +177,7 @@ if(APPLE)
     install(FILES launcher.command DESTINATION ${DESTINATION_DIR})
 endif()
 include(cmake/CopyHelper.cmake)
+copy_files(FILES source/questionResources/QMresources.json COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 copy_files(FILES source/questionResources/QRBresources.json COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 copy_files(FILES source/questionResources/QOresources.json COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 copy_files(FILES source/questionResources/killerQresources.json COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})

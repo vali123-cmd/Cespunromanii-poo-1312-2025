@@ -21,6 +21,8 @@ class QuestionKiller : public Question {
     static std::unordered_map<std::string, int> usedQuestionKillers;
 
 public:
+
+    QuestionKiller* clone() const override;
     static void takeActionNegative(Family& leaderFamily);
     void takeAction(Family& leaderFamily, Family &f1, Family &f2) override;
     bool useQuestion(Family& family) override;

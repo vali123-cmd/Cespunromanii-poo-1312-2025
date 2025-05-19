@@ -8,6 +8,7 @@
 #include <random>
 
 #include "Family.h"
+#include "RollDice.h"
 
 #include "questionClasses/QuestionKiller.h"
 #include "questionClasses/QuestionMath.h"
@@ -72,6 +73,7 @@ int Round::pickRandIndex(int maxsize) {
 
         //BUG FIX: nu se sterge intrebarea din json dupa ce a fost folosita.
         return q;
+
 
     }
     Family& Round::whoPressedFirst(Family& f1, Family& f2) {
@@ -160,12 +162,7 @@ int Round::pickRandIndex(int maxsize) {
             family_switched_ = true;
         }
     }
-    bool Round::checkIfDerived(const Question& question) {
-    return (dynamic_cast<const QuestionKiller*>(&question) != nullptr ||
-        dynamic_cast<const QuestionOptional*>(&question) != nullptr ||
-        dynamic_cast<const QuestionRandBonus*>(&question) != nullptr) ||
-            dynamic_cast<const QuestionMath*>(&question) != nullptr;
-    }
+
     Question* Round::generateSpecialQuestion(Family*) {
         return nullptr;
     }
@@ -209,6 +206,36 @@ int Round::pickRandIndex(int maxsize) {
     printAllAnswers(copy);
     }
 
+    void Round::RollTheDice(Family *f) {
+    int choice;
+    std::cout<<"Roll the dice, doriti numere reale sau intregi?"<<'\n';
+    std::cout<<"1. Reale"<<'\n';
+    std::cout<<"2. Intregi"<<'\n';
+    std::cin>>choice;
+    if (choice == 1) {
+        RollDice<float> dice;
+        float guess;
+        std::cout<<"Introduceti un numar real: "<<'\n';
+        std::cin>>guess;
+        if (dice.takeGuess(guess)) {
+            std::cout<<"Ai ghicit!"<<'\n';
+            f->set_family_score(f->get_family_score() + 20);
+        } else {
+            std::cout<<"Ai gresit!"<<'\n';
+        }
+    } else if (choice == 2) {
+        RollDice<int> dice;
+        int guess;
+        std::cout<<"Introduceti un numar intreg: "<<'\n';
+        std::cin>>guess;
+        if (dice.takeGuess(guess)) {
+            std::cout<<"Ai ghicit!"<<'\n';
+            f->set_family_score(f->get_family_score() + 20);
+        } else {
+            std::cout<<"Ai gresit!"<<'\n';
+        }
+    }
+    }
 
 
 
@@ -228,31 +255,7 @@ int Round::pickRandIndex(int maxsize) {
 
 
 
-
-        if (checkIfDerived(*currentQuestion)) {
-
-                std::cout<<*currentQuestion;
-                getAnswerFromPlayer(answer, leaderFamily->get_players()[0]);
-                if (currentQuestion->isAnswerRight(answer, givenScore, givenAns)) {
-                    currentQuestion->takeAction(*leaderFamily, f1, f2);
-                }
-                else if (dynamic_cast<QuestionKiller*>(currentQuestion)) {
-                    QuestionKiller::takeActionNegative(*leaderFamily);
-
-
-                }
-
-        }
-
     }
-
-
-
-
-
-
-
-
     Round::Round(int round_id_,  json& data_) : data(data_), round_id(round_id_), currentQuestion(nullptr) {
 
     }
@@ -263,19 +266,21 @@ int Round::pickRandIndex(int maxsize) {
 
 
     Round::Round(const Round &other)
-        : data(other.data),
+        : answers_given(other.answers_given),
+        data(other.data),
         round_id(other.round_id),
-        answers_given(other.answers_given),
-        currentQuestion(other.currentQuestion)
+        currentQuestion(other.currentQuestion->clone())
            {}
 
     Round& Round::operator=(const Round &other) {
         if (this == &other)
             return *this;
+
+        delete currentQuestion;
         answers_given = other.answers_given;
         round_id = other.round_id;
         data = other.data;
-        currentQuestion = other.currentQuestion;
+        currentQuestion = other.currentQuestion ? other.currentQuestion->clone() : nullptr;
         givenScore = other.givenScore;
         bonus_multiplier = other.bonus_multiplier;
         ANSWER_LIMIT = other.ANSWER_LIMIT;

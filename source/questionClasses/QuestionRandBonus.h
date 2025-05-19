@@ -17,7 +17,7 @@ class QuestionRandBonus : public Question
     const std::string& get_question_text() override;
 public:
     bool useQuestion(Family &f) override;
-
+    QuestionRandBonus* clone() const override;
     static double generateBonus();
     QuestionRandBonus(const std::string& text_, const std::vector<std::pair<std::string, int>>& answers_);
     bool isAnswerRight(std::string &userString, int &score, std::string &foundAnswer) override;

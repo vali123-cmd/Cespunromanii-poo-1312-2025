@@ -18,6 +18,9 @@ const std::string& QuestionOptional::get_question_text() {
                 + m_text;
     return m_text;
 }
+QuestionOptional* QuestionOptional::clone() const {
+    return new QuestionOptional(*this);
+}
 
 QuestionOptional::QuestionOptional(const std::string &text_, const std::vector<std::pair<std::string, int> > &answers_):
 

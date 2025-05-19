@@ -40,6 +40,20 @@ si vor sa retraiasca aceasta experienta.
 - [simsimd (v6.4.0)](https://github.com/ashvardanian/simsimd) (Apache 2.0)
     - pentru <a href="https://en.wikipedia.org/wiki/Cosine_similarity">similaritate cosinus</a>
 
+
+
+TUTORIAL PENTRU ACTIVARE OLLAMA(AI) PE LINUX:
+https://itsfoss.com/ollama-setup-linux/
+La model, in loc de ollama pull llama2, recomand llama3
+
+
+
+
+
+
+
+
+
 separarea codului din clase în .h (sau .hpp) și .cpp (facut)
 moșteniri:
 minim o clasă de bază și 3 clase derivate din aceeași ierarhie

@@ -24,13 +24,14 @@ protected:
     std::string m_text;
     std::vector<std::pair<std::string, int>> answers;
 public:
+    virtual Question* clone() const;
 
 
     virtual bool useQuestion(Family& family);
 
     virtual void takeAction(Family& leaderFamily, Family &f1, Family& f2);
 
-    explicit Question(const std::string &text_, const std::vector<std::pair<std::string, int>> &answers_);
+    explicit Question(std::string text_, const std::vector<std::pair<std::string, int>> &answers_);
 
     virtual const std::string &get_question_text();
 

@@ -55,3 +55,39 @@ Question* SpecialRound::generateSpecialQuestion(Family*) {
 
 }
 
+void SpecialRound::playRound(Family& f1, Family& f2) {
+    std::cout << "Runda " << round_id << " a inceput" << '\n';
+
+    currentQuestion = getQuestion(data);
+    std::cout << *currentQuestion;
+    Family* leaderFamily = &whoPressedFirst(f1, f2);
+    std::cout << *leaderFamily;
+
+
+    std::cin.ignore();
+    loopRound(leaderFamily, *currentQuestion, f1, f2);
+
+    currentQuestion = generateSpecialQuestion(leaderFamily);
+
+
+
+
+
+
+        std::cout<<*currentQuestion;
+        getAnswerFromPlayer(answer, leaderFamily->get_players()[0]);
+        if (currentQuestion->isAnswerRight(answer, givenScore, givenAns)) {
+            currentQuestion->takeAction(*leaderFamily, f1, f2);
+        }
+        else if (dynamic_cast<QuestionKiller*>(currentQuestion)) {
+            QuestionKiller::takeActionNegative(*leaderFamily);
+
+
+        }
+
+    }
+
+
+
+
+

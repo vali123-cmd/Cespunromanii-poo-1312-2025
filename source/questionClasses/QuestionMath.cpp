@@ -41,3 +41,7 @@ void QuestionMath::takeAction(Family &leaderFamily, Family&, Family&) {
     leaderFamily.set_family_score(101*leaderFamily.get_family_score()/100);
 
 }
+
+QuestionMath* QuestionMath::clone() const{
+    return new QuestionMath(*this);
+}
