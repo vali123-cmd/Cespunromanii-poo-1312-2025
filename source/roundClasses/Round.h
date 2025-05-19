@@ -44,7 +44,7 @@ class Round {
 
 
 
-    void RollTheDice(Family* f);
+
 protected:
     json& data;
     int round_id = 1;
@@ -52,6 +52,7 @@ protected:
     std::string answer;
     std::string givenAns;
     int givenScore = 0;
+    void RollTheDice(Family* f);
     static int pickRandIndex(int maxsize);
     static void dataSetup(std::vector<std::pair<std::string,int>>& answers, std::string& text, json& data_);
     static Question* getQuestion(json &data_);

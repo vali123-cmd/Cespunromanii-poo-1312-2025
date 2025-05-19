@@ -15,6 +15,7 @@ public:
     explicit FileReadException(const std::string& file);
 
     const char* what() const noexcept override;
+    virtual ~FileReadException() noexcept = default;
 };
 
 

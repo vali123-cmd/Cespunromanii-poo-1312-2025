@@ -15,7 +15,7 @@ public:
     explicit OutOfRangeException(const int& inf, const int& sup);
 
     const char* what() const noexcept override;
-
+    virtual ~OutOfRangeException() noexcept = default;
 };
 
 

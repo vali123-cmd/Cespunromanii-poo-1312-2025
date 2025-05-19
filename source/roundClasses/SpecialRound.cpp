@@ -11,7 +11,7 @@
 #include "questionClasses/QuestionOptional.h"
 #include "questionClasses/QuestionRandBonus.h"
 #include "questionClasses/QuestionMath.h"
-
+#include "RollDice.h"
 SpecialRound::SpecialRound(int round_id_, json &data_, json &dataQO_, json &dataQK, json &dataQRB, json &dataQM):
         Round(round_id_, data_), dataQO(dataQO_), dataQK(dataQK), dataQRB(dataQRB), dataQM(dataQM) {
 
@@ -84,6 +84,9 @@ void SpecialRound::playRound(Family& f1, Family& f2) {
 
 
         }
+    if (round_id == 6) {
+        RollTheDice(leaderFamily);
+    }
 
     }
 

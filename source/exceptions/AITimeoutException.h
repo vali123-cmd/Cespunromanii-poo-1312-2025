@@ -14,6 +14,7 @@ class AITimeoutException : public std::exception {
 public:
     explicit AITimeoutException(int timeoutInSeconds);
     const char* what() const noexcept override;
+    virtual ~AITimeoutException() noexcept = default;
 };
 
 #endif // AI_TIMEOUT_EXCEPTION_H
