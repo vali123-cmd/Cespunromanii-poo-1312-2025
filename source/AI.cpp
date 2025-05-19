@@ -10,17 +10,15 @@
 #include "exceptions/AITimeoutException.h"
 
 using json = nlohmann::json;
-bool AI::useAIErrors = false;
-void AI::switchAIErrors() {
-    std::cout<<"Doresti sa activezi erorile AI? Daca ai o conexiune de internet slaba sau"
-               "nu ai configurat Ollama bine jocul va da crash(vezi tutorial in README) (1 - da, 0 - nu): ";
-    std::cin>>useAIErrors;
-}
 
-float AI::getScore(const std::string& word1, const std::string& word2) const {
+
+
+float AI::getScore(const std::string& word1, const std::string& word2, const bool& useAIErrors) const {
     std::string prompt = std::string("cat de similare sunt urmatoarele cuvinte ca sens, cuvintele sunt in limba romana:  ") + word1 + " " + word2+
-        "raspunde cu un numar real intre 0 si 1, vreau doar numarul in formatul 0.xx";
-
+        " raspunde cu un numar real intre 0 si 1, vreau doar numarul in formatul 0.xx";
+    if (useAIErrors == 0 ) {
+        return -1;
+    }
 
     cpr::Url api_link = api_url;
     cpr::Header header{
@@ -85,8 +83,8 @@ float AI::getScore(const std::string& word1, const std::string& word2) const {
 
     try {
         return std::stof(accumulated);
-    } catch (...) {
-        std::cerr << "Failed to convert response to float: '" << accumulated << "'\n";
+    } catch (const std::exception& e) {
+        std::cerr << "Failed to convert response to float: '" << accumulated << "'\n" <<e.what();
         return -1.0f;
     }
 

@@ -11,10 +11,13 @@
 class AI;
 
 class AIConnectionPool {
+    static bool useAIErrors;
     std::vector<std::unique_ptr<AI>> connections;
-public:
-    AI* getConnection();
 
+public:
+    bool getuseAIErrors();
+    AI* getConnection();
+    void switchAIErrors();
     void releaseConnection(AI* conn);
 
 };

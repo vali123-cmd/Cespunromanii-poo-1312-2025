@@ -9,6 +9,7 @@
 #include <fstream>
 
 #include "AI.h"
+#include "AIConnectionPool.h"
 #include "Family.h"
 #include "exceptions/FileReadException.h"
 #include "NormalGame.h"
@@ -34,8 +35,8 @@
     }
 
     void Game::askForAI() {
-        AI helper;
-        AI::switchAIErrors();
+        AIConnectionPool pool;
+        pool.switchAIErrors();
     }
     void Game::setUp(std::string& family1, std::string& family2) {
         std::cout << "Salut! Bine ai venit la Family feud/(Ce spun romanii?)! Eu sunt gazda emisiunii, Cabral./"
