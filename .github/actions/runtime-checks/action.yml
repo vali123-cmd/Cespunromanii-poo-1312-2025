@@ -51,7 +51,8 @@ runs:
       run: |
         # run LLM server in background
         source ./scripts/run_llm.sh
-        cat "${INPUT_FILENAME}" | tr -d '\r' | ./${{ env.ZIP_NAME }}/"${EXECUTABLE_NAME}"
+        cd ${{ env.ZIP_NAME }}
+        cat "${INPUT_FILENAME}" | tr -d '\r' | ./"${EXECUTABLE_NAME}"
         # server shutdown
         kill -TERM $(jobs -p)
 
@@ -63,7 +64,8 @@ runs:
       run: |
         # run LLM server in background
         source ./scripts/run_llm.sh
-        cat "${INPUT_FILENAME}" | ./${{ env.ZIP_NAME }}/"${EXECUTABLE_NAME}".exe
+        cd ${{ env.ZIP_NAME }}
+        cat "${INPUT_FILENAME}" | tr -d '\r' | ./"${EXECUTABLE_NAME}"
         # server shutdown
         kill -TERM $(jobs -p)
 
