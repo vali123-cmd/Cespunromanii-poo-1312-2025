@@ -33,7 +33,7 @@ class Round {
     void pickBonus(int& bonus_multiplier);
     void printCurrentAnswers();
     void printAllAnswers(const Question& question);
-    virtual Question* generateSpecialQuestion(Family*);
+    virtual std::unique_ptr<Question> generateSpecialQuestion(Family*);
 
     static void SwitchFamily(Family *&currentFamily, Family &f1, Family &f2);
 
@@ -48,14 +48,14 @@ class Round {
 protected:
     json& data;
     int round_id = 1;
-    Question* currentQuestion;
+    std::unique_ptr<Question> currentQuestion;
     std::string answer;
     std::string givenAns;
     int givenScore = 0;
     void RollTheDice(Family* f);
     static int pickRandIndex(int maxsize);
     static void dataSetup(std::vector<std::pair<std::string,int>>& answers, std::string& text, json& data_);
-    static Question* getQuestion(json &data_);
+    static std::unique_ptr<Question> getQuestion(json &data_);
     void loopRound(Family*& leaderFamily, Question& currentQuestion, Family& f1, Family& f2);
     static Family &whoPressedFirst(Family &f1, Family &f2);
     static void getAnswerFromPlayer(std::string& answer, const Player& jucator);

@@ -7,6 +7,7 @@
 //#define NOMINMAX //windows headers definesc min si max(eroare la distanta levenstein)
 
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -24,7 +25,7 @@ protected:
     std::string m_text;
     std::vector<std::pair<std::string, int>> answers;
 public:
-    virtual Question* clone() const;
+    virtual std::unique_ptr<Question> clone() const;
 
 
     virtual bool useQuestion(Family& family);

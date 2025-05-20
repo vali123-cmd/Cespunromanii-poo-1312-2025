@@ -11,9 +11,6 @@
 are voie sa foloseasca maxim 2 intrebari QuestionKiller pe meci, prin care poate sa ia toate punctele
 de la intrebarea initiala */
 
-
-
-
 class QuestionKiller : public Question {
 
     int calculateDeductedPoints();
@@ -22,7 +19,7 @@ class QuestionKiller : public Question {
 
 public:
 
-    QuestionKiller* clone() const override;
+    std::unique_ptr<Question> clone() const override;
     static void takeActionNegative(Family& leaderFamily);
     void takeAction(Family& leaderFamily, Family &f1, Family &f2) override;
     bool useQuestion(Family& family) override;
@@ -30,7 +27,5 @@ public:
     const std::string& get_question_text() override;
     bool isAnswerRight(std::string &userString, int &score, std::string &foundAnswer) override;
 };
-
-
 
 #endif //QUESTIONKILLER_H

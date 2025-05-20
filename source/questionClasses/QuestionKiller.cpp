@@ -9,9 +9,9 @@
 #include <set>
 
 #include "Family.h"
-QuestionKiller* QuestionKiller::clone() const{
-    return new QuestionKiller(*this);
-};
+std::unique_ptr<Question> QuestionKiller::clone() const {
+    return std::make_unique<QuestionKiller>(*this);
+}
 std::unordered_map<std::string, int> QuestionKiller::usedQuestionKillers;
 const std::string& QuestionKiller::get_question_text(){
 

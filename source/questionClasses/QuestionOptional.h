@@ -15,7 +15,7 @@ class QuestionOptional :public Question{
 
 
 public:
-    QuestionOptional* clone() const override;
+    std::unique_ptr<Question> clone() const override; // Updated return type
     QuestionOptional(const std::string& text_, const std::vector<std::pair<std::string, int>>& answers_);
     bool useQuestion(Family &f) override;
     bool isAnswerRight(std::string &userString, int &score, std::string &foundAnswer) override;
@@ -24,3 +24,4 @@ public:
 };
 
 #endif //QUESTIONOPTIONAL_H
+

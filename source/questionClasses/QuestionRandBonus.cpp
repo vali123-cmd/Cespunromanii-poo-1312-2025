@@ -37,8 +37,8 @@ bool QuestionRandBonus::useQuestion(Family &f) {
 
 }
 
-QuestionRandBonus * QuestionRandBonus::clone() const {
-    return new QuestionRandBonus(*this);
+std::unique_ptr<Question> QuestionRandBonus::clone() const {
+    return std::make_unique<QuestionRandBonus>(*this);
 }
 
 double QuestionRandBonus::generateBonus() {
@@ -69,3 +69,4 @@ bool QuestionRandBonus::isAnswerRight(std::string &userString_, int &score_, std
     std::cout<<"Raspuns gresit"<<std::endl;
     return false;
 }
+

@@ -42,6 +42,6 @@ void QuestionMath::takeAction(Family &leaderFamily, Family&, Family&) {
 
 }
 
-QuestionMath* QuestionMath::clone() const{
-    return new QuestionMath(*this);
+std::unique_ptr<Question> QuestionMath::clone() const{
+    return std::make_unique<QuestionMath>(*this);
 }

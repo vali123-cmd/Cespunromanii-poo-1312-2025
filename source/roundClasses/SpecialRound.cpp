@@ -18,10 +18,10 @@ SpecialRound::SpecialRound(int round_id_, json &data_, json &dataQO_, json &data
 
 }
 
-Question* SpecialRound::generateSpecialQuestion(Family*) {
+std::unique_ptr<Question> SpecialRound::generateSpecialQuestion(Family*) {
     int randomDerived = pickRandIndex(NUMBER_OF_DERIVED);
 
-    Question* q;
+    std::unique_ptr<Question> q;
     std::string text;
     std::vector<std::pair<std::string, int>> answers;
     switch (randomDerived) {
@@ -29,24 +29,24 @@ Question* SpecialRound::generateSpecialQuestion(Family*) {
             std::cout<<"Intrebare optionala"<<std::endl;
             dataSetup(answers, text, dataQO);
 
-            q = new QuestionOptional(text, answers);
+            q = std::make_unique<QuestionOptional>(text, answers);
             break;
         case 1:
             std::cout<<"Intrebare killer"<<std::endl;
             dataSetup(answers, text, dataQRB);
 
-            q = new QuestionKiller(text, answers);
+            q = std::make_unique<QuestionKiller>(text, answers);
             break;
         case 2:
             std::cout<<"Intrebare bonus"<<std::endl;
             dataSetup(answers, text, dataQK);
 
-            q = new QuestionRandBonus(text, answers);
+            q = std::make_unique<QuestionRandBonus>(text, answers);
             break;
         case 3:
             std::cout<<"Intrebare matematica"<<std::endl;
             dataSetup(answers, text, dataQM);
-            q = new QuestionMath(text, answers);
+            q = std::make_unique<QuestionMath>(text, answers);
             break;
         default:
             throw OutOfRangeException(0, NUMBER_OF_DERIVED);
@@ -79,7 +79,7 @@ void SpecialRound::playRound(Family& f1, Family& f2) {
         if (currentQuestion->isAnswerRight(answer, givenScore, givenAns)) {
             currentQuestion->takeAction(*leaderFamily, f1, f2);
         }
-        else if (dynamic_cast<QuestionKiller*>(currentQuestion)) {
+        else if (dynamic_cast<QuestionKiller*>(currentQuestion.get())) {
             QuestionKiller::takeActionNegative(*leaderFamily);
 
 

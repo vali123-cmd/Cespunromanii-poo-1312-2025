@@ -20,7 +20,7 @@ protected:
 
 public:
     void playRound(Family& f1, Family& f2) override;
-    Question* generateSpecialQuestion(Family*) override;
+    std::unique_ptr<Question> generateSpecialQuestion(Family*) override;
     SpecialRound(int round_id_, json& data_, json &dataQO_, json &dataQK, json &dataQRB, json& dataQM);
     ~SpecialRound() override = default;
  SpecialRound(const SpecialRound &other)

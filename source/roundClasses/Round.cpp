@@ -60,7 +60,7 @@ int Round::pickRandIndex(int maxsize) {
     }
 
 
-    Question* Round::getQuestion(json &data_) {
+    std::unique_ptr<Question> Round::getQuestion(json &data_) {
 
 
 
@@ -68,7 +68,7 @@ int Round::pickRandIndex(int maxsize) {
         std::vector<std::pair<std::string, int>> answers;
         std::string text;
         dataSetup(answers, text, data_);
-        auto* q = new Question(text, answers);
+        std::unique_ptr<Question> q = std::make_unique<Question>(text,answers);
 
 
         //BUG FIX: nu se sterge intrebarea din json dupa ce a fost folosita.
@@ -163,7 +163,7 @@ int Round::pickRandIndex(int maxsize) {
         }
     }
 
-    Question* Round::generateSpecialQuestion(Family*) {
+    std::unique_ptr<Question> Round::generateSpecialQuestion(Family*) {
         return nullptr;
     }
 
@@ -260,27 +260,23 @@ int Round::pickRandIndex(int maxsize) {
 
     }
 
-    Round::~Round() {
-        delete currentQuestion;
-    }
-
+    Round::~Round() = default;
 
     Round::Round(const Round &other)
         : answers_given(other.answers_given),
         data(other.data),
         round_id(other.round_id),
-        currentQuestion(other.currentQuestion->clone())
+        currentQuestion(other.currentQuestion ? other.currentQuestion->clone() : nullptr)
            {}
 
     Round& Round::operator=(const Round &other) {
         if (this == &other)
             return *this;
 
-        delete currentQuestion;
+        currentQuestion = other.currentQuestion ? other.currentQuestion->clone() : nullptr;
         answers_given = other.answers_given;
         round_id = other.round_id;
         data = other.data;
-        currentQuestion = other.currentQuestion ? other.currentQuestion->clone() : nullptr;
         givenScore = other.givenScore;
         bonus_multiplier = other.bonus_multiplier;
         ANSWER_LIMIT = other.ANSWER_LIMIT;
@@ -319,3 +315,4 @@ std::ostream& operator<<(std::ostream& os, const Round& q) {
     }
     return os;
 }
+

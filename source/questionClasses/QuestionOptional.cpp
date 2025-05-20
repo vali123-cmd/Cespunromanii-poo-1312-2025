@@ -18,8 +18,8 @@ const std::string& QuestionOptional::get_question_text() {
                 + m_text;
     return m_text;
 }
-QuestionOptional* QuestionOptional::clone() const {
-    return new QuestionOptional(*this);
+std::unique_ptr<Question> QuestionOptional::clone() const {
+    return std::make_unique<QuestionOptional>(*this);
 }
 
 QuestionOptional::QuestionOptional(const std::string &text_, const std::vector<std::pair<std::string, int> > &answers_):
@@ -60,3 +60,4 @@ void QuestionOptional::takeAction(Family &leaderFamily, Family&, Family&) {
     leaderFamily.set_family_score(105*leaderFamily.get_family_score()/100);
 
 }
+

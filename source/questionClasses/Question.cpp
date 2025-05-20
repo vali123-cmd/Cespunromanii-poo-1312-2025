@@ -90,11 +90,9 @@ void Question::formatAnswer(std::string& s) {
         return answers;
     }
 
-    Question* Question::clone() const {
-    return new Question(*this);
-
-
-};
+    std::unique_ptr<Question> Question::clone() const {
+        return std::make_unique<Question>(*this);
+    }
 
     bool Question::isAnswerRight(std::string& userString, int& score, std::string& foundAnswer) {
         //formatare pentru precizie mai buna cu ajutorul formatAnswer().

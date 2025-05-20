@@ -18,7 +18,7 @@
 
 class QuestionFactory : public SpecialRound {
 public:
-   Question* getQuestion();
+   std::unique_ptr<Question> getQuestion();
 };
 
 #endif //QUESTIONFACTORY_H
