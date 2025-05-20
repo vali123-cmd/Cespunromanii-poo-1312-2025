@@ -76,9 +76,10 @@ runs:
         # run LLM server in background
         source ./scripts/run_llm.sh
         # remove --show-leak-kinds=all (and --track-origins=yes) if there are many leaks in external libs
+        cd ${{ env.ZIP_NAME }}
         cat "${INPUT_FILENAME}" | tr -d '\r' | valgrind \
             --leak-check=full --show-leak-kinds=all --track-origins=yes \
             --error-exitcode=1 \
-            ./${{ env.ZIP_NAME }}/"${EXECUTABLE_NAME}"
+            ./"${EXECUTABLE_NAME}"| 
         # server shutdown
         kill -TERM $(jobs -p)
