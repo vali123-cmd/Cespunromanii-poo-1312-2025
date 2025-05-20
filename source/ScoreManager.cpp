@@ -22,7 +22,7 @@ void ScoreManager::saveScores(const std::unordered_map<std::string, int>& scores
         out << j.dump(4);  // Pretty print
         std::cout << "Scores saved to " << filename << "\n";
     } else {
-        std::cerr << "Failed to open " << filename << " for writing.\n";
+        std::cout << "Failed to open " << filename << " for writing.\n";
     }
 }
 
@@ -30,7 +30,7 @@ std::unordered_map<std::string, int> ScoreManager::loadScores() {
     std::unordered_map<std::string, int> scores;
     std::ifstream in(filename);
     if (!in) {
-        std::cerr << "File " << filename << " not found.\n";
+        std::cout << "File " << filename << " not found.\n";
         return scores;
     }
 
@@ -53,12 +53,17 @@ void ScoreManager::printScores() {
 }
 
 void ScoreManager::clearScores() {
-    std::ofstream out(filename, std::ios::trunc);
-    if (out) {
-        out << "{}";  // Clear the file
-        std::cout << "Scores cleared.\n";
-    } else {
-        std::cerr << "Failed to open " << filename << " for writing.\n";
+    try {
+        std::ofstream out(filename, std::ios::trunc);
+        if (out) {
+            out << "{}";  // Clear the file
+            std::cout << "Scores cleared.\n";
+        } else {
+            std::cerr << "Failed to open " << filename << " for writing.\n";
+        }
+    }
+    catch (const::std::exception& e) {
+        std::cout<<"Error clearing scores: " << e.what() << "\n";
     }
 }
 
