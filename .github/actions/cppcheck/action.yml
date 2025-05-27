@@ -26,13 +26,9 @@ runs:
 
     - name: Install cppcheck
       shell: bash
-      # this step is fast, no need for caching
       run: |
         cd cppcheck
         sudo cmake --install build
-
-    # The flag CMAKE_EXPORT_COMPILE_COMMANDS generates compile_commands.json
-    # which is used by cppcheck and clang-tidy
     - name: Configure CMake
       uses: ./.github/actions/configure-cmake
       with:

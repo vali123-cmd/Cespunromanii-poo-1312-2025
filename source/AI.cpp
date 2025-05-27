@@ -8,12 +8,24 @@
 #include <json.hpp>
 
 #include "exceptions/AITimeoutException.h"
-
+#include <fstream>
 using json = nlohmann::json;
 
+void AI::configureJSON(json& jsonConfig) {
+    // Configurăm URL-ul API-ului din fișierul JSON
+    if (jsonConfig.contains("api_url")) {
+        api_url = jsonConfig["api_url"].get<std::string>();
+    } else {
+        std::cerr << "Warning: 'api_url' not found in JSON configuration. Using default: " << api_url << "\n";
+    }
 
+}
 
-float AI::getScore(const std::string& word1, const std::string& word2, const bool& useAIErrors) const {
+float AI::getScore(const std::string& word1, const std::string& word2, const bool& useAIErrors)  {
+    std::ifstream configFile("config.json");
+    json jsonConfig;
+    configFile>> jsonConfig;
+    configureJSON(jsonConfig);
     std::string prompt = std::string("cat de similare sunt urmatoarele cuvinte ca sens, cuvintele sunt in limba romana:  ") + word1 + " " + word2+
         " raspunde cu un numar real intre 0 si 1, vreau doar numarul in formatul 0.xx";
     if (useAIErrors == 0 ) {

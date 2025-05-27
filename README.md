@@ -49,7 +49,7 @@ https://medium.com/@sridevi17j/step-by-step-guide-setting-up-and-running-ollama-
 Pentru windows si mac.
 
 Daca nu functioneaza Ollama, atunci apasati 0 cand sunteti intrebat de server de ai.
-
+Pentru alte LLM-uri locale, modificati fisierul configure.json, in dreptul url_api.
 
 
 
