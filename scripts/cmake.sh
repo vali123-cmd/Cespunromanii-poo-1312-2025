@@ -1,18 +1,13 @@
 #!/usr/bin/bash
-
 DEFAULT_BUILD_DIR="build"
 DEFAULT_BUILD_TYPE="Debug"
 DEFAULT_INSTALL_DIR="install_dir"
-
 configure() {
-    # cmake -S . -B build -DCMAKE_BUILD_TYPE=Debug
-    #
     BUILD_DIR="${DEFAULT_BUILD_DIR}"
     BUILD_TYPE="${DEFAULT_BUILD_TYPE}"
     INSTALL_DIR="${DEFAULT_INSTALL_DIR}"
     SOURCE_DIR="."
     CMAKE_OPTS=()
-
     while getopts ":b:c:e:g:i:s:" opt; do
       case "${opt}" in
         b) BUILD_DIR="${OPTARG}"
@@ -39,17 +34,13 @@ configure() {
         ;;
       esac
     done
-
     cmake -B "${BUILD_DIR}" \
           -S "${SOURCE_DIR}" \
           -DCMAKE_BUILD_TYPE="${BUILD_TYPE}" \
           -DCMAKE_INSTALL_PREFIX="${INSTALL_DIR}" \
           "${CMAKE_OPTS[@]}"
 }
-
 build() {
-    # cmake --build build --config Debug -j6
-    #
     BUILD_DIR="${DEFAULT_BUILD_DIR}"
     BUILD_TYPE="${DEFAULT_BUILD_TYPE}"
     NPROC=6
@@ -81,10 +72,7 @@ build() {
           -j "${NPROC}" \
           "${CMAKE_OPTS[@]}"
 }
-
 install() {
-    # cmake --install build --config Debug --prefix install_dir
-    #
     BUILD_DIR="${DEFAULT_BUILD_DIR}"
     BUILD_TYPE="${DEFAULT_BUILD_TYPE}"
     INSTALL_DIR="${DEFAULT_INSTALL_DIR}"
@@ -105,13 +93,10 @@ install() {
         ;;
       esac
     done
-
     cmake --install "${BUILD_DIR}" \
           --config "${BUILD_TYPE}" \
           --prefix "${INSTALL_DIR}"
 }
-
-
 case "$1" in
     configure)
     shift

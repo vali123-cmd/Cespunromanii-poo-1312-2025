@@ -24,8 +24,16 @@ void AI::configureJSON(json& jsonConfig) {
 float AI::getScore(const std::string& word1, const std::string& word2, const bool& useAIErrors)  {
     std::ifstream configFile("config.json");
     json jsonConfig;
-    configFile>> jsonConfig;
-    configureJSON(jsonConfig);
+
+            try {
+            configFile >> jsonConfig;
+                configureJSON(jsonConfig);
+        } catch (const std::exception& e) {
+            std::cerr << "Error reading JSON configuration: " << e.what() << "\n";
+            return -1.0f; // Return an error value
+        }
+
+
     std::string prompt = std::string("cat de similare sunt urmatoarele cuvinte ca sens, cuvintele sunt in limba romana:  ") + word1 + " " + word2+
         " raspunde cu un numar real intre 0 si 1, vreau doar numarul in formatul 0.xx";
     if (useAIErrors == 0 ) {
