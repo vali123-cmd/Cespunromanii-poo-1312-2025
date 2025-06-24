@@ -32,9 +32,8 @@ void Config::ConfigureJSON() {
         return;
     }
     try{
-        std::ostringstream buffer; // use ostringstream to avoid implicit conversion
-        buffer << configFile.rdbuf();
-        std::string filetext = buffer.str();
+        std::string filetext((std::istreambuf_iterator<char>(configFile)),
+                      std::istreambuf_iterator<char>());
         jsonConfig = json::parse(filetext);
 
     } catch (const json::parse_error& e) {
