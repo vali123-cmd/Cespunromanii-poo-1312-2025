@@ -79,6 +79,8 @@ set(SOURCES
         source/questionClasses/QuestionFactory.h
         source/RollDice.cpp
         source/RollDice.h
+        source/Config.cpp
+        source/Config.h
 
 )
 add_executable(${MAIN_EXECUTABLE_NAME}
@@ -115,3 +117,4 @@ copy_files(FILES source/questionResources/killerQresources.json COPY_TO_DESTINAT
 copy_files(FILES source/questionResources/intrebari.json COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 copy_files(FILES tastatura.txt COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 copy_files(FILES tastatura.txt scripts/run_llm.sh COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
+copy_files(FILES configure.json COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})

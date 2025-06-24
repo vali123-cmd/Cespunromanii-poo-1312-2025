@@ -11,44 +11,25 @@
 #include <fstream>
 using json = nlohmann::json;
 
-void AI::configureJSON(json& jsonConfig) {
-    // Configurăm URL-ul API-ului din fișierul JSON
-    if (jsonConfig.contains("api_url")) {
-        api_url = jsonConfig["api_url"].get<std::string>();
-    } else {
-        std::cerr << "Warning: 'api_url' not found in JSON configuration. Using default: " << api_url << "\n";
-    }
 
-}
 
 float AI::getScore(const std::string& word1, const std::string& word2, const bool& useAIErrors)  {
-    std::ifstream configFile("config.json");
-    json jsonConfig;
+    std::string prompt =  config.getCustomPrompt() + word1 + "and" + word2;
 
-            try {
-            configFile >> jsonConfig;
-                configureJSON(jsonConfig);
-        } catch (const std::exception& e) {
-            std::cerr << "Error reading JSON configuration: " << e.what() << "\n";
-            return -1.0f; // Return an error value
-        }
-
-
-    std::string prompt = std::string("cat de similare sunt urmatoarele cuvinte ca sens, cuvintele sunt in limba romana:  ") + word1 + " " + word2+
-        " raspunde cu un numar real intre 0 si 1, vreau doar numarul in formatul 0.xx";
     if (useAIErrors == 0 ) {
+        std::cout<<"branchedinitial";
         return -1;
     }
 
-    cpr::Url api_link = api_url;
+    cpr::Url api_endpoint = config.getApiEndpoint();
     cpr::Header header{
                     {"Content-Type", "application/json"}
     };
     // Adăugăm timeout la request, deoarece pot exista situații când durează foarte mult.
-    const int miliseconds = 15000;
-    using json = nlohmann::json;
+    const int miliseconds = config.getParsedTimeout();
+
     json json_body;
-    json_body["model"] = "llama3";
+    json_body["model"] = config.getModel();
 
     json_body["messages"] = json::array({
         // json::object({{"role", "system"}, {"content", "You are a helpful assistant"}}),
@@ -56,23 +37,23 @@ float AI::getScore(const std::string& word1, const std::string& word2, const boo
     });
     // std::cout << "sending " << json_body << "\n";
     cpr::Body body = {json_body.dump()};
-    cpr::Response res = cpr::Post(api_link, body, header, cpr::Timeout{miliseconds}); // Facem o cerere la API
+    cpr::Response res = cpr::Post(api_endpoint, body, header, cpr::Timeout{miliseconds}); // Facem o cerere la API
 
     if(res.elapsed * 1000 > miliseconds)
     {
         if (useAIErrors) {
             throw AITimeoutException(miliseconds / 1000);
         }
-        return -1;
+
     }
     if(res.status_code != 200) // Dacă status code-ul nu este 200 înseamnă că a apărut o eroare
     {
-
+        std::cout<<"branched200";
         return -1;
     }
     if(res.text.empty())
     {
-
+        std::cout<<"branchedempty";
         return -1;
     }
 
@@ -81,9 +62,11 @@ float AI::getScore(const std::string& word1, const std::string& word2, const boo
     std::string line;
 
     while (std::getline(stream, line)) {
+
         if (line.empty()) continue;
 
         try {
+
             json j = json::parse(line);
 
 
@@ -108,12 +91,7 @@ float AI::getScore(const std::string& word1, const std::string& word2, const boo
         return -1.0f;
     }
 
-    //json json_resp = json::parse(res.text); // Parsăm răspunsul primit
-    // std::cout << res.text << "\n";
-    // std::cout << json_resp["choices"] << "\n";
-    //std::string str_score = json_resp["choices"][0]["message"]["content"];
-    //float score = std::stof(str_score);
-    //return score;
+
 }
 
 bool AI::isActive() const {
@@ -122,7 +100,7 @@ bool AI::isActive() const {
 
 void AI::disconnect() {
     active = false;
-    std::cout << "Disconnected from AI.\n";
+
 }
 
 void AI::connect() {

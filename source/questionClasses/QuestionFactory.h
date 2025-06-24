@@ -16,7 +16,7 @@
 
 #include "roundClasses/SpecialRound.h"
 
-class QuestionFactory : public SpecialRound {
+class QuestionFactory :public SpecialRound {
 public:
    std::unique_ptr<Question> getQuestion();
 };
