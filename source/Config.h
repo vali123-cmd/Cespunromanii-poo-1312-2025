@@ -16,7 +16,7 @@ private:
     std::string timeout;
      std::string custom_prompt;
      std::string model;
-     bool AIErrorsEnabled = false;
+
     Config();
     Config(const Config&) = delete;
     Config& operator=(const Config&) = delete;
@@ -25,7 +25,7 @@ public:
     static Config& getInstance();
 
     void ConfigureJSON();
-  const int& getParsedTimeout() ;
+   int getParsedTimeout() ;
     const std::string& getCustomPrompt() ;
     const std::string& getApiEndpoint();
     const std::string& getModel();

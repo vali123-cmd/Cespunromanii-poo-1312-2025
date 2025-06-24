@@ -25,10 +25,9 @@ void Config::ConfigureJSON() {
         return;
     }
     try{
-
-            std::stringstream<char> buffer; //fixed implicit template instantiation
+            std::ostringstream buffer; // use ostringstream to avoid implicit conversion
             buffer << configFile.rdbuf();
-            std::string filetext = buffer.str();
+            filetext = buffer.str();
             jsonConfig = json::parse(filetext);
 
     } catch (const json::parse_error& e) {
@@ -72,7 +71,7 @@ Config& Config::getInstance() {
     return instance;
 }
 
-const int& Config::getParsedTimeout() {
+int Config::getParsedTimeout() {
     try {
         return std::stoi(timeout);
     } catch (const std::exception& e) {
