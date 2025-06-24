@@ -2,24 +2,8 @@
 // Created by danciu-valentin-nicolae on 23.06.2025.
 //
 
-// Define macros needed for macOS compatibility
-#ifndef __OS_AVAILABILITY_MSG
-#define __OS_AVAILABILITY_MSG(_target, _availability, _msg)
-#endif
-#ifndef __deprecated
-#define __deprecated
-#endif
-#ifndef __message
-#define __message(x)
-#endif
-#ifndef __OS_AVAILABILITY_MSG
-#define __OS_AVAILABILITY_MSG(target, availability, msg)
-#endif
-#ifndef __deprecated
-#define __deprecated __attribute__((deprecated))
-#endif
-#ifndef __message
-#define __message(x) __attribute__((availability(x)))
+
+
 #endif
 //evit DEPRECATED PE MACOSX, vezi commituri anterioare
 
@@ -64,22 +48,22 @@ void Config::ConfigureJSON() {
     model = "llama3";
     custom_prompt = "Compare the level of similarity between the following two romanian words based on their meanings and usage. Provide a float value between 0 and 1, where 0 means no similarity and 1 means identical meaning. The words are: ";
     if (jsonConfig.contains("api-endpoint")) {
-        api_endpoint = jsonConfig["api-endpoint"].get<std::string>();
+        api_endpoint = jsonConfig["api-endpoint"];
     } else {
         std::cerr << "Warning: 'api-endpoint' not found in JSON configuration. Using default: " << api_endpoint << "\n";
     }
     if (jsonConfig.contains("timeout")) {
-        timeout = jsonConfig["timeout"].get<std::string>();
+        timeout = jsonConfig["timeout"];
     } else {
         std::cerr << "Warning: 'timeout' not found in JSON configuration. Using default: " << timeout<< "\n";
     }
     if (jsonConfig.contains("custom-prompt")) {
-        custom_prompt = jsonConfig["custom-prompt"].get<std::string>();
+        custom_prompt = jsonConfig["custom-prompt"];
     } else {
         std::cerr << "Warning: 'custom-prompt' not found in JSON configuration. Using default: " << custom_prompt << "\n";
     }
     if (jsonConfig.contains("model")) {
-        model = jsonConfig["model"].get<std::string>();
+        model = jsonConfig["model"];
     } else {
         std::cerr << "Warning: 'model' not found in JSON configuration. Using default: " << model << "\n";
     }
