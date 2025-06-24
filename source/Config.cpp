@@ -5,7 +5,7 @@
 #include "Config.h"
 
 #include <iostream>
-
+#include <sstream>
 
 #include "json.hpp"
 #include <fstream>
