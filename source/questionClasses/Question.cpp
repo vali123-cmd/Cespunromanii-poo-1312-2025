@@ -105,7 +105,7 @@ void Question::formatAnswer(std::string& s) {
 
         for (const auto& item : answers) {
 
-            //std::cout<<ai->getScore(userString, item.first, pool.getuseAIErrors())<<'\n';
+            std::cout<<ai->getScore(userString, item.first, pool.getuseAIErrors())<<'\n';
             if (similarity_percentage(userString, item.first) > 70 or (ai->getScore(userString, item.first, pool.getuseAIErrors())*100 > 70)) {
                 //NOTA: 70% este un prag de similaritate,poate varia in urmatoarele release-uri,
                 //in viitor vom folosi un AI pentru a calcula procentul de similaritate.

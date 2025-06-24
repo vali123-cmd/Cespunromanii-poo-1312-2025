@@ -2,13 +2,28 @@
 // Created by danciu-valentin-nicolae on 23.06.2025.
 //
 
+// Define macros needed for macOS compatibility
+#ifndef __OS_AVAILABILITY_MSG
+#define __OS_AVAILABILITY_MSG(_target, _availability, _msg)
+#endif
+#ifndef __deprecated
+#define __deprecated
+#endif
+#ifndef __message
+#define __message(x)
+#endif
+//evit DEPRECATED PE MACOSX, vezi commituri anterioare
+
+
+
 #include "Config.h"
 
 #include <iostream>
-#include <sstream>
+
 
 #include "json.hpp"
 #include <fstream>
+#include <sstream>
 using json = nlohmann::json;
 
 Config::Config() {
@@ -18,17 +33,16 @@ Config::Config() {
 
 void Config::ConfigureJSON() {
      json jsonConfig;
-    std::string filetext;
     std::ifstream configFile("configure.json");
     if (!configFile.is_open()) {
         std::cerr << "Error: Could not open configure.json file. Using default:\n";
         return;
     }
     try{
-            std::ostringstream buffer; // use ostringstream to avoid implicit conversion
-            buffer << configFile.rdbuf();
-            filetext = buffer.str();
-            jsonConfig = json::parse(filetext);
+        std::ostringstream buffer; // use ostringstream to avoid implicit conversion
+        buffer << configFile.rdbuf();
+        std::string filetext = buffer.str();
+        jsonConfig = json::parse(filetext);
 
     } catch (const json::parse_error& e) {
         std::cerr << "Error parsing JSON: " << e.what() << "\n";

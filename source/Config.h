@@ -11,7 +11,6 @@
 
 class Config {
 
-private:
     std::string api_endpoint;
     std::string timeout;
      std::string custom_prompt;
