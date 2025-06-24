@@ -26,7 +26,7 @@ void Config::ConfigureJSON() {
     }
     try{
 
-            std::stringstream buffer;
+            std::stringstream<char> buffer; //fixed implicit template instantiation
             buffer << configFile.rdbuf();
             std::string filetext = buffer.str();
             jsonConfig = json::parse(filetext);
@@ -62,11 +62,8 @@ void Config::ConfigureJSON() {
         std::cerr << "Warning: 'model' not found in JSON configuration. Using default: " << model << "\n";
     }
 }
-std::string Config::getApiEndpoint() {
+const std::string& Config::getApiEndpoint() {
     return api_endpoint;
-}
-bool Config::isAIErrorsEnabled() const {
-    return AIErrorsEnabled;
 }
 
 Config& Config::getInstance() {
@@ -75,7 +72,7 @@ Config& Config::getInstance() {
     return instance;
 }
 
-int Config::getParsedTimeout() {
+const int& Config::getParsedTimeout() {
     try {
         return std::stoi(timeout);
     } catch (const std::exception& e) {
@@ -84,9 +81,9 @@ int Config::getParsedTimeout() {
     }
 }
 
-std::string Config::getCustomPrompt() {
+const std::string& Config::getCustomPrompt() {
     return custom_prompt;
 }
-std::string Config::getModel() {
+const std::string& Config::getModel() {
     return model;
 }

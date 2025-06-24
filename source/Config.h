@@ -25,11 +25,11 @@ public:
     static Config& getInstance();
 
     void ConfigureJSON();
-  int getParsedTimeout() ;
-    std::string getCustomPrompt() ;
-    std::string getApiEndpoint();
-     std::string getModel();
-    bool isAIErrorsEnabled() const;
+  const int& getParsedTimeout() ;
+    const std::string& getCustomPrompt() ;
+    const std::string& getApiEndpoint();
+    const std::string& getModel();
+
 };
 
 
