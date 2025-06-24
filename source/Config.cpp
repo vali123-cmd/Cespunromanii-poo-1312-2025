@@ -12,6 +12,15 @@
 #ifndef __message
 #define __message(x)
 #endif
+#ifndef __OS_AVAILABILITY_MSG
+#define __OS_AVAILABILITY_MSG(target, availability, msg)
+#endif
+#ifndef __deprecated
+#define __deprecated __attribute__((deprecated))
+#endif
+#ifndef __message
+#define __message(x) __attribute__((availability(x)))
+#endif
 //evit DEPRECATED PE MACOSX, vezi commituri anterioare
 
 
@@ -60,7 +69,7 @@ void Config::ConfigureJSON() {
         std::cerr << "Warning: 'api-endpoint' not found in JSON configuration. Using default: " << api_endpoint << "\n";
     }
     if (jsonConfig.contains("timeout")) {
-        timeout = jsonConfig["timeout"];
+        timeout = jsonConfig["timeout"].get<std::string>();
     } else {
         std::cerr << "Warning: 'timeout' not found in JSON configuration. Using default: " << timeout<< "\n";
     }
@@ -70,7 +79,7 @@ void Config::ConfigureJSON() {
         std::cerr << "Warning: 'custom-prompt' not found in JSON configuration. Using default: " << custom_prompt << "\n";
     }
     if (jsonConfig.contains("model")) {
-        model = jsonConfig["model"];
+        model = jsonConfig["model"].get<std::string>();
     } else {
         std::cerr << "Warning: 'model' not found in JSON configuration. Using default: " << model << "\n";
     }
