@@ -25,7 +25,7 @@ float AI::getScore(const std::string& word1, const std::string& word2, const boo
     cpr::Header header{
                     {"Content-Type", "application/json"}
     };
-    // Adăugăm timeout la request, deoarece pot exista situații când durează foarte mult.
+    //  Adăugăm timeout la request, deoarece pot exista situații când durează foarte mult.
     const int miliseconds = config.getParsedTimeout();
 
     json json_body;
