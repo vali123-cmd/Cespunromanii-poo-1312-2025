@@ -25,6 +25,7 @@ FetchContent_Declare(
         GIT_TAG 1.11.0
         GIT_SHALLOW    1
 )
+set(CPR_FORCE_USE_SYSTEM_ZLIB ON)
 FetchContent_MakeAvailable(cpr)
 FetchContent_Declare(
         simsimd
