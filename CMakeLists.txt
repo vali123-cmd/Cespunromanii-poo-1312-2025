@@ -26,6 +26,8 @@ FetchContent_Declare(
         GIT_SHALLOW    1
 )
 set(CPR_FORCE_USE_SYSTEM_ZLIB ON)
+set(BUILD_ZLIB OFF)
+set(USE_SYSTEM_ZLIB ON)
 FetchContent_MakeAvailable(cpr)
 FetchContent_Declare(
         simsimd
