@@ -25,9 +25,13 @@ FetchContent_Declare(
         GIT_TAG 1.11.0
         GIT_SHALLOW    1
 )
+
 set(CPR_FORCE_USE_SYSTEM_ZLIB ON)
 set(BUILD_ZLIB OFF)
 set(USE_SYSTEM_ZLIB ON)
+set(BUILD_ZLIB OFF CACHE INTERNAL "")
+
+set(USE_SYSTEM_ZLIB ON CACHE INTERNAL "")
 FetchContent_MakeAvailable(cpr)
 FetchContent_Declare(
         simsimd
