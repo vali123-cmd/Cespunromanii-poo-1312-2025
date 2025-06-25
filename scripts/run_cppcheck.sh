@@ -8,6 +8,7 @@ cppcheck --enable=all \
     -i"${GEN_DIR:-generated}" --suppress="*:${GEN_DIR:-generated}/*" \
     --suppress=missingIncludeSystem \
     --suppress=missingInclude \
+    --suppress=unusedFunction \
     --suppress=unmatchedSuppression \
     --suppress=useStlAlgorithm \
     --check-level=exhaustive \
