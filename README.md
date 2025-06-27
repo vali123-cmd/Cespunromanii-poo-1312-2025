@@ -80,4 +80,4 @@ Contribuțiile sunt binevenite! Dacă dorești să adaugi ceva sau să raportezi
 
 
 Mulțumesc că ai ales să joci **Ce spun românii?**! Sper să te distrezi și să îți testezi cunoștințele într-un mod plăcut și provocator.
-Nu ezita să împărtășești feedback-ul tău și să ne ajuți să îmbunătățim jocul!
+Nu ezita să împărtășești feedback-ul tău!
