@@ -30,10 +30,12 @@ void AIConnectionPool::releaseConnection(AI* conn) {
 
 void AIConnectionPool::switchAIErrors() {
 
-        std::cout<<"Doresti sa activezi erorile AI? Daca ai o conexiune de internet slaba sau "
-                   "nu ai configurat Ollama bine jocul va da crash(vezi tutorial in README) (1 - da, 0 - nu): ";
-        std::cin>>useAIErrors;
-
+    std::cout << "\n";
+    std::cout << "Doresti sa activezi erorile AI?\n";
+    std::cout << "Daca ai o conexiune de internet slaba sau nu ai configurat Ollama bine jocul va da crash (vezi tutorial in README).\n";
+    std::cout << "(1 - da, 0 - nu): ";
+    std::cin >> useAIErrors;
+    std::cout << "\n";
 }
 
 bool AIConnectionPool::getuseAIErrors() {

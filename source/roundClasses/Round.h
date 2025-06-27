@@ -58,7 +58,7 @@ protected:
     static std::unique_ptr<Question> getQuestion(json &data_);
     void loopRound(Family*& leaderFamily, Question& currentQuestion, Family& f1, Family& f2);
     static Family &whoPressedFirst(Family &f1, Family &f2);
-    static void getAnswerFromPlayer(std::string& answer, const Player& jucator);
+    void getAnswerFromPlayer(std::string& answer, const Player& jucator);
 public:
     int get_round_id() const;
 

@@ -17,6 +17,8 @@
 
 //Impart in normalRound, specialRound si astfel folosesc functii virtuale pure.
 void Round::printCurrentAnswers() {
+
+
         for (const auto& item : answers_given) {
             std::cout << item.first << " " << item.second << '\n';
         }
@@ -112,7 +114,7 @@ int Round::pickRandIndex(int maxsize) {
 
     bool Round::isRoundOverAnswers(Family *&leaderFamily, std::vector<std::pair<std::string, int>> &answers_given_,
         Player& jucator, const std::string& givenAns_, const int& givenScore_, const int& bonus_multiplier_) {
-        std::cout << "Raspuns corect! Felicitari!" << '\n';
+
         answers_given_.emplace_back(givenAns_, givenScore_);
         printCurrentAnswers();
         jucator.increaseScore(givenScore_, bonus_multiplier_);
@@ -127,6 +129,8 @@ int Round::pickRandIndex(int maxsize) {
         return false;
     }
     void Round::getAnswerFromPlayer(std::string &answer, const Player& jucator) {
+    std::cout << "\033[31m" << currentQuestion->get_question_text() << "\033[0m\n";
+    std::cout<<"----------------------------\n";
     std::cout << jucator << " te rugam sa introduci un raspuns popular: " << "\n";
     std::cin.clear();
     std::getline(std::cin, answer);
@@ -315,4 +319,3 @@ std::ostream& operator<<(std::ostream& os, const Round& q) {
     }
     return os;
 }
-

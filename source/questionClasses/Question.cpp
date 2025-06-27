@@ -17,19 +17,22 @@ void Question::printTimestamp() {
     auto now = std::chrono::system_clock::now();
     std::time_t now_c = std::chrono::system_clock::to_time_t(now);
     std::tm *now_tm = std::localtime(&now_c);
-    std::cout << "[Timestamp: " << std::put_time(now_tm, "%Y-%m-%d %H:%M:%S") << "]"<<'\n';
+    std::cout << "\n[Timestamp: " << std::put_time(now_tm, "%Y-%m-%d %H:%M:%S") << "]";
 }
+
 bool Question::useQuestion(Family &family) {
-    std::cout<<family;
+    std::cout << "\n";
+    std::cout << family;
+    std::cout << "\n";
     return false;
-
 }
-void Question::takeAction(Family &leaderFamily, Family &f1, Family &f2) {
-    if (leaderFamily == f1)
-        std::cout<<"Familia "<<f1.get_family_name()<<" a raspuns corect!"<<'\n';
-    else if (leaderFamily == f2)
-        std::cout<<"Familia "<<f2.get_family_name()<<" a raspuns corect!"<<'\n';
 
+void Question::takeAction(Family &leaderFamily, Family &f1, Family &f2) {
+    std::cout << "\n";
+    if (leaderFamily == f1)
+        std::cout << "Familia " << f1.get_family_name() << " a raspuns corect!\n\n";
+    else if (leaderFamily == f2)
+        std::cout << "Familia " << f2.get_family_name() << " a raspuns corect!\n\n";
 }
 
     void swap(Question &lhs, Question &rhs) noexcept {
@@ -108,26 +111,30 @@ void Question::formatAnswer(std::string& s) {
         AI* ai = pool.getConnection();
         ai->connect();
 
-
         for (const auto& item : answers) {
             printTimestamp();
-            std::cout<<" Raspuns din partea AI:";
-            std::cout<<ai->getScore(userString, item.first, pool.getuseAIErrors())<<'\n';
-            if (similarity_percentage(userString, item.first) > 70 or (ai->getScore(userString, item.first, pool.getuseAIErrors())*100 > 70) and (ai->validAnswer(m_text, item.first, pool.getuseAIErrors()))) {
-                //NOTA: 70% este un prag de similaritate,poate varia in urmatoarele release-uri,
-                //in viitor vom folosi un AI pentru a calcula procentul de similaritate.
-                score = item.second;
-                foundAnswer = item.first;
-                answers.erase(std::find_if(answers.begin(), answers.end(),[&](const std::pair<std::string, int>& p) {
-                    return p.first == item.first;
-                }));
-                ai->disconnect();
+            std::cout << "\nRaspuns din partea AI: ";
+            std::cout << ai->getScore(userString, item.first, pool.getuseAIErrors()) << "\n";
+            if (similarity_percentage(userString, item.first) > 70 or ai->getScore(userString, item.first, pool.getuseAIErrors())*100 > 70 ) {
+                if ( ai->validAnswer(m_text, item.first, pool.getuseAIErrors())) {
+                    //NOTA: 70% este un prag de similaritate,poate varia in urmatoarele release-uri,
+                    //in viitor vom folosi un AI pentru a calcula procentul de similaritate.
+                    score = item.second;
+                    foundAnswer = item.first;
+                    answers.erase(std::find_if(answers.begin(), answers.end(),[&](const std::pair<std::string, int>& p) {
+                        return p.first == item.first;
+                    }));
+                    ai->disconnect();
 
-                return 1;
+                    std::cout << "\nRaspuns corect! Ai obtinut " << score << " puncte.\n\n";
+                    return 1;
+                }
+
             }
         }
         ai->disconnect();
         pool.releaseConnection(ai);
+        std::cout << "\nRaspuns gresit! Incearca din nou.\n\n";
         return 0;
     }
 
@@ -146,6 +153,6 @@ void Question::formatAnswer(std::string& s) {
 
 
     std::ostream& operator<<(std::ostream& os,  Question& q) {
-        os<<q.get_question_text()<<'\n';
+        os << "\nIntrebare: \033[31m" << q.get_question_text() << "\033[0m\n";
         return os;
     }
