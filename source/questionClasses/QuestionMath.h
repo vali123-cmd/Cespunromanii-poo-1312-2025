@@ -8,7 +8,7 @@
 
 
 class QuestionMath : public Question{
-    bool isAnswerRight(std::string &userString_, int &score_, std::string &foundAnswer) override;
+    bool isAnswerRight(std::string &userString_, int &score_, std::string&) override;
 public:
     std::unique_ptr<Question> clone() const override;
     QuestionMath(const std::string& text_, const std::vector<std::pair<std::string, int>>& answers_);

@@ -28,7 +28,7 @@ const std::string& QuestionMath::get_question_text() {
     return m_text;
 }
 
-bool QuestionMath::isAnswerRight(std::string &userString_, int &score_, std::string &foundAnswer) {
+bool QuestionMath::isAnswerRight(std::string &userString_, int &score_, std::string&) {
     AIConnectionPool pool;
     AI* ai = pool.getConnection();
     ai->connect();
