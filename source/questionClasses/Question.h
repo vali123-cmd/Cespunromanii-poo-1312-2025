@@ -10,7 +10,9 @@
 #include <memory>
 #include <string>
 #include <vector>
-
+#include <chrono>
+#include <ctime>
+#include <iomanip>
 #include "Family.h"
 
 
@@ -25,6 +27,7 @@ protected:
     std::string m_text;
     std::vector<std::pair<std::string, int>> answers;
 public:
+    void printTimestamp();
     virtual std::unique_ptr<Question> clone() const;
 
 

@@ -6,6 +6,9 @@
 
 #include <iostream>
 
+#include "AI.h"
+#include "AIConnectionPool.h"
+
 QuestionMath::QuestionMath(const std::string &text_, const std::vector<std::pair<std::string, int> > &answers_):
 
 Question(text_, answers_) {
@@ -26,7 +29,11 @@ const std::string& QuestionMath::get_question_text() {
 }
 
 bool QuestionMath::isAnswerRight(std::string &userString_, int &score_, std::string &foundAnswer) {
-    if (foundAnswer == answers[0].first and userString_ == answers[0].first) {
+    AIConnectionPool pool;
+    AI* ai = pool.getConnection();
+    ai->connect();
+
+    if (ai->validAnswer(m_text, userString_, true)) {
         std::cout<<"Raspuns corect"<<std::endl;
         std::cout<<"Scorul tau"<<score_<<" va fi marit cu 1%."<<std::endl;
         return true;

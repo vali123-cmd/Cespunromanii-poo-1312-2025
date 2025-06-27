@@ -12,7 +12,13 @@
 #include "AIConnectionPool.h"
 class Family;
 
-
+void Question::printTimestamp() {
+    //Functie care afiseaza un timestamp in formatul: 2025-05-05 12:34:56
+    auto now = std::chrono::system_clock::now();
+    std::time_t now_c = std::chrono::system_clock::to_time_t(now);
+    std::tm *now_tm = std::localtime(&now_c);
+    std::cout << "[Timestamp: " << std::put_time(now_tm, "%Y-%m-%d %H:%M:%S") << "]"<<'\n';
+}
 bool Question::useQuestion(Family &family) {
     std::cout<<family;
     return false;
@@ -104,9 +110,10 @@ void Question::formatAnswer(std::string& s) {
 
 
         for (const auto& item : answers) {
-
+            printTimestamp();
+            std::cout<<" Raspuns din partea AI:";
             std::cout<<ai->getScore(userString, item.first, pool.getuseAIErrors())<<'\n';
-            if (similarity_percentage(userString, item.first) > 70 or (ai->getScore(userString, item.first, pool.getuseAIErrors())*100 > 70)) {
+            if (similarity_percentage(userString, item.first) > 70 or (ai->getScore(userString, item.first, pool.getuseAIErrors())*100 > 70) and (ai->validAnswer(m_text, item.first, pool.getuseAIErrors()))) {
                 //NOTA: 70% este un prag de similaritate,poate varia in urmatoarele release-uri,
                 //in viitor vom folosi un AI pentru a calcula procentul de similaritate.
                 score = item.second;

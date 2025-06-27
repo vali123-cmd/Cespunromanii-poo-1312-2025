@@ -16,7 +16,7 @@ class AI {
 
 public:
     void disconnect();
-
+    bool validAnswer(const std::string& question, const std::string& answer, const bool& useAIErrors);
     float getScore(const std::string& word1, const std::string& word2, const bool& useAIErrors);
     bool isActive() const;
     void connect();

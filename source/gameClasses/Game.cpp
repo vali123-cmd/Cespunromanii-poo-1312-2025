@@ -124,7 +124,7 @@ void Game::saveWinnerScores( Family& winnerFamily)
         std::cout<<"Doresti sa stergi scorurile? Da/Nu"<<'\n';
         std::string answer;
         std::cin>>answer;
-        if (answer == "Da") {
+        if (answer == "Da" or answer == "da") {
             scoreManager.clearScores();
         }
 }
