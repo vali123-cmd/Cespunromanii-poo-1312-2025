@@ -128,14 +128,14 @@ int Round::pickRandIndex(int maxsize) {
         }
         return false;
     }
-    void Round::getAnswerFromPlayer(std::string &answer, const Player& jucator) {
+    void Round::getAnswerFromPlayer(std::string &answer_, const Player& jucator) {
     std::cout << "\033[31m" << currentQuestion->get_question_text() << "\033[0m\n";
     std::cout<<"----------------------------\n";
     std::cout << jucator << " te rugam sa introduci un raspuns popular: " << "\n";
     std::cin.clear();
-    std::getline(std::cin, answer);
-    answer.erase(0, answer.find_first_not_of(" \t\n\r\f\v"));
-    answer.erase(answer.find_last_not_of(" \t\n\r\f\v") + 1);
+    std::getline(std::cin, answer_);
+    answer.erase(0, answer_.find_first_not_of(" \t\n\r\f\v"));
+    answer.erase(answer_.find_last_not_of(" \t\n\r\f\v") + 1);
     }
 
 
