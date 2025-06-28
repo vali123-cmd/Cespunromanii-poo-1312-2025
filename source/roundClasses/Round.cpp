@@ -129,8 +129,11 @@ int Round::pickRandIndex(int maxsize) {
         return false;
     }
     void Round::getAnswerFromPlayer(std::string &answer_, const Player& jucator) {
-    if (currentQuestion && typeid(*currentQuestion) == typeid(Question)) {
-        std::cout << "\033[31m" << currentQuestion->get_question_text() << "\033[0m\n";
+    if (currentQuestion) {
+        auto& ref = *currentQuestion;
+        if (typeid(ref) == typeid(Question)) {
+            std::cout << "\033[31m" << currentQuestion->get_question_text() << "\033[0m\n";
+        }
     }
     std::cout<<"----------------------------\n";
     std::cout << jucator << " te rugam sa introduci un raspuns popular: " << "\n";
