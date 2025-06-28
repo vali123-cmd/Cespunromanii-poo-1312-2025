@@ -50,6 +50,10 @@ Dacă Ollama nu funcționează, apasă `0` când ești întrebat de serverul AI.
 
 Pentru alte LLM-uri locale, modifică fișierul `configure.json` la secțiunea `url_endpoint`.
 
+- Exista un prompt in configure.json care poate fi modificat, insa nu trebuie sa eliminati <word1> si <word2>, utilizatorul ar trebui sa customizeze acel prompt in jurul <word1> si <word2> pentru ca AI-ul sa functioneze.
+- Pentru utilizatori la care cererile catre LLM-ul local functioneza foarte incet, acestia pot totusi juca jocul cu conditia sa modifice <<timeout>> din configure.json la o valoare acceptabila pentru acestia.
+  
+
 
 ## Note
 
