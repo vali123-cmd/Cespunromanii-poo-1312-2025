@@ -31,8 +31,8 @@ void AIConnectionPool::releaseConnection(AI* conn) {
 void AIConnectionPool::switchAIErrors() {
 
     std::cout << "\n";
-    std::cout << "Doresti sa activezi erorile AI?\n";
-    std::cout << "Daca ai o conexiune de internet slaba sau nu ai configurat Ollama bine jocul va da crash (vezi tutorial in README).\n";
+    std::cout << "Doresti validare de raspunsuri pe baza de AI?\n";
+    std::cout << "Daca nu ai configurat un LLM local bine jocul va da crash (vezi tutorial in README).\n";
     std::cout << "(1 - da, 0 - nu): ";
     std::cin >> useAIErrors;
     std::cout << "\n";

@@ -24,7 +24,7 @@ Inițial, jocul folosea distanța Levenshtein pentru a compara răspunsurile juc
 - AI-ul analizează răspunsul jucătorului și îl compară semantic cu răspunsurile corecte.
 - Astfel, răspunsuri cu același sens, dar scrise diferit, sunt recunoscute ca fiind corecte.
 - Dacă nu ai AI activat, se folosește totuși o verificare de similaritate, dar fără înțelegerea contextului.
-
+- 
 ---
 
 ##  Resurse externe
@@ -39,9 +39,7 @@ Inițial, jocul folosea distanța Levenshtein pentru a compara răspunsurile juc
 
 ### Activare Ollama (AI) pe Linux:
 - [Tutorial complet](https://itsfoss.com/ollama-setup-linux/)
-- Recomandare: folosește `llama3` în loc de `llama2` (`ollama pull llama3`)
-- OBSERVATIE: ROLLAMA sau ROGEMMA sunt alternative bune pe Limba Română pentru Ollama.
-- Este la latitudinea utilizatorului ce model de LLM doreste să folosească, dar acesta trebuie să fie local si să modifice fișierul `configure.json` la secțiunea `url_endpoint`.
+
 
 ### Pentru Windows și Mac:
 - [Ghid pas cu pas](https://medium.com/@sridevi17j/step-by-step-guide-setting-up-and-running-ollama-in-windows-macos-linux-a00f21164bf3)
@@ -50,6 +48,37 @@ Dacă Ollama nu funcționează, apasă `0` când ești întrebat de serverul AI.
 
 Pentru alte LLM-uri locale, modifică fișierul `configure.json` la secțiunea `url_endpoint`.
 
+## 📄 Ghid rapid pentru `configure.json`
+
+Fișierul `configure.json` permite personalizarea modului în care jocul interacționează cu AI-ul și gestionează validarea răspunsurilor. Acesta se află în directorul principal al proiectului și poate fi editat cu orice editor de text.
+
+### Exemplu de structură:
+
+```json
+{
+  "api-endpoint": "127.0.0.1:11434/api/chat",
+  "timeout": "5000",
+  "model": "llama3",
+  "custom-prompt": "Compare the level of similarity between the following two romanian words based on their meanings and usage. Provide a float value between 0 and 1, where 0 means no similarity and 1 means identical meaning. I want only a number of type 0.xx in the answer and nothing else. The words are: <word1> and <word2>.",
+  "additional-prompt": "Poate fi considerat următorul răspuns corect la întrebarea: <question> ? Răspunsul este: <answer> . Răspunsul este corect? Răspunde cu '1' pentru 'da' sau '0' pentru 'nu'."
+}
+```
+
+###  Explicație a variabilelor:
+
+- **api-endpoint**: Adresa și portul la care rulează serverul AI (ex: Ollama). Modifică dacă folosești altă adresă sau port.
+- **timeout**: Timpul maxim (în milisecunde) de așteptare pentru răspunsul AI-ului.
+- **model**: Numele modelului AI folosit (ex: `llama3`). Poate fi schimbat în funcție de modelele disponibile local.
+- **custom-prompt**: Promptul folosit pentru a compara semantic două cuvinte. Poți personaliza formularea pentru a obține rezultate mai bune.
+- **additional-prompt**: Promptul folosit pentru a verifica dacă un răspuns este corect pentru o anumită întrebare. Poți adapta textul pentru a schimba modul de validare.
+
+### Recomandări:
+
+- Dacă folosești un alt model sau server AI, modifică valorile pentru `api-endpoint` și `model`.
+- Pentru rezultate mai bune la validarea răspunsurilor, poți ajusta prompturile după preferință.
+- Orice modificare a acestui fișier se aplică la următoarea rulare a jocului.
+
+---
 
 ## Note
 
@@ -81,3 +110,6 @@ Contribuțiile sunt binevenite! Dacă dorești să adaugi ceva sau să raportezi
 
 Mulțumesc că ai ales să joci **Ce spun românii?**! Sper să te distrezi și să îți testezi cunoștințele într-un mod plăcut și provocator.
 Nu ezita să împărtășești feedback-ul tău!
+
+---
+

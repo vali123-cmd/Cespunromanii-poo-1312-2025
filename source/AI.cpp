@@ -23,7 +23,18 @@ bool AI::validAnswer(const std::string& answer, const std::string& question, con
 
     json json_body;
     json_body["model"] = config.getModel();
-    std::string prompt = "Poate fi considerat următorul răspuns corect la întrebarea: '" + question + "'? Răspunsul este: '" + answer + "'. Răspunde cu '1' sau '0'.";
+    std::string prompt = config.getAdditionalPrompt();
+
+
+    size_t pos;
+    while ((pos = prompt.find("<answer>")) != std::string::npos) {
+        prompt.replace(pos, 8, question);
+    }
+    while ((pos = prompt.find("<question>")) != std::string::npos) {
+        prompt.replace(pos, 10, answer);
+    }
+
+
     json_body["messages"] = json::array({
         // json::object({{"role", "system"}, {"content", "You are a helpful assistant"}}),
         json::object({{"role", "user"}, {"content", prompt}, {"temperature", 0.0}, {"seed", 42}})
@@ -41,12 +52,11 @@ bool AI::validAnswer(const std::string& answer, const std::string& question, con
     }
     if(res.status_code != 200) // Dacă status code-ul nu este 200 înseamnă că a apărut o eroare
     {
-        std::cout<<"branched200";
+
         return false;
     }
     if(res.text.empty())
     {
-        std::cout<<"branchedempty";
         return false;
     }
 
@@ -87,10 +97,10 @@ float AI::getScore(const std::string& word1, const std::string& word2, const boo
     while ((pos = prompt.find("<word2>")) != std::string::npos) {
         prompt.replace(pos, 7, word2);
     }
-    std::cout << "Prompt: " << prompt << "\n";
+
 
     if (useAIErrors == 0 ) {
-        std::cout<<"branchedinitial"; //fordebug
+
         return -1;
     }
 
@@ -121,12 +131,12 @@ float AI::getScore(const std::string& word1, const std::string& word2, const boo
     }
     if(res.status_code != 200) // Dacă status code-ul nu este 200 înseamnă că a apărut o eroare
     {
-        std::cout<<"branched200"; //for debug
+
         return -1;
     }
     if(res.text.empty())
     {
-        std::cout<<"branchedempty"; //for debug
+
         return -1;
     }
 

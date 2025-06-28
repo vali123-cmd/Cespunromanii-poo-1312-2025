@@ -15,7 +15,7 @@ class Config {
     std::string timeout;
      std::string custom_prompt;
      std::string model;
-
+    std::string additional_prompt;
     Config();
     Config(const Config&) = delete;
     Config& operator=(const Config&) = delete;
@@ -28,6 +28,7 @@ public:
     const std::string& getCustomPrompt() ;
     const std::string& getApiEndpoint();
     const std::string& getModel();
+    const std::string& getAdditionalPrompt();
 
 };
 

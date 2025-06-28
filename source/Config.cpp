@@ -66,6 +66,11 @@ void Config::ConfigureJSON() {
     } else {
         std::cerr << "Warning: 'model' not found in JSON configuration. Using default: " << model << "\n";
     }
+    if (jsonConfig.contains("additional-prompt")) {
+        additional_prompt = jsonConfig["additional-prompt"];
+    } else {
+        std::cerr << "Warning: 'additional-prompt' not found in JSON configuration. Using default: " << additional_prompt << "\n";
+    }
 }
 const std::string& Config::getApiEndpoint() {
     return api_endpoint;
@@ -91,4 +96,7 @@ const std::string& Config::getCustomPrompt() {
 }
 const std::string& Config::getModel() {
     return model;
+}
+const std::string&  Config::getAdditionalPrompt() {
+    return additional_prompt;
 }

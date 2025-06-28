@@ -17,7 +17,7 @@ void Question::printTimestamp() {
     auto now = std::chrono::system_clock::now();
     std::time_t now_c = std::chrono::system_clock::to_time_t(now);
     std::tm *now_tm = std::localtime(&now_c);
-    std::cout << "\n[Timestamp: " << std::put_time(now_tm, "%Y-%m-%d %H:%M:%S") << "]";
+    std::cout << "\n\033[90m[" << std::put_time(now_tm, "%Y-%m-%d %H:%M:%S") << "]\033[0m"<< " ";
 }
 
 bool Question::useQuestion(Family &family) {
@@ -106,15 +106,26 @@ void Question::formatAnswer(std::string& s) {
     bool Question::isAnswerRight(std::string& userString, int& score, std::string& foundAnswer) {
         //formatare pentru precizie mai buna cu ajutorul formatAnswer().
         formatAnswer(userString);
+    for (const auto& item : answers) {
+
+
+        if (userString == item.first) {
+
+                score = item.second;
+                std::cout << "\nRaspuns corect! Ai obtinut " << score << " puncte.\n\n";
+                return 1;
+            }
+
+        }
 
         AIConnectionPool pool;
         AI* ai = pool.getConnection();
         ai->connect();
 
         for (const auto& item : answers) {
+            std::cout << "\033[90mRaspuns din partea AI: \033[0m";
             printTimestamp();
-            std::cout << "\nRaspuns din partea AI: ";
-            std::cout << ai->getScore(userString, item.first, pool.getuseAIErrors()) << "\n";
+            std::cout << "\033[90m" << ai->getScore(userString, item.first, pool.getuseAIErrors()) << "\033[0m\n";
             if (similarity_percentage(userString, item.first) > 70 or ai->getScore(userString, item.first, pool.getuseAIErrors())*100 > 70 ) {
                 if ( ai->validAnswer(m_text, item.first, pool.getuseAIErrors())) {
                     //NOTA: 70% este un prag de similaritate,poate varia in urmatoarele release-uri,
@@ -134,7 +145,7 @@ void Question::formatAnswer(std::string& s) {
         }
         ai->disconnect();
         pool.releaseConnection(ai);
-        std::cout << "\nRaspuns gresit! Incearca din nou.\n\n";
+
         return 0;
     }
 

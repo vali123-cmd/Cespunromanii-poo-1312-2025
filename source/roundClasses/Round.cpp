@@ -9,7 +9,7 @@
 
 #include "Family.h"
 #include "RollDice.h"
-
+#include <typeinfo>
 #include "questionClasses/QuestionKiller.h"
 #include "questionClasses/QuestionMath.h"
 #include "questionClasses/QuestionOptional.h"
@@ -129,7 +129,9 @@ int Round::pickRandIndex(int maxsize) {
         return false;
     }
     void Round::getAnswerFromPlayer(std::string &answer_, const Player& jucator) {
-    std::cout << "\033[31m" << currentQuestion->get_question_text() << "\033[0m\n";
+    if (typeid(*currentQuestion) == typeid(Question)) {
+        std::cout << "\033[31m" << currentQuestion->get_question_text() << "\033[0m\n";
+    }
     std::cout<<"----------------------------\n";
     std::cout << jucator << " te rugam sa introduci un raspuns popular: " << "\n";
     std::cin.clear();
