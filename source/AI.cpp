@@ -42,12 +42,12 @@ bool AI::validAnswer(const std::string& answer, const std::string& question, con
     if(res.status_code != 200) // Dacă status code-ul nu este 200 înseamnă că a apărut o eroare
     {
         std::cout<<"branched200";
-        return -1;
+        return false;
     }
     if(res.text.empty())
     {
         std::cout<<"branchedempty";
-        return -1;
+        return false;
     }
 
     std::string accumulated;
@@ -79,7 +79,15 @@ bool AI::validAnswer(const std::string& answer, const std::string& question, con
     return accumulated == "1";
 }
 float AI::getScore(const std::string& word1, const std::string& word2, const bool& useAIErrors)  {
-    std::string prompt =  config.getCustomPrompt() + word1 + "and" + word2;
+    std::string prompt =  config.getCustomPrompt();
+    size_t pos;
+    while ((pos = prompt.find("<word1>")) != std::string::npos) {
+        prompt.replace(pos, 7, word1);
+    }
+    while ((pos = prompt.find("<word2>")) != std::string::npos) {
+        prompt.replace(pos, 7, word2);
+    }
+    std::cout << "Prompt: " << prompt << "\n";
 
     if (useAIErrors == 0 ) {
         std::cout<<"branchedinitial"; //fordebug
