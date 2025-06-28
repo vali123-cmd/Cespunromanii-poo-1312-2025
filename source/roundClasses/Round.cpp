@@ -129,7 +129,7 @@ int Round::pickRandIndex(int maxsize) {
         return false;
     }
     void Round::getAnswerFromPlayer(std::string &answer_, const Player& jucator) {
-    if (typeid(*currentQuestion) == typeid(Question)) {
+    if (currentQuestion && typeid(*currentQuestion) == typeid(Question)) {
         std::cout << "\033[31m" << currentQuestion->get_question_text() << "\033[0m\n";
     }
     std::cout<<"----------------------------\n";
