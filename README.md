@@ -69,7 +69,7 @@ Contribuțiile sunt binevenite! Dacă dorești să adaugi ceva sau să raportezi
 ## Tehnologii folosite
 
 - **C++** pentru logica jocului și gestionarea întrebărilor/răspunsurilor.
-- **AI/ML model** pentru verificarea răspunsurilor bazată pe înțelegerea semantică.
+- **AI/ML model** pentru verificarea răspunsurilor bazată pe înțelegerea semantică
 
 ---
 
