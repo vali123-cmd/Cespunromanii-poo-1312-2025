@@ -1,33 +1,33 @@
-# Ce spun românii? 🇷🇴
+# What Do Romanians Say? 🇷🇴
 
 ---
-**Ce spun românii?** este un joc inspirat de celebrul Family Feud, creat pentru cei care vor să retrăiască experiența copilăriei într-un mod modern și interactiv, direct din terminal.
-
----
-
-## 🕹️ Caracteristici principale
-
-- **Gameplay**: Două familii se întrec în a ghici cele mai populare răspunsuri la întrebări amuzante și interesante.
-- **Verificare inteligentă a răspunsurilor**: Folosește AI (prin Ollama sau alt LLM local) pentru a valida răspunsurile jucătorilor, nu doar pe baza asemănării literale, ci și pe baza sensului.
-- **Similaritate semantică**: Răspunsurile nu sunt verificate doar cu distanța Levenshtein (care măsoară diferențele de caractere), ci și cu ajutorul AI, care înțelege contextul și sensul cuvintelor.
-- **Interfață colorată și spațiată pentru terminal**: Întrebările sunt evidențiate cu roșu, iar afișarea scorurilor și răspunsurilor este aerisită și clară.
-- **Moduri de joc variate**: Poți alege între mod Normal și Special, fiecare cu provocări diferite.
-- **Configurare flexibilă pentru AI**: Poți activa sau dezactiva validarea cu AI, în funcție de preferințe sau de conexiunea la internet.
+**What Do Romanians Say?** is a game inspired by the famous *Family Feud*, created for those who want to relive their childhood experience in a modern and interactive way — right from the terminal.
 
 ---
 
-## 🤖 Cum funcționează verificarea răspunsurilor?
+## 🕹️ Main Features
 
-Inițial, jocul folosea distanța Levenshtein pentru a compara răspunsurile jucătorilor cu cele corecte. Această metodă funcționează bine pentru greșeli de scriere minore, dar nu poate înțelege dacă două răspunsuri diferite exprimă același lucru (ex: "mașină" vs "automobil").
-
-**Acum, jocul folosește AI pentru a verifica răspunsurile:**
-- AI-ul analizează răspunsul jucătorului și îl compară semantic cu răspunsurile corecte.
-- Astfel, răspunsuri cu același sens, dar scrise diferit, sunt recunoscute ca fiind corecte.
-- Dacă nu ai AI activat, se folosește totuși o verificare de similaritate, dar fără înțelegerea contextului.
+- **Gameplay**: Two families compete to guess the most popular answers to fun and interesting questions.
+- **Smart Answer Checking**: Uses AI (via Ollama or another local LLM) to validate players' answers not just based on literal similarity but also based on meaning.
+- **Semantic Similarity**: Answers are checked not only with Levenshtein distance (which measures character-level differences) but also with the help of AI that understands the context and meaning of words.
+- **Colorful and Spaced Terminal Interface**: Questions are highlighted in red, and the display of scores and answers is clean and easy to read.
+- **Various Game Modes**: Choose between Normal and Special modes, each with different challenges.
+- **Flexible AI Configuration**: You can enable or disable AI validation depending on your preferences or internet connection.
 
 ---
 
-##  Resurse externe
+## 🤖 How Does Answer Validation Work?
+
+Initially, the game used Levenshtein distance to compare player answers with the correct ones. This method works well for minor typos but cannot understand when two different words mean the same thing (e.g., "car" vs. "automobile").
+
+**Now, the game uses AI to validate answers:**
+- The AI analyzes the player's answer and semantically compares it with the correct ones.
+- Therefore, answers with the same meaning, even if worded differently, are recognized as correct.
+- If AI is not enabled, similarity checking is still used, but without context understanding.
+
+---
+
+## External Resources
 
 - [cpr (1.11.0)](https://github.com/libcpr/cpr/releases/tag/1.11.0) (MIT)
 - [json (3.11.3)](https://github.com/nlohmann/json/releases/tag/v3.11.3) (MIT)
@@ -35,49 +35,49 @@ Inițial, jocul folosea distanța Levenshtein pentru a compara răspunsurile juc
 
 ---
 
-## 🛠️ Instalare și configurare AI
+## 🛠️ Installation and AI Configuration
 
-### Activare Ollama (AI) pe Linux:
-- [Tutorial complet](https://itsfoss.com/ollama-setup-linux/)
-- Recomandare: folosește `llama3` în loc de `llama2` (`ollama pull llama3`)
-- OBSERVATIE: ROLLAMA sau ROGEMMA sunt alternative bune pe Limba Română pentru Ollama.
-- Este la latitudinea utilizatorului ce model de LLM doreste să folosească, dar acesta trebuie să fie local si să modifice fișierul `configure.json` la secțiunea `url_endpoint`.
+### Activating Ollama (AI) on Linux:
+- [Complete tutorial](https://itsfoss.com/ollama-setup-linux/)
+- Recommendation: Use `llama3` instead of `llama2` (`ollama pull llama3`)
+- NOTE: ROLLAMA or ROGEMMA are good Romanian-language alternatives to Ollama.
+- It’s up to the user which LLM model to use, but it must be local, and you need to modify the `configure.json` file under the `url_endpoint` section.
 
-### Pentru Windows și Mac:
-- [Ghid pas cu pas](https://medium.com/@sridevi17j/step-by-step-guide-setting-up-and-running-ollama-in-windows-macos-linux-a00f21164bf3)
+### For Windows and Mac:
+- [Step-by-step guide](https://medium.com/@sridevi17j/step-by-step-guide-setting-up-and-running-ollama-in-windows-macos-linux-a00f21164bf3)
 
-Dacă Ollama nu funcționează, apasă `0` când ești întrebat de serverul AI.
+If Ollama doesn’t work, press `0` when asked for the AI server.
 
-Pentru alte LLM-uri locale, modifică fișierul `configure.json` la secțiunea `url_endpoint`.
-
-
-## Note
-
-- Asigură-te că ai instalat toate dependențele necesare înainte de a rula jocul.
-- Pentru o experiență optimă, joacă jocul în terminale care suportă culori și formatare avansată.
+For other local LLMs, modify the `configure.json` file in the `url_endpoint` section.
 
 ---
 
-## Contribuții
+## Notes
 
-Contribuțiile sunt binevenite! Dacă dorești să adaugi ceva sau să raportezi o problemă, te rog să deschizi un issue sau un pull request pe GitHub.
-
----
-
-
-
-## Tehnologii folosite
-
-- **C++** pentru logica jocului și gestionarea întrebărilor/răspunsurilor.
-- **AI/ML model** pentru verificarea răspunsurilor bazată pe înțelegerea semantică
+- Make sure all necessary dependencies are installed before running the game.
+- For the best experience, play the game in terminals that support color and advanced formatting.
 
 ---
 
-## Planuri de viitor
+## Contributions
 
-- Realizarea unei versiuni cu interfață grafică (GUI) pentru o experiență mai prietenoasă.
-- Nu sunt decis dacă să folosesc Qt sau SFML pentru GUI, dar sper să o fac cât mai curând. :)
+Contributions are welcome! If you'd like to add something or report an issue, please open an issue or a pull request on GitHub.
 
+---
 
-Mulțumesc că ai ales să joci **Ce spun românii?**! Sper să te distrezi și să îți testezi cunoștințele într-un mod plăcut și provocator.
-Nu ezita să împărtășești feedback-ul tău!
+## Technologies Used
+
+- **C++** for the game logic and handling of questions/answers.
+- **AI/ML model** for semantic-based answer validation.
+
+---
+
+## Future Plans
+
+- Develop a graphical user interface (GUI) version for a more user-friendly experience.
+- I haven’t decided yet whether to use Qt or SFML for the GUI, but I hope to do it soon. :)
+
+---
+
+Thank you for choosing to play **What Do Romanians Say?** I hope you have fun and challenge your knowledge in an enjoyable and engaging way.  
+Feel free to share your feedback!
